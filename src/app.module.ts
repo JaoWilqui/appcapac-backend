@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { ConfigurationModule } from './config/configuration.module';
-import { MysqlDatabaseModule } from './database/mysql.module';
+import { ConfigurationModule } from './infrastructure/config/configuration.module';
+import { MysqlDatabaseModule } from './infrastructure/database/mysql.module';
+import { UserModule } from './modules/user/user.module';
 
 @Module({
-  imports: [
-         MysqlDatabaseModule,ConfigurationModule],
+  imports: [UserModule, MysqlDatabaseModule, ConfigurationModule],
   controllers: [],
   providers: [],
 })
