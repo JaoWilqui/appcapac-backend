@@ -12,6 +12,10 @@ export class UserRepository implements TodoRepository<UserEntity> {
     private readonly userEntityRepository: Repository<UserEntity>,
   ) {}
 
+  async findByEmail(email: string): Promise<UserEntity> {
+    return await this.userEntityRepository.findOneBy({ email });
+  }
+
   async updateContent(id: number, user: UserEntity): Promise<void> {
     const userEntity = this.userEntity(user);
     await this.userEntityRepository.update({ id: id }, userEntity);
