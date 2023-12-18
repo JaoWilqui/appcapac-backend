@@ -20,6 +20,9 @@ export class VideosEntity {
   @Column({ type: 'varchar', length: 150, nullable: false })
   nome: string;
 
+  @Column({ type: 'varchar', length: 300, nullable: false })
+  fileRelativePath: string;
+
   @ManyToOne(() => CategoryEntity, category => category.videos)
   @JoinColumn({
     name: 'id_categoria',

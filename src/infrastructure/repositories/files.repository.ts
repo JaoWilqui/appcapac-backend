@@ -41,6 +41,7 @@ export class FilesTodoRepository implements TodoRepository<FilesEntity> {
     file.categoria = filesEntity.categoria;
     file.modulo = filesEntity.modulo;
     file.nome = filesEntity.nome;
+    file.fileRelativePath = filesEntity.fileRelativePath;
     file.tipo = filesEntity.tipo;
 
     return file;
@@ -56,6 +57,7 @@ export class FilesTodoRepository implements TodoRepository<FilesEntity> {
     filesEntity.categoria = file.categoria;
     filesEntity.modulo = file.modulo;
     filesEntity.nome = file.nome;
+    filesEntity.fileRelativePath = file.fileRelativePath;
     filesEntity.tipo = file.tipo;
 
     return filesEntity;

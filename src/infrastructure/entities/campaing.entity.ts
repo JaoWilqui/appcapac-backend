@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { ImagesEntity } from './images.entity';
+import { VideosEntity } from './videos.entity';
 
 @Entity({ name: 'campanha', synchronize: false })
 export class CampaingEntity {
@@ -25,4 +27,10 @@ export class CampaingEntity {
 
   @Column({ type: 'int', length: 11, nullable: false })
   status: string;
+
+  @OneToMany(() => VideosEntity, videos => videos.campaing)
+  videos: VideosEntity[];
+
+  @OneToMany(() => ImagesEntity, images => images.campaing)
+  images: ImagesEntity[];
 }

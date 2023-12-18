@@ -12,11 +12,11 @@ export class CategoryTodoRepository implements TodoRepository<CategoryEntity> {
   ) {}
 
   async updateContent(id: number, category: CategoryEntity): Promise<void> {
-    const categoryEntity = this.CategoryEntity(category);
+    const categoryEntity = this.categoryEntity(category);
     await this.CategoryEntityRepository.update({ id: id }, categoryEntity);
   }
   async insert(category: CategoryEntity): Promise<void> {
-    const categoryEntity = this.CategoryEntity(category);
+    const categoryEntity = this.categoryEntity(category);
     await this.CategoryEntityRepository.insert(categoryEntity);
   }
   async findAll(): Promise<CategoryEntity[]> {
@@ -39,11 +39,14 @@ export class CategoryTodoRepository implements TodoRepository<CategoryEntity> {
     category.descricao = categoryEntity.descricao;
     category.dtcadastro = categoryEntity.dtcadastro;
     category.nome = categoryEntity.nome;
+    category.videos = categoryEntity.videos;
+    category.images = categoryEntity.images;
+    category.arquivos = categoryEntity.arquivos;
 
     return category;
   }
 
-  private CategoryEntity(category: CategoryEntity): CategoryEntity {
+  private categoryEntity(category: CategoryEntity): CategoryEntity {
     const categoryEntity: CategoryEntity = new CategoryEntity();
 
     categoryEntity.id = category.id;
@@ -51,6 +54,9 @@ export class CategoryTodoRepository implements TodoRepository<CategoryEntity> {
     categoryEntity.descricao = category.descricao;
     categoryEntity.dtcadastro = category.dtcadastro;
     categoryEntity.nome = category.nome;
+    categoryEntity.videos = category.videos;
+    categoryEntity.images = category.images;
+    categoryEntity.arquivos = category.arquivos;
 
     return categoryEntity;
   }

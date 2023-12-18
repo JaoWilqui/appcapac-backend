@@ -16,6 +16,9 @@ export class FilesEntity {
   @Column({ type: 'date', nullable: false })
   dtcadastro: Date;
 
+  @Column({ type: 'varchar', length: 300, nullable: false })
+  fileRelativePath: string;
+
   @ManyToOne(() => CategoryEntity, category => category.arquivos)
   @JoinColumn({
     name: 'id_categoria',

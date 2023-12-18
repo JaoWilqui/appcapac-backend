@@ -14,6 +14,9 @@ export class ImagesEntity {
   @Column({ type: 'varchar', length: 50, nullable: false })
   descricao: string;
 
+  @Column({ type: 'varchar', length: 300, nullable: false })
+  imageRelativePath: string;
+
   @ManyToOne(() => CategoryEntity, category => category.images)
   @JoinColumn({
     name: 'id_categoria',
