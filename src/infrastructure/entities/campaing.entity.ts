@@ -25,7 +25,7 @@ export class CampaingEntity {
   @Column({ type: 'char', length: 1, nullable: false })
   deletado: string;
 
-  @Column({ type: 'int', length: 11, nullable: false })
+  @Column({ type: 'int', nullable: false })
   status: string;
 
   @OneToMany(() => VideosEntity, videos => videos.campaing)

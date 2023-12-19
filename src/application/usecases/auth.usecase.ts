@@ -1,22 +1,22 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { UserRepository } from 'src/infrastructure/repositories/user.repository';
+import { IUserRepository } from 'src/domain/repositories/user.repository';
+import { IJwtService } from 'src/domain/services/jwt.service';
+import { IAuthUseCase } from 'src/domain/usecases/iauth.usecase';
 
-@Injectable()
-export class AuthUsecase {
+export class AuthUsecase implements IAuthUseCase {
   constructor(
-    private userRepository: UserRepository,
-    private jwtService: JwtService,
+    private userRepository: IUserRepository,
+    private jwtService: IJwtService,
   ) {}
 
-  async signIn(email, password) {
+  async signIn(email: string, password: string) {
     const user = await this.userRepository.findByEmail(email);
     if (user?.senha !== password) {
-      throw new UnauthorizedException();
+      throw new Error('Erro ao autenticar, verifique seus dados');
     }
-    const payload = { sub: user.id, email: user.email, username: user.nome };
+    const payload = { sub: user.id, email: user.email, username: user.nome, perm: user.perms };
     return {
-      access_token: await this.jwtService.signAsync(payload),
+      access_token: await this.jwtService.sign(payload),
+      user,
     };
   }
 }

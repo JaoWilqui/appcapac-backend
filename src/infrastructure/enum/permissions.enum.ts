@@ -1,4 +1,4 @@
-export enum PERMS {
+export enum Perms {
   admin = 'ADMIN',
   user = 'USER',
 }

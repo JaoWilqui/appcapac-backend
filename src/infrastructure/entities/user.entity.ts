@@ -26,4 +26,7 @@ export class UserEntity {
 
   @Column({ type: 'char', length: 1 })
   deletado: string;
+
+  @Column({ type: 'varchar', length: 100 })
+  perms: string;
 }
