@@ -1,5 +1,8 @@
 import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from 'src/infrastructure/_http/guards/auth.guard';
 import { AuthModule } from './infrastructure/_http/auth/auth.module';
+import { PermsGuard } from './infrastructure/_http/guards/perms.guard';
 import { CampaingModule } from './infrastructure/_http/modules/campaing/campaing.module';
 import { CategoryModule } from './infrastructure/_http/modules/category/category.module';
 import { ImagesModule } from './infrastructure/_http/modules/images/images.module';
@@ -12,6 +15,15 @@ import { MysqlDatabaseModule } from './infrastructure/database/mysql.module';
 @Module({
   imports: [AuthModule, VideosModule, ModulesModule, ImagesModule, CampaingModule, CategoryModule, UserModule, MysqlDatabaseModule, ConfigurationModule],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: PermsGuard,
+    },
+  ],
 })
 export class AppModule {}
