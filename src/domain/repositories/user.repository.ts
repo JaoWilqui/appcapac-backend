@@ -7,7 +7,7 @@ export interface IUserRepository {
   findByEmail(email: string): Promise<IUser>;
   updateContent(id: number, user: IUpdateUser): Promise<void>;
   insert(user: ICreatetUser): Promise<void>;
-  findAll(): Promise<IPaginationDTO<IUser[]>>;
+  findAll(params: IPaginationDTO<IUser>): Promise<IPaginationDTO<IUser>>;
   findById(id: number): Promise<IUser>;
   deleteById(id: number): Promise<void>;
 }

@@ -1,6 +1,14 @@
 export class IPaginationDTO<T> {
-  data?: T;
-  pageIndex: number;
-  totalPages?: number;
-  pageSize: number;
+  data?: T[];
+  page: number;
+  itemCount?: number;
+  pageCount: number;
+  orderBy: string;
+  order: Order = Order.ASC;
+  filters?: T;
+}
+
+export enum Order {
+  ASC = 'ASC',
+  DESC = 'DESC',
 }

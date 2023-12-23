@@ -8,6 +8,6 @@ export interface IUser {
   senha: string;
   dtcadastro: Date;
   access: IAccess[];
-  deletado: string;
+  deletado?: string;
   perms: string;
 }

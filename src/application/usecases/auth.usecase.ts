@@ -23,7 +23,6 @@ export class AuthUsecase implements IAuthUseCase {
     const payload = { sub: user.id, email: user.email, username: user.nome, perm: user.perms };
     return {
       access_token: await this.jwtService.sign(payload),
-      user,
     };
   }
 }

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { IPaginationDTO } from 'src/domain/dto/pagination.dto';
 import { TodoRepository } from 'src/infrastructure/repositories/_todo.repository';
 import { Repository } from 'typeorm';
 import { VideosEntity } from '../entities/videos.entity';
@@ -12,52 +13,36 @@ export class VideosRepository implements TodoRepository<VideosEntity> {
   ) {}
 
   async updateContent(id: number, videos: VideosEntity): Promise<void> {
-    const videosEntity = this.videosEntity(videos);
+    const videosEntity = videos;
     await this.videosEntityRepository.update({ id: id }, videosEntity);
   }
   async insert(videos: VideosEntity): Promise<void> {
-    const videosEntity = this.videosEntity(videos);
+    const videosEntity = videos;
     await this.videosEntityRepository.insert(videosEntity);
   }
-  async findAll(): Promise<VideosEntity[]> {
-    const videosEntity = await this.videosEntityRepository.find();
-    return videosEntity.map(videosEntity => this.videos(videosEntity));
+  async findAll(params: IPaginationDTO<VideosEntity>): Promise<IPaginationDTO<VideosEntity>> {
+    const queryBuilder = this.videosEntityRepository.createQueryBuilder('videos');
+    const paginatedData: IPaginationDTO<VideosEntity> = new IPaginationDTO<VideosEntity>();
+    if (params?.filters) {
+      Object.keys(params.filters).forEach(key => {
+        if (params.filters[key]) {
+          queryBuilder.andWhere(`videos.${key}=:${key}`, { [key]: params.filters[key] });
+        }
+      });
+    }
+    queryBuilder.andWhere('videos.deletado!=:deletado', { deletado: 'x' });
+    queryBuilder.skip(params.pageCount * params.page);
+    queryBuilder.take(params.pageCount);
+    queryBuilder.orderBy(params.orderBy, params.order);
+    paginatedData.itemCount = await queryBuilder.getCount();
+    paginatedData.data = await queryBuilder.getMany();
+    return paginatedData;
   }
   async findById(id: number): Promise<VideosEntity> {
     const videosEntity = await this.videosEntityRepository.findOneBy({ id: id });
-    return this.videos(videosEntity);
+    return videosEntity;
   }
   async deleteById(id: number): Promise<void> {
-    await this.videosEntityRepository.delete({ id: id });
-  }
-
-  private videos(videosEntity: VideosEntity): VideosEntity {
-    const videos: VideosEntity = new VideosEntity();
-
-    videos.id = videosEntity.id;
-    videos.deletado = videosEntity.deletado;
-    videos.descricao = videosEntity.descricao;
-    videos.dtcadastro = videosEntity.dtcadastro;
-    videos.nome = videosEntity.nome;
-    videos.modulo = videosEntity.modulo;
-    videos.category = videosEntity.category;
-    videos.link = videosEntity.link;
-
-    return videos;
-  }
-
-  private videosEntity(videos: VideosEntity): VideosEntity {
-    const videosEntity: VideosEntity = new VideosEntity();
-
-    videosEntity.id = videos.id;
-    videosEntity.deletado = videos.deletado;
-    videosEntity.descricao = videos.descricao;
-    videosEntity.dtcadastro = videos.dtcadastro;
-    videosEntity.nome = videos.nome;
-    videosEntity.modulo = videos.modulo;
-    videosEntity.category = videos.category;
-    videosEntity.link = videos.link;
-
-    return videosEntity;
+    await this.videosEntityRepository.update(id, { deletado: 'x' });
   }
 }

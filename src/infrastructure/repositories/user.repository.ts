@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UserEntity } from 'src/infrastructure/entities/user.entity';
 
+import { IPaginationDTO } from 'src/domain/dto/pagination.dto';
 import { TodoRepository } from 'src/infrastructure/repositories/_todo.repository';
 import { Repository } from 'typeorm';
-import { UserEntity } from '../entities/user.entity';
 
 @Injectable()
 export class UserRepository implements TodoRepository<UserEntity> {
@@ -24,20 +25,33 @@ export class UserRepository implements TodoRepository<UserEntity> {
     const userEntity = user;
     await this.userEntityRepository.insert(userEntity);
   }
-  async findAll(): Promise<UserEntity[]> {
-    const userEntity = await this.userEntityRepository.find();
-
-    return userEntity.map(userEntity => {
-      if (!userEntity.deletado) {
-        return userEntity;
-      }
-    });
+  async findAll(params: IPaginationDTO<UserEntity>): Promise<IPaginationDTO<UserEntity>> {
+    const queryBuilder = this.userEntityRepository.createQueryBuilder('user');
+    const paginatedData: IPaginationDTO<UserEntity> = new IPaginationDTO<UserEntity>();
+    if (params?.filters) {
+      Object.keys(params.filters).forEach(key => {
+        if (params.filters[key]) {
+          queryBuilder.andWhere(`user.${key}=:${key}`, { [key]: params.filters[key] });
+        }
+      });
+    }
+    queryBuilder.andWhere('user.deletado!=:deletado', { deletado: 'x' });
+    queryBuilder.select(['user.id', 'user.nome', 'user.sobrenome', 'user.email', 'user.dtcadastro']);
+    queryBuilder.skip(params.pageCount * (params.page - 1));
+    queryBuilder.take(params.pageCount);
+    queryBuilder.orderBy(params.orderBy, params.order);
+    queryBuilder.execute();
+    paginatedData.itemCount = await queryBuilder.getCount();
+    paginatedData.data = await queryBuilder.getMany();
+    return paginatedData;
   }
   async findById(id: number): Promise<UserEntity> {
-    const userEntity = await this.userEntityRepository.findOneBy({ id: id });
-    if (userEntity.deletado) {
-      return null;
-    }
+    const queryBuilder = await this.userEntityRepository.createQueryBuilder('user');
+    queryBuilder.andWhere('user.id=:id', { id: id });
+    queryBuilder.andWhere('user.deletado!=:deletado', { deletado: 'x' });
+    queryBuilder.select(['user.id', 'user.nome', 'user.sobrenome', 'user.email', 'user.dtcadastro']);
+    queryBuilder.execute();
+    const userEntity = await queryBuilder.getOne();
     return userEntity;
   }
   async deleteById(id: number): Promise<void> {

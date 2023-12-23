@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { IPaginationDTO } from 'src/domain/dto/pagination.dto';
 import { CategoryEntity } from 'src/infrastructure/entities/category.entity';
 import { TodoRepository } from 'src/infrastructure/repositories/_todo.repository';
 import { Repository } from 'typeorm';
@@ -8,56 +9,40 @@ import { Repository } from 'typeorm';
 export class CategoryTodoRepository implements TodoRepository<CategoryEntity> {
   constructor(
     @InjectRepository(CategoryEntity)
-    private readonly CategoryEntityRepository: Repository<CategoryEntity>,
+    private readonly categoryEntityRepository: Repository<CategoryEntity>,
   ) {}
 
   async updateContent(id: number, category: CategoryEntity): Promise<void> {
-    const categoryEntity = this.categoryEntity(category);
-    await this.CategoryEntityRepository.update({ id: id }, categoryEntity);
+    const categoryEntity = category;
+    await this.categoryEntityRepository.update({ id: id }, categoryEntity);
   }
   async insert(category: CategoryEntity): Promise<void> {
-    const categoryEntity = this.categoryEntity(category);
-    await this.CategoryEntityRepository.insert(categoryEntity);
+    const categoryEntity = category;
+    await this.categoryEntityRepository.insert(categoryEntity);
   }
-  async findAll(): Promise<CategoryEntity[]> {
-    const categoryEntity = await this.CategoryEntityRepository.find();
-    return categoryEntity.map(categoryEntity => this.category(categoryEntity));
+  async findAll(params: IPaginationDTO<CategoryEntity>): Promise<IPaginationDTO<CategoryEntity>> {
+    const queryBuilder = this.categoryEntityRepository.createQueryBuilder('category');
+    const paginatedData: IPaginationDTO<CategoryEntity> = new IPaginationDTO<CategoryEntity>();
+    if (params?.filters) {
+      Object.keys(params.filters).forEach(key => {
+        if (params.filters[key]) {
+          queryBuilder.andWhere(`category.${key}=:${key}`, { [key]: params.filters[key] });
+        }
+      });
+    }
+    queryBuilder.andWhere('category.deletado!=:deletado', { deletado: 'x' });
+    queryBuilder.skip(params.pageCount * params.page);
+    queryBuilder.take(params.pageCount);
+    queryBuilder.orderBy(params.orderBy, params.order);
+    paginatedData.itemCount = await queryBuilder.getCount();
+    paginatedData.data = await queryBuilder.getMany();
+    return paginatedData;
   }
   async findById(id: number): Promise<CategoryEntity> {
-    const categoryEntity = await this.CategoryEntityRepository.findOneBy({ id: id });
-    return this.category(categoryEntity);
+    const categoryEntity = await this.categoryEntityRepository.findOneBy({ id: id });
+    return categoryEntity;
   }
   async deleteById(id: number): Promise<void> {
-    await this.CategoryEntityRepository.delete({ id: id });
-  }
-
-  private category(categoryEntity: CategoryEntity): CategoryEntity {
-    const category: CategoryEntity = new CategoryEntity();
-
-    category.id = categoryEntity.id;
-    category.deletado = categoryEntity.deletado;
-    category.descricao = categoryEntity.descricao;
-    category.dtcadastro = categoryEntity.dtcadastro;
-    category.nome = categoryEntity.nome;
-    category.videos = categoryEntity.videos;
-    category.images = categoryEntity.images;
-    category.arquivos = categoryEntity.arquivos;
-
-    return category;
-  }
-
-  private categoryEntity(category: CategoryEntity): CategoryEntity {
-    const categoryEntity: CategoryEntity = new CategoryEntity();
-
-    categoryEntity.id = category.id;
-    categoryEntity.deletado = category.deletado;
-    categoryEntity.descricao = category.descricao;
-    categoryEntity.dtcadastro = category.dtcadastro;
-    categoryEntity.nome = category.nome;
-    categoryEntity.videos = category.videos;
-    categoryEntity.images = category.images;
-    categoryEntity.arquivos = category.arquivos;
-
-    return categoryEntity;
+    await this.categoryEntityRepository.update(id, { deletado: 'x' });
   }
 }

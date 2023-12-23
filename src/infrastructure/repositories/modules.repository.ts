@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
+import { IPaginationDTO } from 'src/domain/dto/pagination.dto';
 import { TodoRepository } from 'src/infrastructure/repositories/_todo.repository';
 import { Repository } from 'typeorm';
 import { ModulesEntity } from '../entities/modules.entity';
@@ -13,51 +14,36 @@ export class ModulesRepository implements TodoRepository<ModulesEntity> {
   ) {}
 
   async updateContent(id: number, modules: ModulesEntity): Promise<void> {
-    const modulesEntity = this.modulesEntity(modules);
+    const modulesEntity = modules;
     await this.modulesEntityRepository.update({ id: id }, modulesEntity);
   }
   async insert(modules: ModulesEntity): Promise<void> {
-    const modulesEntity = this.modulesEntity(modules);
+    const modulesEntity = modules;
     await this.modulesEntityRepository.insert(modulesEntity);
   }
-  async findAll(): Promise<ModulesEntity[]> {
-    const modulesEntity = await this.modulesEntityRepository.find();
-    return modulesEntity.map(modulesEntity => this.modules(modulesEntity));
+  async findAll(params: IPaginationDTO<ModulesEntity>): Promise<IPaginationDTO<ModulesEntity>> {
+    const queryBuilder = this.modulesEntityRepository.createQueryBuilder('modules');
+    const paginatedData: IPaginationDTO<ModulesEntity> = new IPaginationDTO<ModulesEntity>();
+    if (params?.filters) {
+      Object.keys(params.filters).forEach(key => {
+        if (params.filters[key]) {
+          queryBuilder.andWhere(`modules.${key}=:${key}`, { [key]: params.filters[key] });
+        }
+      });
+    }
+    queryBuilder.andWhere('modules.deletado!=:deletado', { deletado: 'x' });
+    queryBuilder.skip(params.pageCount * params.page);
+    queryBuilder.take(params.pageCount);
+    queryBuilder.orderBy(params.orderBy, params.order);
+    paginatedData.itemCount = await queryBuilder.getCount();
+    paginatedData.data = await queryBuilder.getMany();
+    return paginatedData;
   }
   async findById(id: number): Promise<ModulesEntity> {
     const modulesEntity = await this.modulesEntityRepository.findOneBy({ id: id });
-    return this.modules(modulesEntity);
+    return modulesEntity;
   }
   async deleteById(id: number): Promise<void> {
-    await this.modulesEntityRepository.delete({ id: id });
-  }
-
-  private modules(modulesEntity: ModulesEntity): ModulesEntity {
-    const modules: ModulesEntity = new ModulesEntity();
-
-    modules.id = modulesEntity.id;
-    modules.deletado = modulesEntity.deletado;
-    modules.nome = modulesEntity.nome;
-    modules.access = modulesEntity.access;
-    modules.arquivos = modulesEntity.arquivos;
-    modules.images = modulesEntity.images;
-    modules.videos = modulesEntity.videos;
-    modules.dtcadastros = modulesEntity.dtcadastros;
-
-    return modules;
-  }
-
-  private modulesEntity(modules: ModulesEntity): ModulesEntity {
-    const modulesEntity: ModulesEntity = new ModulesEntity();
-
-    modulesEntity.id = modules.id;
-    modulesEntity.deletado = modules.deletado;
-    modulesEntity.nome = modules.nome;
-    modulesEntity.access = modules.access;
-    modulesEntity.arquivos = modules.arquivos;
-    modulesEntity.images = modules.images;
-    modulesEntity.videos = modules.videos;
-    modulesEntity.dtcadastros = modules.dtcadastros;
-    return modulesEntity;
+    await this.modulesEntityRepository.update(id, { deletado: 'x' });
   }
 }
