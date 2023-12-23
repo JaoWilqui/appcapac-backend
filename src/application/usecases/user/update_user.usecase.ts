@@ -1,18 +1,19 @@
-import { IInsertUser } from 'src/domain/dto/user/insert_user.dto';
+import {} from 'src/domain/dto/user/create_user.dto';
+import { IUpdateUser } from 'src/domain/dto/user/update_user.dto';
 import { IUserRepository } from 'src/domain/repositories/user.repository';
 import { IBcryptService } from 'src/domain/services/bcrypt.service';
-import { IInsertUserUsecase } from 'src/domain/usecases/iinsert_user.usecase';
+import { IUpdateUserUsecase } from 'src/domain/usecases/user/iupdate_user.usecase';
 
-export class UpdateUserUsecase implements IInsertUserUsecase {
+export class UpdateUserUsecase implements IUpdateUserUsecase {
   constructor(
     private userRepository: IUserRepository,
     private bcryptService: IBcryptService,
   ) {}
-  async insertUser(user: IInsertUser) {
+  async updateUser(id: number, user: IUpdateUser) {
     try {
-      const interceptUser: IInsertUser = user;
+      const interceptUser: IUpdateUser = user;
       interceptUser.senha = await this.bcryptService.encrypt(interceptUser.senha);
-      await this.userRepository.updateContent(interceptUser.id, interceptUser);
+      await this.userRepository.updateContent(id, interceptUser);
       return { status: 200, message: 'Usuário atualziado com sucesso!' };
     } catch (error) {
       throw Error();

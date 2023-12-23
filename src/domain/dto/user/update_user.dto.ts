@@ -1,7 +1,7 @@
 import { IAccess } from 'src/domain/entities/access.entity';
 
-export class IInsertUser {
-  id?: number;
+export class IUpdateUser {
+  id: number;
   nome: string;
   sobrenome: string;
   email: string;

@@ -26,6 +26,7 @@ export class UserRepository implements TodoRepository<UserEntity> {
   }
   async findAll(): Promise<UserEntity[]> {
     const userEntity = await this.userEntityRepository.find();
+
     return userEntity.map(userEntity => {
       if (!userEntity.deletado) {
         return userEntity;

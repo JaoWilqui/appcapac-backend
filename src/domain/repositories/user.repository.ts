@@ -1,11 +1,13 @@
-import { IInsertUser } from '../dto/user/insert_user.dto';
+import { IPaginationDTO } from '../dto/pagination.dto';
+import { ICreatetUser } from '../dto/user/create_user.dto';
+import { IUpdateUser } from '../dto/user/update_user.dto';
 import { IUser } from '../entities/user.entity';
 
 export interface IUserRepository {
   findByEmail(email: string): Promise<IUser>;
-  updateContent(id: number, user: IInsertUser): Promise<void>;
-  insert(user: IInsertUser): Promise<void>;
-  findAll(): Promise<IUser[]>;
+  updateContent(id: number, user: IUpdateUser): Promise<void>;
+  insert(user: ICreatetUser): Promise<void>;
+  findAll(): Promise<IPaginationDTO<IUser[]>>;
   findById(id: number): Promise<IUser>;
   deleteById(id: number): Promise<void>;
 }

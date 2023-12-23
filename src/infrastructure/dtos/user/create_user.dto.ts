@@ -1,10 +1,8 @@
 import { IsNotEmpty } from 'class-validator';
-import { IInsertUser } from 'src/domain/dto/user/insert_user.dto';
+import { ICreatetUser } from 'src/domain/dto/user/create_user.dto';
 import { IAccess } from 'src/domain/entities/access.entity';
 
-export class InsertUserDTO implements IInsertUser {
-  id?: number;
-
+export class CreateUserDTO implements ICreatetUser {
   @IsNotEmpty({ message: 'O campo nome é obrigatório' })
   nome: string;
 

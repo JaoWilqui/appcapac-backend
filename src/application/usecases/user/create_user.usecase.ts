@@ -1,18 +1,20 @@
-import { IInsertUser } from 'src/domain/dto/user/insert_user.dto';
+import { ICreatetUser } from 'src/domain/dto/user/create_user.dto';
 import { IUserRepository } from 'src/domain/repositories/user.repository';
 import { IBcryptService } from 'src/domain/services/bcrypt.service';
-import { IInsertUserUsecase } from 'src/domain/usecases/iinsert_user.usecase';
+import { ICreateUserUsecase } from 'src/domain/usecases/user/icreate_user.usecase';
 
-export class CreateUserUsecase implements IInsertUserUsecase {
+export class CreateUserUsecase implements ICreateUserUsecase {
   constructor(
     private userRepository: IUserRepository,
     private bcryptService: IBcryptService,
   ) {}
-  async insertUser(user: IInsertUser) {
+
+  async insertUser(user: ICreatetUser) {
     try {
-      const interceptUser: IInsertUser = user;
+      const interceptUser: ICreatetUser = user;
       interceptUser.senha = await this.bcryptService.encrypt(interceptUser.senha);
       await this.userRepository.insert(interceptUser);
+
       return { status: 200, message: 'Usuário registrado com sucesso!' };
     } catch (error) {
       throw Error();
