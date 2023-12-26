@@ -1,4 +1,5 @@
 import { ILogin } from 'src/domain/dto/auth/auth.dto';
+import { IUserProfile } from 'src/domain/dto/user/user_profile.dto';
 import { IUserRepository } from 'src/domain/repositories/user.repository';
 import { IBcryptService } from 'src/domain/services/bcrypt.service';
 import { IJwtService } from 'src/domain/services/jwt.service';
@@ -20,7 +21,15 @@ export class AuthUsecase implements IAuthUseCase {
       throw new Error('Erro ao autenticar, verifique seus dados');
     }
 
-    const payload = { sub: user.id, email: user.email, username: user.nome, perm: user.perms };
+    const payload: IUserProfile = {
+      id: user.id,
+      email: user.email,
+      nome: user.nome,
+      sobrenome: user.sobrenome,
+      perms: user.perms,
+      dtcadastro: user.dtcadastro,
+      access: user.access,
+    };
     return {
       access_token: await this.jwtService.sign(payload),
     };

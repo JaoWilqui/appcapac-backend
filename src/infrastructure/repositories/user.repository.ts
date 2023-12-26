@@ -31,7 +31,7 @@ export class UserRepository implements TodoRepository<UserEntity> {
     if (params?.filters) {
       Object.keys(params.filters).forEach(key => {
         if (params.filters[key]) {
-          queryBuilder.andWhere(`user.${key}=:${key}`, { [key]: params.filters[key] });
+          queryBuilder.andWhere(`user.${key} like :${key}`, { [key]: params.filters[key] });
         }
       });
     }

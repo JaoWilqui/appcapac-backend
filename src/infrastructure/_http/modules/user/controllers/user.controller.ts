@@ -2,6 +2,8 @@ import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nes
 import { DeleteUserUsecase } from 'src/application/usecases/user/delete_user.usecase';
 import { FindAllUsersUsecase } from 'src/application/usecases/user/find_all_users.usecase';
 import { Permissions } from 'src/infrastructure/_http/decorators/perms.decorator';
+import { User } from 'src/infrastructure/_http/decorators/user.decorator';
+import { AuthGuard } from 'src/infrastructure/_http/guards/auth.guard';
 import { PermsGuard } from 'src/infrastructure/_http/guards/perms.guard';
 import { PaginationDTO } from 'src/infrastructure/dtos/pagination.dto';
 import { CreateUserDTO } from 'src/infrastructure/dtos/user/create_user.dto';
@@ -12,8 +14,8 @@ import { CreateUserUsecase } from './../../../../../application/usecases/user/cr
 import { FindUserByIdUsecase } from './../../../../../application/usecases/user/find_user_by_id.usecase';
 import { UpdateUserUsecase } from './../../../../../application/usecases/user/update_user.usecase';
 
+@UseGuards(PermsGuard, AuthGuard)
 @Controller('user')
-@UseGuards(PermsGuard)
 export class UserController {
   constructor(
     private createUserUsecase: CreateUserUsecase,
@@ -23,32 +25,37 @@ export class UserController {
     private findUserByIdUsecase: FindUserByIdUsecase,
   ) {}
 
+  @Get('profile')
+  async getProfile(@User() user) {
+    return user;
+  }
+
+  @Permissions(Perms.admin, Perms.user)
   @Get(':id')
-  @Permissions([Perms.admin])
   async getUserById(@Param('id') id: number) {
     return await this.findUserByIdUsecase.findUserById(id);
   }
 
+  @Permissions(Perms.admin)
   @Get('')
-  @Permissions([Perms.admin])
   async getAllUsers(@Body() params: PaginationDTO<GetUserDto>) {
     return await this.findAllUsersUsecase.findAllUsers(params);
   }
 
+  @Permissions(Perms.admin)
   @Post('register')
-  @Permissions([Perms.admin])
   async registerUser(@Body() CreateUserDTO: CreateUserDTO) {
     return await this.createUserUsecase.insertUser(CreateUserDTO);
   }
 
+  @Permissions(Perms.admin)
   @Put('update/:id')
-  @Permissions([Perms.admin])
   async updateUser(@Body() updateUserDTO: UpdateUserDTO, @Param('id') id: number) {
     return await this.updateUserUsecase.updateUser(id, updateUserDTO);
   }
 
+  @Permissions(Perms.admin)
   @Delete('delete/:id')
-  @Permissions([Perms.admin])
   async deleteUser(@Param('id') id: number) {
     return await this.deleteUserUsecase.deleteUser(id);
   }

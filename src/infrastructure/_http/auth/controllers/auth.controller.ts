@@ -8,7 +8,7 @@ export class AuthController {
   constructor(private authUsecase: AuthUsecase) {}
 
   @Public()
-  @Post('login')
+  @Post('')
   login(@Body() loginDto: LoginDTO) {
     return this.authUsecase.signIn(loginDto);
   }

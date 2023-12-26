@@ -13,6 +13,6 @@ export class PermsGuard implements CanActivate {
       return true;
     }
     const { user } = context.switchToHttp().getRequest();
-    return requiredRoles.some(perm => user.perm === perm);
+    return requiredRoles.some(perms => user.perms === perms);
   }
 }
