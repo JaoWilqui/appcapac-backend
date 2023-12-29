@@ -18,13 +18,8 @@ export class UpdateUserDTO implements IUpdateUser {
   @IsNotEmpty({ message: 'O campo senha é obrigatório' })
   senha: string;
 
-  @IsNotEmpty({ message: 'O campo dtcadastro é obrigatório' })
-  dtcadastro: Date;
-
   @IsNotEmpty({ message: 'O campo access é obrigatório' })
   access: IAccess[];
-
-  deletado?: string;
 
   @IsNotEmpty({ message: 'O campo perms é obrigatório' })
   perms: string;

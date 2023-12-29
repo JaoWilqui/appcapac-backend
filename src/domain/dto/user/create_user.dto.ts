@@ -5,8 +5,6 @@ export class ICreatetUser {
   sobrenome: string;
   email: string;
   senha: string;
-  dtcadastro: Date;
-  access: IAccess[];
-  deletado?: string;
+  access?: IAccess[];
   perms: string;
 }
