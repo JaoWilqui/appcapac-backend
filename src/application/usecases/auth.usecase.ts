@@ -15,7 +15,7 @@ export class AuthUsecase implements IAuthUseCase {
   async signIn(login: ILogin) {
     const user = await this.userRepository.findByEmail(login.email);
 
-    const isMatch = this.bcryptService.compare(login.password, user.senha);
+    const isMatch = await this.bcryptService.compare(login.password, user.senha);
 
     if (!isMatch) {
       throw new Error('Erro ao autenticar, verifique seus dados');

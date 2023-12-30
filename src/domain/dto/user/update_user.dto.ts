@@ -6,8 +6,6 @@ export class IUpdateUser {
   sobrenome: string;
   email: string;
   senha: string;
-  dtcadastro: Date;
   access: IAccess[];
-  deletado?: string;
   perms: string;
 }
