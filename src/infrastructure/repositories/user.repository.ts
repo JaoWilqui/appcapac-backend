@@ -28,13 +28,24 @@ export class UserRepository implements TodoRepository<UserEntity> {
   async findAll(params: IPaginationDTO<UserEntity>): Promise<IPaginationDTO<UserEntity>> {
     const queryBuilder = this.userEntityRepository.createQueryBuilder('user');
     const paginatedData: IPaginationDTO<UserEntity> = new IPaginationDTO<UserEntity>();
-    if (params?.filters) {
-      Object.keys(params.filters).forEach(key => {
-        if (params.filters[key]) {
-          queryBuilder.andWhere(`user.${key} like :${key}`, { [key]: params.filters[key] });
-        }
-      });
+
+    if (params.filters.id) {
+      queryBuilder.andWhere(`user.id=:id`, { id: params.filters.id });
     }
+
+    if (params.filters.nome) {
+      queryBuilder.andWhere(`user.nome ILIKE %:nome%`, { nome: params.filters.nome });
+    }
+    if (params.filters.email) {
+      queryBuilder.andWhere(`user.email ILIKE %:email%`, { email: params.filters.email });
+    }
+    if (params.filters.sobrenome) {
+      queryBuilder.andWhere(`user.sobrenome ILIKE %:sobrenome% `, { sobrenome: params.filters.sobrenome });
+    }
+    if (params.filters.dtcadastro) {
+      queryBuilder.andWhere(`user.dtcadastro=:dtcadastro`, { dtcadastro: params.filters.dtcadastro });
+    }
+
     queryBuilder.andWhere('user.deletado!=:deletado', { deletado: 'x' });
     queryBuilder.select(['user.id', 'user.nome', 'user.sobrenome', 'user.email', 'user.dtcadastro']);
     queryBuilder.skip(params.pageCount * (params.page - 1));
