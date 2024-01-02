@@ -23,13 +23,13 @@ export class CategoryTodoRepository implements TodoRepository<CategoryEntity> {
   async findAll(params: IPaginationDTO<CategoryEntity>): Promise<IPaginationDTO<CategoryEntity>> {
     const queryBuilder = this.categoryEntityRepository.createQueryBuilder('category');
     const paginatedData: IPaginationDTO<CategoryEntity> = new IPaginationDTO<CategoryEntity>();
-    if (params?.filters) {
-      Object.keys(params.filters).forEach(key => {
-        if (params.filters[key]) {
-          queryBuilder.andWhere(`category.${key}=:${key}`, { [key]: params.filters[key] });
-        }
-      });
-    }
+    // if (params?.filters) {
+    //   Object.keys(params.filters).forEach(key => {
+    //     if (params.filters[key]) {
+    //       queryBuilder.andWhere(`category.${key}=:${key}`, { [key]: params.filters[key] });
+    //     }
+    //   });
+    // }
     queryBuilder.andWhere('category.deletado!=:deletado', { deletado: 'x' });
     queryBuilder.skip(params.pageCount * params.page);
     queryBuilder.take(params.pageCount);

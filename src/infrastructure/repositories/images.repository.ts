@@ -24,13 +24,13 @@ export class ImagesRepository implements TodoRepository<ImagesEntity> {
   async findAll(params: IPaginationDTO<ImagesEntity>): Promise<IPaginationDTO<ImagesEntity>> {
     const queryBuilder = this.imagesEntityRepository.createQueryBuilder('images');
     const paginatedData: IPaginationDTO<ImagesEntity> = new IPaginationDTO<ImagesEntity>();
-    if (params?.filters) {
-      Object.keys(params.filters).forEach(key => {
-        if (params.filters[key]) {
-          queryBuilder.andWhere(`images.${key}=:${key}`, { [key]: params.filters[key] });
-        }
-      });
-    }
+    // if (params?.filters) {
+    //   Object.keys(params.filters).forEach(key => {
+    //     if (params.filters[key]) {
+    //       queryBuilder.andWhere(`images.${key}=:${key}`, { [key]: params.filters[key] });
+    //     }
+    //   });
+    // }
     queryBuilder.andWhere('images.deletado!=:deletado', { deletado: 'x' });
     queryBuilder.skip(params.pageCount * params.page);
     queryBuilder.take(params.pageCount);

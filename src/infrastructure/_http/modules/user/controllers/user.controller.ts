@@ -1,6 +1,7 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { DeleteUserUsecase } from 'src/application/usecases/user/delete_user.usecase';
 import { FindAllUsersUsecase } from 'src/application/usecases/user/find_all_users.usecase';
+import { IUser } from 'src/domain/entities/user.entity';
 import { Permissions } from 'src/infrastructure/_http/decorators/perms.decorator';
 import { User } from 'src/infrastructure/_http/decorators/user.decorator';
 import { AuthGuard } from 'src/infrastructure/_http/guards/auth.guard';
@@ -27,7 +28,7 @@ export class UserController {
 
   @Get('profile')
   async getProfile(@User() user) {
-    return user;
+    return await user;
   }
 
   @Permissions(Perms.admin, Perms.user)
@@ -38,7 +39,7 @@ export class UserController {
 
   @Permissions(Perms.admin)
   @Get('')
-  async getAllUsers(@Body() params: PaginationDTO<GetUserDto>) {
+  async getAllUsers(@Query() params: PaginationDTO<GetUserDto> & IUser) {
     return await this.findAllUsersUsecase.findAllUsers(params);
   }
 

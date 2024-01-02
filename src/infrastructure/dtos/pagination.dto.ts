@@ -19,7 +19,4 @@ export class PaginationDTO<T> implements IPaginationDTO<any> {
 
   @IsOptional()
   order: Order = Order.ASC;
-
-  @IsOptional()
-  filters?: T;
 }

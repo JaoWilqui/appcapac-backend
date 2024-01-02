@@ -3,7 +3,7 @@ import { IUser } from './user.entity';
 
 export interface IAccess {
   id: number;
-  user: IUser[];
+  user: IUser;
   modulo: IModules;
   dtcadastro: Date;
 }

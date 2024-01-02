@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from 'src/infrastructure/entities/user.entity';
 
 import { IPaginationDTO } from 'src/domain/dto/pagination.dto';
+import { IUser } from 'src/domain/entities/user.entity';
 import { TodoRepository } from 'src/infrastructure/repositories/_todo.repository';
 import { Repository } from 'typeorm';
 
@@ -25,25 +26,25 @@ export class UserRepository implements TodoRepository<UserEntity> {
     const userEntity = user;
     await this.userEntityRepository.insert(userEntity);
   }
-  async findAll(params: IPaginationDTO<UserEntity>): Promise<IPaginationDTO<UserEntity>> {
+  async findAll(params: IPaginationDTO<UserEntity> & IUser): Promise<IPaginationDTO<UserEntity>> {
     const queryBuilder = this.userEntityRepository.createQueryBuilder('user');
     const paginatedData: IPaginationDTO<UserEntity> = new IPaginationDTO<UserEntity>();
 
-    if (params.filters.id) {
-      queryBuilder.andWhere(`user.id=:id`, { id: params.filters.id });
+    if (params.id) {
+      queryBuilder.andWhere(`user.id=:id`, { id: params.id });
     }
 
-    if (params.filters.nome) {
-      queryBuilder.andWhere(`user.nome ILIKE %:nome%`, { nome: params.filters.nome });
+    if (params.nome) {
+      queryBuilder.andWhere(`user.nome ILIKE %:nome%`, { nome: params.nome });
     }
-    if (params.filters.email) {
-      queryBuilder.andWhere(`user.email ILIKE %:email%`, { email: params.filters.email });
+    if (params.email) {
+      queryBuilder.andWhere(`user.email ILIKE %:email%`, { email: params.email });
     }
-    if (params.filters.sobrenome) {
-      queryBuilder.andWhere(`user.sobrenome ILIKE %:sobrenome% `, { sobrenome: params.filters.sobrenome });
+    if (params.sobrenome) {
+      queryBuilder.andWhere(`user.sobrenome ILIKE %:sobrenome% `, { sobrenome: params.sobrenome });
     }
-    if (params.filters.dtcadastro) {
-      queryBuilder.andWhere(`user.dtcadastro=:dtcadastro`, { dtcadastro: params.filters.dtcadastro });
+    if (params.dtcadastro) {
+      queryBuilder.andWhere(`user.dtcadastro=:dtcadastro`, { dtcadastro: params.dtcadastro });
     }
 
     queryBuilder.andWhere('user.deletado!=:deletado', { deletado: 'x' });
@@ -57,7 +58,7 @@ export class UserRepository implements TodoRepository<UserEntity> {
     return paginatedData;
   }
   async findById(id: number): Promise<UserEntity> {
-    const queryBuilder = await this.userEntityRepository.createQueryBuilder('user');
+    const queryBuilder = this.userEntityRepository.createQueryBuilder('user');
     queryBuilder.andWhere('user.id=:id', { id: id });
     queryBuilder.andWhere('user.deletado!=:deletado', { deletado: 'x' });
     queryBuilder.select(['user.id', 'user.nome', 'user.sobrenome', 'user.email', 'user.dtcadastro']);

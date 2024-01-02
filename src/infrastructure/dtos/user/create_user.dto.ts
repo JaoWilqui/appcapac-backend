@@ -16,7 +16,7 @@ export class CreateUserDTO implements ICreatetUser {
   senha: string;
 
   @IsNotEmpty({ message: 'O campo access é obrigatório' })
-  access: IAccess[];
+  access?: IAccess[];
 
   @IsNotEmpty({ message: 'O campo perms é obrigatório' })
   perms: string;

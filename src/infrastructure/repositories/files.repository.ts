@@ -23,13 +23,13 @@ export class FilesTodoRepository implements TodoRepository<FilesEntity> {
   async findAll(params: IPaginationDTO<FilesEntity>): Promise<IPaginationDTO<FilesEntity>> {
     const queryBuilder = this.filesEntityRepository.createQueryBuilder('files');
     const paginatedData: IPaginationDTO<FilesEntity> = new IPaginationDTO<FilesEntity>();
-    if (params?.filters) {
-      Object.keys(params.filters).forEach(key => {
-        if (params.filters[key]) {
-          queryBuilder.andWhere(`files.${key}=:${key}`, { [key]: params.filters[key] });
-        }
-      });
-    }
+    // if (params?.filters) {
+    //   Object.keys(params.filters).forEach(key => {
+    //     if (params.filters[key]) {
+    //       queryBuilder.andWhere(`files.${key}=:${key}`, { [key]: params.filters[key] });
+    //     }
+    //   });
+    // }
     queryBuilder.andWhere('files.deletado!=:deletado', { deletado: 'x' });
     queryBuilder.skip(params.pageCount * params.page);
     queryBuilder.take(params.pageCount);

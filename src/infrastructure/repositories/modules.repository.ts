@@ -24,13 +24,13 @@ export class ModulesRepository implements TodoRepository<ModulesEntity> {
   async findAll(params: IPaginationDTO<ModulesEntity>): Promise<IPaginationDTO<ModulesEntity>> {
     const queryBuilder = this.modulesEntityRepository.createQueryBuilder('modules');
     const paginatedData: IPaginationDTO<ModulesEntity> = new IPaginationDTO<ModulesEntity>();
-    if (params?.filters) {
-      Object.keys(params.filters).forEach(key => {
-        if (params.filters[key]) {
-          queryBuilder.andWhere(`modules.${key}=:${key}`, { [key]: params.filters[key] });
-        }
-      });
-    }
+    // if (params?.filters) {
+    //   Object.keys(params.filters).forEach(key => {
+    //     if (params.filters[key]) {
+    //       queryBuilder.andWhere(`modules.${key}=:${key}`, { [key]: params.filters[key] });
+    //     }
+    //   });
+    // }
     queryBuilder.andWhere('modules.deletado!=:deletado', { deletado: 'x' });
     queryBuilder.skip(params.pageCount * params.page);
     queryBuilder.take(params.pageCount);

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IPaginationDTO } from 'src/domain/dto/pagination.dto';
+import { IVideos } from 'src/domain/entities/videos.entity';
 import { TodoRepository } from 'src/infrastructure/repositories/_todo.repository';
 import { Repository } from 'typeorm';
 import { VideosEntity } from '../entities/videos.entity';
@@ -20,16 +21,16 @@ export class VideosRepository implements TodoRepository<VideosEntity> {
     const videosEntity = videos;
     await this.videosEntityRepository.insert(videosEntity);
   }
-  async findAll(params: IPaginationDTO<VideosEntity>): Promise<IPaginationDTO<VideosEntity>> {
+  async findAll(params: IPaginationDTO<VideosEntity> & IVideos): Promise<IPaginationDTO<VideosEntity>> {
     const queryBuilder = this.videosEntityRepository.createQueryBuilder('videos');
     const paginatedData: IPaginationDTO<VideosEntity> = new IPaginationDTO<VideosEntity>();
-    if (params?.filters) {
-      Object.keys(params.filters).forEach(key => {
-        if (params.filters[key]) {
-          queryBuilder.andWhere(`videos.${key}=:${key}`, { [key]: params.filters[key] });
-        }
-      });
-    }
+    // if (params?.filters) {
+    //   Object.keys(params.filters).forEach(key => {
+    //     if (params.filters[key]) {
+    //       queryBuilder.andWhere(`videos.${key}=:${key}`, { [key]: params.filters[key] });
+    //     }
+    //   });
+    // }
     queryBuilder.andWhere('videos.deletado!=:deletado', { deletado: 'x' });
     queryBuilder.skip(params.pageCount * params.page);
     queryBuilder.take(params.pageCount);

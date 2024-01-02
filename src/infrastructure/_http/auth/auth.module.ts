@@ -17,7 +17,7 @@ import { AuthController } from './controllers/auth.controller';
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '18000s' },
+      signOptions: { expiresIn: '1800000s' },
     }),
     TypeOrmModule.forFeature([UserEntity]),
   ],

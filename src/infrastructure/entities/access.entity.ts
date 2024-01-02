@@ -12,7 +12,7 @@ export class AccessEntity {
     name: 'id_user',
     referencedColumnName: 'id',
   })
-  user: UserEntity[];
+  user: UserEntity;
 
   @ManyToOne(() => ModulesEntity, module => module)
   @JoinColumn({

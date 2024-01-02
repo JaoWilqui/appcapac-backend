@@ -5,7 +5,6 @@ export class IPaginationDTO<T> {
   pageCount: number;
   orderBy: string;
   order: Order = Order.ASC;
-  filters?: T;
 }
 
 export enum Order {

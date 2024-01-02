@@ -23,13 +23,13 @@ export class CampaingRepository implements TodoRepository<CampaingEntity> {
   async findAll(params: IPaginationDTO<CampaingEntity>): Promise<IPaginationDTO<CampaingEntity>> {
     const queryBuilder = this.campaingEntityRepository.createQueryBuilder('campaing');
     const paginatedData: IPaginationDTO<CampaingEntity> = new IPaginationDTO<CampaingEntity>();
-    if (params?.filters) {
-      Object.keys(params.filters).forEach(key => {
-        if (params.filters[key]) {
-          queryBuilder.andWhere(`campaing.${key}=:${key}`, { [key]: params.filters[key] });
-        }
-      });
-    }
+    // if (params?.filters) {
+    //   Object.keys(params.filters).forEach(key => {
+    //     if (params.filters[key]) {
+    //       queryBuilder.andWhere(`campaing.${key}=:${key}`, { [key]: params.filters[key] });
+    //     }
+    //   });
+    // }
     queryBuilder.andWhere('campaing.deletado!=:deletado', { deletado: 'x' });
     queryBuilder.skip(params.pageCount * params.page);
     queryBuilder.take(params.pageCount);
