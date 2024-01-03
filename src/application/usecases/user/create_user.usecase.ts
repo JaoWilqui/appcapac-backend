@@ -1,5 +1,8 @@
+import { HttpException, HttpStatus } from '@nestjs/common';
 import { ICreatetUser } from 'src/domain/dto/user/create_user.dto';
-import { IAccesRepository } from 'src/domain/repositories/access.repository';
+import { IModules } from 'src/domain/entities/modules.entity';
+import { IUser } from 'src/domain/entities/user.entity';
+import { IModulesRepository } from 'src/domain/repositories/modules.repository';
 import { IUserRepository } from 'src/domain/repositories/user.repository';
 import { IBcryptService } from 'src/domain/services/bcrypt.service';
 import { ICreateUserUsecase } from 'src/domain/usecases/user/icreate_user.usecase';
@@ -7,13 +10,36 @@ import { ICreateUserUsecase } from 'src/domain/usecases/user/icreate_user.usecas
 export class CreateUserUsecase implements ICreateUserUsecase {
   constructor(
     private userRepository: IUserRepository,
-    private accessRepository: IAccesRepository,
     private bcryptService: IBcryptService,
+    private modulesRepository: IModulesRepository,
   ) {}
 
   async insertUser(user: ICreatetUser) {
     try {
-      const interceptUser: ICreatetUser = user;
+      const existingUser = await this.userRepository.findByEmail(user.email);
+
+      if (existingUser) {
+        throw new HttpException(
+          {
+            status: HttpStatus.I_AM_A_TEAPOT,
+            error: 'E-mail ja existente!',
+          },
+          HttpStatus.I_AM_A_TEAPOT,
+        );
+      }
+
+      const interceptUser: IUser = { ...user, modules: [] };
+
+      const filteredModules: IModules[] = [];
+      const modules = await this.modulesRepository.findAll();
+      modules.data.forEach(module => {
+        user.modules.forEach(value => {
+          if (module.id == value) {
+            filteredModules.push(module);
+          }
+        });
+      });
+      interceptUser.modules = filteredModules;
       interceptUser.senha = await this.bcryptService.encrypt(interceptUser.senha);
       await this.userRepository.insert(interceptUser);
 

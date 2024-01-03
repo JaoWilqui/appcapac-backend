@@ -1,4 +1,4 @@
-import { IAccess } from 'src/domain/entities/access.entity';
+import { IModules } from 'src/domain/entities/modules.entity';
 
 export class IUserProfile {
   id: number;
@@ -6,6 +6,6 @@ export class IUserProfile {
   sobrenome: string;
   email: string;
   dtcadastro: Date;
-  access: IAccess[];
+  modules: IModules[];
   perms: string;
 }

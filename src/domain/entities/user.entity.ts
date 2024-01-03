@@ -1,13 +1,13 @@
-import { IAccess } from './access.entity';
+import { IModules } from './modules.entity';
 
 export interface IUser {
-  id: number;
+  id?: number;
   nome: string;
   sobrenome: string;
   email: string;
   senha: string;
-  dtcadastro: Date;
-  access: IAccess[];
+  dtcadastro?: Date;
+  modules: IModules[];
   deletado?: string;
   perms: string;
 }

@@ -1,5 +1,5 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { AccessEntity } from './access.entity';
+import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { ModulesEntity } from './modules.entity';
 
 @Entity({ name: 'usuarios', synchronize: false })
 export class UserEntity {
@@ -21,8 +21,19 @@ export class UserEntity {
   @Column({ type: 'date', nullable: false })
   dtcadastro: Date;
 
-  @OneToMany(() => AccessEntity, access => access.user)
-  access: AccessEntity[];
+  @ManyToMany(() => ModulesEntity)
+  @JoinTable({
+    name: 'acessos',
+    joinColumn: {
+      name: 'id_user',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'id_modulo',
+      referencedColumnName: 'id',
+    },
+  })
+  modules: ModulesEntity[];
 
   @Column({ type: 'char', length: 1 })
   deletado: string;

@@ -28,7 +28,7 @@ export class AuthUsecase implements IAuthUseCase {
       sobrenome: user.sobrenome,
       perms: user.perms,
       dtcadastro: user.dtcadastro,
-      access: user.access,
+      modules: user.modules,
     };
     return {
       access_token: await this.jwtService.sign(payload),

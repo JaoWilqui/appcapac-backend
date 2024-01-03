@@ -1,10 +1,10 @@
 export class IPaginationDTO<T> {
   data?: T[];
-  page: number;
+  page?: number;
   itemCount?: number;
-  pageCount: number;
-  orderBy: string;
-  order: Order = Order.ASC;
+  pageCount?: number;
+  orderBy?: string;
+  order?: Order = Order.ASC;
 }
 
 export enum Order {

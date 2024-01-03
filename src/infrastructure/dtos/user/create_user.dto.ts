@@ -1,6 +1,5 @@
 import { IsNotEmpty } from 'class-validator';
 import { ICreatetUser } from 'src/domain/dto/user/create_user.dto';
-import { IAccess } from 'src/domain/entities/access.entity';
 
 export class CreateUserDTO implements ICreatetUser {
   @IsNotEmpty({ message: 'O campo nome é obrigatório' })
@@ -15,8 +14,8 @@ export class CreateUserDTO implements ICreatetUser {
   @IsNotEmpty({ message: 'O campo senha é obrigatório' })
   senha: string;
 
-  @IsNotEmpty({ message: 'O campo access é obrigatório' })
-  access?: IAccess[];
+  @IsNotEmpty({ message: 'O campo modulos é obrigatório' })
+  modules: number[];
 
   @IsNotEmpty({ message: 'O campo perms é obrigatório' })
   perms: string;

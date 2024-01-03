@@ -45,8 +45,8 @@ export class UserController {
 
   @Permissions(Perms.admin)
   @Post('register')
-  async registerUser(@Body() CreateUserDTO: CreateUserDTO) {
-    return await this.createUserUsecase.insertUser(CreateUserDTO);
+  async registerUser(@Body() createUserDTO: CreateUserDTO) {
+    return await this.createUserUsecase.insertUser(createUserDTO);
   }
 
   @Permissions(Perms.admin)

@@ -1,4 +1,4 @@
-import { IAccess } from 'src/domain/entities/access.entity';
+import { IModules } from 'src/domain/entities/modules.entity';
 import { IUser } from 'src/domain/entities/user.entity';
 
 export class GetUserDto implements IUser {
@@ -14,7 +14,7 @@ export class GetUserDto implements IUser {
 
   dtcadastro: Date;
 
-  access: IAccess[];
+  modules: IModules[];
 
   perms: string;
 }

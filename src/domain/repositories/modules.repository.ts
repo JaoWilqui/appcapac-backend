@@ -1,12 +1,10 @@
 import { IPaginationDTO } from '../dto/pagination.dto';
-import { ICreatetUser } from '../dto/user/create_user.dto';
-import { IUpdateUser } from '../dto/user/update_user.dto';
-import { IUser } from '../entities/user.entity';
+import { IModules } from '../entities/modules.entity';
 
 export interface IModulesRepository {
-  updateContent(id: number, user: IUpdateUser): Promise<void>;
-  insert(user: ICreatetUser): Promise<void>;
-  findAll(params: IPaginationDTO<IUser>): Promise<IPaginationDTO<IUser>>;
-  findById(id: number): Promise<IUser>;
+  updateContent(id: number, user: IModules): Promise<void>;
+  insert(module: IModules): Promise<void>;
+  findAll(params?: IPaginationDTO<IModules>): Promise<IPaginationDTO<IModules>>;
+  findById(id: number): Promise<IModules>;
   deleteById(id: number): Promise<void>;
 }
