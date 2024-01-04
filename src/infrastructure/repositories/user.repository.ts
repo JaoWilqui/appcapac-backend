@@ -15,7 +15,14 @@ export class UserRepository implements TodoRepository<UserEntity> {
   ) {}
 
   async findByEmail(email: string): Promise<UserEntity> {
-    return await this.userEntityRepository.findOneBy({ email });
+    const queryBuilder = this.userEntityRepository.createQueryBuilder('user');
+    queryBuilder.leftJoinAndSelect('user.modules', 'modules').addSelect(['modules.id', 'modules.nome', 'modules.dtcadastro']);
+    queryBuilder.andWhere('user.email=:email', { email: email });
+    queryBuilder.andWhere('user.deletado IS NULL');
+    queryBuilder.select(['user.id', 'user.nome', 'user.sobrenome', 'user.email', 'user.dtcadastro', 'user.senha', 'user.perms', 'modules']);
+    queryBuilder.execute();
+    const userEntity = await queryBuilder.getOne();
+    return userEntity;
   }
 
   async updateContent(id: number, user: UserEntity): Promise<void> {
