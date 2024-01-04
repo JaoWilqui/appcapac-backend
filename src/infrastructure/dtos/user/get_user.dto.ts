@@ -1,5 +1,6 @@
 import { IModules } from 'src/domain/entities/modules.entity';
 import { IUser } from 'src/domain/entities/user.entity';
+import { Perms } from 'src/infrastructure/enum/permissions.enum';
 
 export class GetUserDto implements IUser {
   id: number;
@@ -16,5 +17,5 @@ export class GetUserDto implements IUser {
 
   modules: IModules[];
 
-  perms: string;
+  perms: Perms;
 }

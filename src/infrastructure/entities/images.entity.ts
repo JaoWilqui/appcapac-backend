@@ -1,7 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { CampaingEntity } from './campaing.entity';
 import { CategoryEntity } from './category.entity';
-import { ModulesEntity } from './modules.entity';
 
 @Entity({ name: 'imagens', synchronize: false })
 export class ImagesEntity {
@@ -23,13 +22,6 @@ export class ImagesEntity {
     referencedColumnName: 'id',
   })
   category: CategoryEntity;
-
-  @ManyToOne(() => ModulesEntity, module => module.images)
-  @JoinColumn({
-    name: 'id_modulos',
-    referencedColumnName: 'id',
-  })
-  modulo: ModulesEntity;
 
   @ManyToOne(() => CampaingEntity, campaing => campaing)
   @JoinColumn({

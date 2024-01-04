@@ -1,6 +1,5 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { CategoryEntity } from './category.entity';
-import { ModulesEntity } from './modules.entity';
 
 @Entity({ name: 'arquivos', synchronize: false })
 export class FilesEntity {
@@ -25,13 +24,6 @@ export class FilesEntity {
     referencedColumnName: 'id',
   })
   categoria: CategoryEntity;
-
-  @ManyToOne(() => ModulesEntity, module => module.arquivos)
-  @JoinColumn({
-    name: 'id_modulos',
-    referencedColumnName: 'id',
-  })
-  modulo: ModulesEntity;
 
   @Column({ type: 'varchar', length: 50, nullable: false })
   tipo: string;

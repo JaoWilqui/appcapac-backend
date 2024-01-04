@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IPaginationDTO } from 'src/domain/dto/pagination.dto';
+import { ICampaing } from 'src/domain/entities/campaing.entity';
 import { TodoRepository } from 'src/infrastructure/repositories/_todo.repository';
 import { Repository } from 'typeorm';
 import { CampaingEntity } from '../entities/campaing.entity';
@@ -20,20 +21,47 @@ export class CampaingRepository implements TodoRepository<CampaingEntity> {
     const campaingEntity = campaing;
     await this.campaingEntityRepository.insert(campaingEntity);
   }
-  async findAll(params: IPaginationDTO<CampaingEntity>): Promise<IPaginationDTO<CampaingEntity>> {
+  async findAll(params: IPaginationDTO<CampaingEntity> & ICampaing): Promise<IPaginationDTO<CampaingEntity>> {
     const queryBuilder = this.campaingEntityRepository.createQueryBuilder('campaing');
     const paginatedData: IPaginationDTO<CampaingEntity> = new IPaginationDTO<CampaingEntity>();
-    // if (params?.filters) {
-    //   Object.keys(params.filters).forEach(key => {
-    //     if (params.filters[key]) {
-    //       queryBuilder.andWhere(`campaing.${key}=:${key}`, { [key]: params.filters[key] });
-    //     }
-    //   });
-    // }
-    queryBuilder.andWhere('campaing.deletado!=:deletado', { deletado: 'x' });
-    queryBuilder.skip(params.pageCount * params.page);
-    queryBuilder.take(params.pageCount);
-    queryBuilder.orderBy(params.orderBy, params.order);
+    if (params?.id) {
+      queryBuilder.andWhere(`campaing.id=:id`, { id: params.id });
+    }
+
+    if (params?.nome) {
+      queryBuilder.andWhere(`campaing.nome like :nome`, { nome: `%${params.nome}%` });
+    }
+
+    if (params?.descricao) {
+      queryBuilder.andWhere(`campaing.descricao like :descricao `, { descricao: `%${params.descricao}%` });
+    }
+    if (params?.dtcadastro) {
+      queryBuilder.andWhere(`campaing.dtcadastro=:dtcadastro`, { dtcadastro: params.dtcadastro });
+    }
+
+    if (params?.status) {
+      queryBuilder.andWhere(`campaing.status = :status`, { dtcadastro: params.status });
+    }
+
+    if (params?.dtfim) {
+      queryBuilder.andWhere(`campaing.dtfim = :dtfim`, { dtcadastro: params.dtfim });
+    }
+
+    if (params?.dtinicio) {
+      queryBuilder.andWhere(`campaing.dtinicio = :dtinicio`, { dtcadastro: params.dtinicio });
+    }
+
+    queryBuilder.andWhere('campaing.deletado IS NULL');
+    queryBuilder.select(['campaing.id', 'campaing.nome', 'campaing.descricao', 'campaing.dtcadastro']);
+
+    if (params?.pageCount && params?.page) {
+      queryBuilder.skip(params.pageCount * (params.page - 1));
+      queryBuilder.take(params.pageCount);
+    }
+
+    if (params?.order && params?.orderBy) {
+      queryBuilder.orderBy(params.orderBy, params.order);
+    }
     paginatedData.itemCount = await queryBuilder.getCount();
     paginatedData.data = await queryBuilder.getMany();
     return paginatedData;

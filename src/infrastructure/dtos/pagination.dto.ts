@@ -9,7 +9,7 @@ export class PaginationDTO<T> implements IPaginationDTO<any> {
   page: number;
 
   @IsOptional()
-  itemCount?: number;
+  itemCount: number;
 
   @IsNotEmpty({ message: 'O campo pageCount não pode ser vazio' })
   pageCount: number;

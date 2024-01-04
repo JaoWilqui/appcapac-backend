@@ -24,17 +24,39 @@ export class VideosRepository implements TodoRepository<VideosEntity> {
   async findAll(params: IPaginationDTO<VideosEntity> & IVideos): Promise<IPaginationDTO<VideosEntity>> {
     const queryBuilder = this.videosEntityRepository.createQueryBuilder('videos');
     const paginatedData: IPaginationDTO<VideosEntity> = new IPaginationDTO<VideosEntity>();
-    // if (params?.filters) {
-    //   Object.keys(params.filters).forEach(key => {
-    //     if (params.filters[key]) {
-    //       queryBuilder.andWhere(`videos.${key}=:${key}`, { [key]: params.filters[key] });
-    //     }
-    //   });
-    // }
-    queryBuilder.andWhere('videos.deletado!=:deletado', { deletado: 'x' });
-    queryBuilder.skip(params.pageCount * params.page);
-    queryBuilder.take(params.pageCount);
-    queryBuilder.orderBy(params.orderBy, params.order);
+
+    if (params?.id) {
+      queryBuilder.andWhere(`videos.id=:id`, { id: params.id });
+    }
+
+    if (params?.descricao) {
+      queryBuilder.andWhere(`videos.descricao like :descricao`, { descricao: `%${params.descricao}%` });
+    }
+
+    if (params?.nome) {
+      queryBuilder.andWhere(`videos.nome like :nome`, { nome: `%${params.descricao}%` });
+    }
+    if (params?.category) {
+      queryBuilder.leftJoinAndSelect('videos.category', 'category');
+    }
+    if (params?.campaing) {
+      queryBuilder.leftJoinAndSelect('videos.campaing', 'campaing');
+    }
+    if (params?.dtcadastro) {
+      queryBuilder.andWhere(`videos.dtcadastro=:dtcadastro`, { dtcadastro: params.dtcadastro });
+    }
+
+    queryBuilder.andWhere('videos.deletado IS NULL');
+    queryBuilder.select(['videos.id', 'videos.nome', 'videos.link', 'campaing', 'category', 'videos.dtcadastro']);
+    if (params?.pageCount && params?.page) {
+      queryBuilder.skip(params.pageCount * (params.page - 1));
+      queryBuilder.take(params.pageCount);
+    }
+
+    if (params?.order && params?.orderBy) {
+      queryBuilder.orderBy(params.orderBy, params.order);
+    }
+    queryBuilder.execute();
     paginatedData.itemCount = await queryBuilder.getCount();
     paginatedData.data = await queryBuilder.getMany();
     return paginatedData;

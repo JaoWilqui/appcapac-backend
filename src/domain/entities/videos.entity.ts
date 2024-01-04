@@ -1,11 +1,10 @@
 import { ICampaing } from './campaing.entity';
 import { ICategory } from './category.entity';
-import { IModules } from './modules.entity';
 
 export class IVideos {
-  id: number;
+  id?: number;
 
-  deletado: string;
+  deletado?: string;
 
   descricao: string;
 
@@ -13,13 +12,9 @@ export class IVideos {
 
   nome: string;
 
-  fileRelativePath: string;
-
   category: ICategory;
-
-  modulo: IModules;
 
   campaing: ICampaing;
 
-  dtcadastro: Date;
+  dtcadastro?: Date;
 }

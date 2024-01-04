@@ -3,19 +3,19 @@ import { IImages } from './images.entity';
 import { IVideos } from './videos.entity';
 
 export class ICategory {
-  id: number;
+  id?: number;
 
   nome: string;
 
   descricao: string;
 
-  dtcadastro: Date;
+  dtcadastro?: Date;
 
-  arquivos: IFiles[];
+  arquivos?: IFiles[];
 
-  videos: IVideos[];
+  videos?: IVideos[];
 
-  images: IImages[];
+  images?: IImages[];
 
-  deletado: string;
+  deletado?: string;
 }

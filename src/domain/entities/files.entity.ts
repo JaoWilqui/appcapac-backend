@@ -1,5 +1,4 @@
 import { ICategory } from './category.entity';
-import { IModules } from './modules.entity';
 
 export class IFiles {
   id: number;
@@ -13,8 +12,6 @@ export class IFiles {
   fileRelativePath: string;
 
   categoria: ICategory;
-
-  modulo: IModules;
 
   tipo: string;
 

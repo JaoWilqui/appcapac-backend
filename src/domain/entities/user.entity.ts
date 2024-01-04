@@ -1,3 +1,4 @@
+import { Perms } from 'src/infrastructure/enum/permissions.enum';
 import { IModules } from './modules.entity';
 
 export interface IUser {
@@ -9,5 +10,5 @@ export interface IUser {
   dtcadastro?: Date;
   modules: IModules[];
   deletado?: string;
-  perms: string;
+  perms: Perms;
 }

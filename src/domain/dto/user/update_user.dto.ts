@@ -1,3 +1,5 @@
+import { Perms } from 'src/infrastructure/enum/permissions.enum';
+
 export class IUpdateUser {
   id: number;
   nome: string;
@@ -5,5 +7,5 @@ export class IUpdateUser {
   email: string;
   senha: string;
   modules: number[];
-  perms: string;
+  perms: Perms;
 }

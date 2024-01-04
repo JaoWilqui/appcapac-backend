@@ -1,7 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { CampaingEntity } from './campaing.entity';
 import { CategoryEntity } from './category.entity';
-import { ModulesEntity } from './modules.entity';
 
 @Entity({ name: 'videos', synchronize: false })
 export class VideosEntity {
@@ -20,22 +19,12 @@ export class VideosEntity {
   @Column({ type: 'varchar', length: 150, nullable: false })
   nome: string;
 
-  @Column({ type: 'varchar', length: 300, nullable: false })
-  fileRelativePath: string;
-
   @ManyToOne(() => CategoryEntity, category => category.videos)
   @JoinColumn({
     name: 'id_categoria',
     referencedColumnName: 'id',
   })
   category: CategoryEntity;
-
-  @ManyToOne(() => ModulesEntity, module => module.videos)
-  @JoinColumn({
-    name: 'id_modulos',
-    referencedColumnName: 'id',
-  })
-  modulo: ModulesEntity;
 
   @ManyToOne(() => CampaingEntity, campaing => campaing)
   @JoinColumn({

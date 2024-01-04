@@ -1,5 +1,6 @@
 import { IsNotEmpty } from 'class-validator';
 import { ICreatetUser } from 'src/domain/dto/user/create_user.dto';
+import { Perms } from 'src/infrastructure/enum/permissions.enum';
 
 export class CreateUserDTO implements ICreatetUser {
   @IsNotEmpty({ message: 'O campo nome é obrigatório' })
@@ -18,5 +19,5 @@ export class CreateUserDTO implements ICreatetUser {
   modules: number[];
 
   @IsNotEmpty({ message: 'O campo perms é obrigatório' })
-  perms: string;
+  perms: Perms;
 }

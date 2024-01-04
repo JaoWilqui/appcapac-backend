@@ -41,13 +41,13 @@ export class UserRepository implements TodoRepository<UserEntity> {
     }
 
     if (params?.nome) {
-      queryBuilder.andWhere(`user.nome ILIKE %:nome%`, { nome: params.nome });
+      queryBuilder.andWhere(`user.nome like :nome`, { nome: `%${params.nome}%` });
     }
     if (params?.email) {
-      queryBuilder.andWhere(`user.email ILIKE %:email%`, { email: params.email });
+      queryBuilder.andWhere(`user.email like :email`, { email: `%${params.email}%` });
     }
     if (params?.sobrenome) {
-      queryBuilder.andWhere(`user.sobrenome ILIKE %:sobrenome% `, { sobrenome: params.sobrenome });
+      queryBuilder.andWhere(`user.sobrenome like :sobrenome `, { sobrenome: `%${params.sobrenome}%` });
     }
     if (params?.dtcadastro) {
       queryBuilder.andWhere(`user.dtcadastro=:dtcadastro`, { dtcadastro: params.dtcadastro });
@@ -55,9 +55,15 @@ export class UserRepository implements TodoRepository<UserEntity> {
 
     queryBuilder.andWhere('user.deletado IS NULL');
     queryBuilder.select(['user.id', 'user.nome', 'user.sobrenome', 'user.email', 'user.dtcadastro']);
-    queryBuilder.skip(params.pageCount * (params.page - 1));
-    queryBuilder.take(params.pageCount);
-    queryBuilder.orderBy(params.orderBy, params.order);
+
+    if (params?.pageCount && params?.page) {
+      queryBuilder.skip(params.pageCount * (params.page - 1));
+      queryBuilder.take(params.pageCount);
+    }
+
+    if (params?.order && params?.orderBy) {
+      queryBuilder.orderBy(params.orderBy, params.order);
+    }
     queryBuilder.execute();
     paginatedData.itemCount = await queryBuilder.getCount();
     paginatedData.data = await queryBuilder.getMany();

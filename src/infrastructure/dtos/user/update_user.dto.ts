@@ -1,5 +1,6 @@
 import { IsNotEmpty } from 'class-validator';
 import { IUpdateUser } from 'src/domain/dto/user/update_user.dto';
+import { Perms } from 'src/infrastructure/enum/permissions.enum';
 
 export class UpdateUserDTO implements IUpdateUser {
   @IsNotEmpty({ message: 'O campo ID é obrigatório' })
@@ -20,5 +21,5 @@ export class UpdateUserDTO implements IUpdateUser {
   modules: number[];
 
   @IsNotEmpty({ message: 'O campo perms é obrigatório' })
-  perms: string;
+  perms: Perms;
 }

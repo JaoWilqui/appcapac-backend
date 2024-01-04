@@ -1,6 +1,5 @@
 import { ICampaing } from './campaing.entity';
 import { ICategory } from './category.entity';
-import { IModules } from './modules.entity';
 
 export class IImages {
   id: number;
@@ -12,8 +11,6 @@ export class IImages {
   imageRelativePath: string;
 
   category: ICategory;
-
-  modulo: IModules;
 
   campaing: ICampaing;
 

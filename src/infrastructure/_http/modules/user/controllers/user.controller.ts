@@ -5,6 +5,7 @@ import { IUser } from 'src/domain/entities/user.entity';
 import { Permissions } from 'src/infrastructure/_http/decorators/perms.decorator';
 import { User } from 'src/infrastructure/_http/decorators/user.decorator';
 import { AuthGuard } from 'src/infrastructure/_http/guards/auth.guard';
+import { ModulesGuard } from 'src/infrastructure/_http/guards/modules.guard';
 import { PermsGuard } from 'src/infrastructure/_http/guards/perms.guard';
 import { PaginationDTO } from 'src/infrastructure/dtos/pagination.dto';
 import { CreateUserDTO } from 'src/infrastructure/dtos/user/create_user.dto';
@@ -15,7 +16,7 @@ import { CreateUserUsecase } from './../../../../../application/usecases/user/cr
 import { FindUserByIdUsecase } from './../../../../../application/usecases/user/find_user_by_id.usecase';
 import { UpdateUserUsecase } from './../../../../../application/usecases/user/update_user.usecase';
 
-@UseGuards(PermsGuard, AuthGuard)
+@UseGuards(PermsGuard, AuthGuard, ModulesGuard)
 @Controller('user')
 export class UserController {
   constructor(

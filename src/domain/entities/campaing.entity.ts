@@ -1,24 +1,25 @@
+import { CampaingEnum } from 'src/infrastructure/enum/campaning.enum';
 import { IImages } from './images.entity';
 import { IVideos } from './videos.entity';
 
 export class ICampaing {
-  id: number;
+  id?: number;
 
   nome: string;
 
   descricao: string;
 
-  dtcadastro: Date;
+  dtcadastro?: Date;
 
   dtinicio: Date;
 
   dtfim: Date;
 
-  deletado: string;
+  deletado?: string;
 
-  status: string;
+  status: CampaingEnum;
 
-  videos: IVideos[];
+  videos?: IVideos[];
 
-  images: IImages[];
+  images?: IImages[];
 }

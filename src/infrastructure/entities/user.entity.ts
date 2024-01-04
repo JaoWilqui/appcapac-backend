@@ -1,4 +1,5 @@
 import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Perms } from '../enum/permissions.enum';
 import { ModulesEntity } from './modules.entity';
 
 @Entity({ name: 'usuarios', synchronize: false })
@@ -38,6 +39,6 @@ export class UserEntity {
   @Column({ type: 'char', length: 1 })
   deletado: string;
 
-  @Column({ type: 'varchar', length: 100 })
-  perms: string;
+  @Column({ type: 'enum', enum: Perms, nullable: false })
+  perms: Perms;
 }
