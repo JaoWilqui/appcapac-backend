@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus } from '@nestjs/common';
+import { BadRequestException, ConflictException, HttpStatus } from '@nestjs/common';
 import { ICreatetUser } from 'src/domain/dto/user/create_user.dto';
 import { IModules } from 'src/domain/entities/modules.entity';
 import { IUser } from 'src/domain/entities/user.entity';
@@ -16,16 +16,10 @@ export class CreateUserUsecase implements ICreateUserUsecase {
 
   async insertUser(user: ICreatetUser) {
     try {
-      const existingUser = await this.userRepository.findByEmail(user.email);
+      const existingEmail = await this.userRepository.findByEmail(user.email);
 
-      if (existingUser) {
-        throw new HttpException(
-          {
-            status: HttpStatus.I_AM_A_TEAPOT,
-            error: 'E-mail ja existente!',
-          },
-          HttpStatus.I_AM_A_TEAPOT,
-        );
+      if (existingEmail) {
+        throw new ConflictException();
       }
 
       const interceptUser: IUser = { ...user, modules: [] };
@@ -45,7 +39,13 @@ export class CreateUserUsecase implements ICreateUserUsecase {
 
       return { status: 200, message: 'Usuário registrado com sucesso!' };
     } catch (error) {
-      throw Error();
+      if (error instanceof ConflictException) {
+        throw new ConflictException({
+          status: HttpStatus.CONFLICT,
+          message: 'E-mail ja existente!',
+        });
+      }
+      throw new BadRequestException(error);
     }
   }
 }

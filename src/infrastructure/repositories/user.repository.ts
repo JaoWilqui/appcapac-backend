@@ -19,8 +19,7 @@ export class UserRepository implements TodoRepository<UserEntity> {
   }
 
   async updateContent(id: number, user: UserEntity): Promise<void> {
-    const userEntity = user;
-    await this.userEntityRepository.update({ id: id }, userEntity);
+    await this.userEntityRepository.update(id, user);
   }
   async insert(user: UserEntity): Promise<void> {
     const userEntity = user;
@@ -59,9 +58,10 @@ export class UserRepository implements TodoRepository<UserEntity> {
   }
   async findById(id: number): Promise<UserEntity> {
     const queryBuilder = this.userEntityRepository.createQueryBuilder('user');
+    queryBuilder.leftJoinAndSelect('user.modules', 'modules').addSelect(['modules.id', 'modules.nome', 'modules.dtcadastro']);
     queryBuilder.andWhere('user.id=:id', { id: id });
-    queryBuilder.andWhere('user.deletado!=:deletado', { deletado: 'x' });
-    queryBuilder.select(['user.id', 'user.nome', 'user.sobrenome', 'user.email', 'user.dtcadastro']);
+    queryBuilder.andWhere('user.deletado IS NULL');
+    queryBuilder.select(['user.id', 'user.nome', 'user.sobrenome', 'user.email', 'user.dtcadastro', 'user.perms', 'modules']);
     queryBuilder.execute();
     const userEntity = await queryBuilder.getOne();
     return userEntity;

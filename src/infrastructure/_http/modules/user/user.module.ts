@@ -31,8 +31,9 @@ import { UserController } from './controllers/user.controller';
     },
     {
       provide: UpdateUserUsecase,
-      useFactory: (userRepository: IUserRepository, bcryptService: IBcryptService) => new UpdateUserUsecase(userRepository, bcryptService),
-      inject: [UserRepository, BcryptService],
+      useFactory: (userRepository: IUserRepository, bcryptService: IBcryptService, modulesRepository: IModulesRepository) =>
+        new UpdateUserUsecase(userRepository, bcryptService, modulesRepository),
+      inject: [UserRepository, BcryptService, ModulesRepository],
     },
     {
       provide: DeleteUserUsecase,
