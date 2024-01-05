@@ -19,7 +19,7 @@ export class VideosRepository implements TodoRepository<VideosEntity> {
   }
   async insert(videos: VideosEntity): Promise<void> {
     const videosEntity = videos;
-    await this.videosEntityRepository.insert(videosEntity);
+    await this.videosEntityRepository.save(videosEntity);
   }
   async findAll(params: IPaginationDTO<VideosEntity> & IVideos): Promise<IPaginationDTO<VideosEntity>> {
     const queryBuilder = this.videosEntityRepository.createQueryBuilder('videos');
@@ -36,18 +36,15 @@ export class VideosRepository implements TodoRepository<VideosEntity> {
     if (params?.nome) {
       queryBuilder.andWhere(`videos.nome like :nome`, { nome: `%${params.descricao}%` });
     }
-    if (params?.category) {
-      queryBuilder.leftJoinAndSelect('videos.category', 'category');
-    }
-    if (params?.campaing) {
-      queryBuilder.leftJoinAndSelect('videos.campaing', 'campaing');
-    }
+
     if (params?.dtcadastro) {
       queryBuilder.andWhere(`videos.dtcadastro=:dtcadastro`, { dtcadastro: params.dtcadastro });
     }
 
+    queryBuilder.leftJoinAndSelect('videos.category', 'category');
+    queryBuilder.leftJoinAndSelect('videos.campaing', 'campaing');
     queryBuilder.andWhere('videos.deletado IS NULL');
-    queryBuilder.select(['videos.id', 'videos.nome', 'videos.link', 'campaing', 'category', 'videos.dtcadastro']);
+    queryBuilder.select(['videos.id', 'videos.nome', 'videos.descricao', 'videos.link', 'campaing', 'category', 'videos.dtcadastro']);
     if (params?.pageCount && params?.page) {
       queryBuilder.skip(params.pageCount * (params.page - 1));
       queryBuilder.take(params.pageCount);

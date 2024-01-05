@@ -45,7 +45,7 @@ export class CategoryController {
   @Permissions(Perms.admin)
   @Post('register')
   async registerUser(@Body() createCategoryDTO: CreateCateogryDTO) {
-    return await this.createCategoryUsecase.inserCategory(createCategoryDTO);
+    return await this.createCategoryUsecase.insertCategory(createCategoryDTO);
   }
 
   @Permissions(Perms.admin)
