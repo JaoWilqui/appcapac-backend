@@ -5,6 +5,7 @@ import { CampaingEnum } from 'src/infrastructure/enum/campaning.enum';
 
 export class GetCampaingDto implements ICampaing {
   id: number;
+
   dtinicio: Date;
   dtfim: Date;
   deletado?: string;
