@@ -1,5 +1,5 @@
 import { BadRequestException } from '@nestjs/common';
-import { IUpdateCategory } from 'src/domain/dto/category/update_Category.dto';
+import { IUpdateCategory } from 'src/domain/dto/category/update_category.dto';
 import {} from 'src/domain/dto/user/create_user.dto';
 import { ICategory } from 'src/domain/entities/category.entity';
 import { ICategoryRepository } from 'src/domain/repositories/category.repository';

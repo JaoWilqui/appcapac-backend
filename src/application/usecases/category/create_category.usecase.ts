@@ -1,5 +1,5 @@
 import { BadRequestException } from '@nestjs/common';
-import { ICreateCategory } from 'src/domain/dto/category/create_Category.dto';
+import { ICreateCategory } from 'src/domain/dto/category/create_category.dto';
 import { ICategory } from 'src/domain/entities/category.entity';
 import { ICategoryRepository } from 'src/domain/repositories/category.repository';
 import { ICreateCategoryUsecase } from 'src/domain/usecases/category/icreate_category.usecase';
