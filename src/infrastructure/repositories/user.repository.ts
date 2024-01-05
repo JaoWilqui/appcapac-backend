@@ -26,7 +26,7 @@ export class UserRepository implements TodoRepository<UserEntity> {
   }
 
   async updateContent(id: number, user: UserEntity): Promise<void> {
-    await this.userEntityRepository.update(user);
+    await this.userEntityRepository.update(id, user);
   }
   async insert(user: UserEntity): Promise<void> {
     const userEntity = user;
