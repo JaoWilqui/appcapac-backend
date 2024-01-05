@@ -7,7 +7,7 @@ import { ICreateCampaingUsecase } from 'src/domain/usecases/campaing/icreate_cam
 export class CreateCampaingUsecase implements ICreateCampaingUsecase {
   constructor(private campaingRepository: ICampaingRepository) {}
 
-  async inserCampaing(campaing: ICreateCampaing) {
+  async insertCampaing(campaing: ICreateCampaing) {
     try {
       const createCampaing: ICampaing = campaing;
 

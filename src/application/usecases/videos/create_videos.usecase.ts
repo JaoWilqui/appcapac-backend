@@ -7,7 +7,7 @@ import { ICreateVideoUsecase } from 'src/domain/usecases/videos/icreate_videos.u
 export class CreateVideosUsecase implements ICreateVideoUsecase {
   constructor(private videosRepository: IVideosRepository) {}
 
-  async inserVideo(video: ICreateVideos) {
+  async insertVideo(video: ICreateVideos) {
     try {
       const createVideo: IVideos = video;
 
