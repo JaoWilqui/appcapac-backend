@@ -1,5 +1,5 @@
-import { ICategoryRepository } from 'src/domain/repositories/Category.repository';
-import { IFindCategoryByIdUserUsecase } from 'src/domain/usecases/Category/ifind_Category_by_id.usecase';
+import { ICategoryRepository } from 'src/domain/repositories/category.repository';
+import { IFindCategoryByIdUserUsecase } from 'src/domain/usecases/category/ifind_category_by_id.usecase';
 
 export class FindCategoryByIdUserUsecase implements IFindCategoryByIdUserUsecase {
   constructor(private categoryRepository: ICategoryRepository) {}

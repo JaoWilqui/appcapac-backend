@@ -8,7 +8,7 @@ import { DeleteCategoryUsecase } from 'src/application/usecases/category/delete_
 import { FindAllCategoryUsecase } from 'src/application/usecases/category/find_all_categorys.usecase';
 import { FindCategoryByIdUserUsecase } from 'src/application/usecases/category/find_category_by_id.usecase';
 import { UpdateCategoryUsecase } from 'src/application/usecases/category/update_category.usecase';
-import { ICategoryRepository } from 'src/domain/repositories/Category.repository';
+import { ICategoryRepository } from 'src/domain/repositories/category.repository';
 import { CategoryRepository } from 'src/infrastructure/repositories/category.repository';
 
 @Module({

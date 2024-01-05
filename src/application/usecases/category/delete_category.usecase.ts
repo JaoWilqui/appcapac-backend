@@ -1,5 +1,5 @@
-import { ICategoryRepository } from 'src/domain/repositories/Category.repository';
-import { IDeleteCategoryUsecase } from 'src/domain/usecases/Category/idelete_Category.usecase';
+import { ICategoryRepository } from 'src/domain/repositories/category.repository';
+import { IDeleteCategoryUsecase } from 'src/domain/usecases/category/idelete_category.usecase';
 
 export class DeleteCategoryUsecase implements IDeleteCategoryUsecase {
   constructor(private categoryRepository: ICategoryRepository) {}

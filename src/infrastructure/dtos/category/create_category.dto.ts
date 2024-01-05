@@ -1,5 +1,5 @@
 import { IsNotEmpty } from 'class-validator';
-import { ICreateCategory } from 'src/domain/dto/Category/create_Category.dto';
+import { ICreateCategory } from 'src/domain/dto/category/create_category.dto';
 
 export class CreateCateogryDTO implements ICreateCategory {
   @IsNotEmpty({ message: 'O campo nome é obrigatório' })

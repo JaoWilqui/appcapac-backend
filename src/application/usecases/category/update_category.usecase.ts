@@ -1,9 +1,9 @@
 import { BadRequestException } from '@nestjs/common';
-import { IUpdateCategory } from 'src/domain/dto/Category/update_Category.dto';
+import { IUpdateCategory } from 'src/domain/dto/category/update_Category.dto';
 import {} from 'src/domain/dto/user/create_user.dto';
-import { ICategory } from 'src/domain/entities/Category.entity';
-import { ICategoryRepository } from 'src/domain/repositories/Category.repository';
-import { IUpdateCategoryUsecase } from 'src/domain/usecases/Category/iupdate_Category.usecase';
+import { ICategory } from 'src/domain/entities/category.entity';
+import { ICategoryRepository } from 'src/domain/repositories/category.repository';
+import { IUpdateCategoryUsecase } from 'src/domain/usecases/category/iupdate_category.usecase';
 
 export class UpdateCategoryUsecase implements IUpdateCategoryUsecase {
   constructor(private categoryRepository: ICategoryRepository) {}
