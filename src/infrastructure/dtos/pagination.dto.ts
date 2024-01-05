@@ -6,17 +6,17 @@ export class PaginationDTO<T> implements IPaginationDTO<any> {
   data?: T[];
 
   @IsNotEmpty({ message: 'O campo page não pode ser vazio' })
-  page: number;
+  page?: number;
 
   @IsOptional()
-  itemCount: number;
+  itemCount?: number;
 
   @IsNotEmpty({ message: 'O campo pageCount não pode ser vazio' })
-  pageCount: number;
+  pageCount?: number;
 
   @IsNotEmpty({ message: 'O campo pageCount não pode ser vazio' })
-  orderBy: string;
+  orderBy?: string;
 
   @IsOptional()
-  order: Order = Order.ASC;
+  order?: Order = Order.ASC;
 }

@@ -41,7 +41,7 @@ export class CampaingController {
   @Permissions(Perms.admin)
   @Post('register')
   async registerUser(@Body() createCampaingDTO: CreateCampaingDTO) {
-    return await this.createCampaingUsecase.inserCampaing(createCampaingDTO);
+    return await this.createCampaingUsecase.insertCampaing(createCampaingDTO);
   }
 
   @Permissions(Perms.admin)

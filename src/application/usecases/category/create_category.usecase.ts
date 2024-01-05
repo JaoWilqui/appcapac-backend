@@ -7,7 +7,7 @@ import { ICreateCategoryUsecase } from 'src/domain/usecases/Category/icreate_Cat
 export class CreateCategoryUsecase implements ICreateCategoryUsecase {
   constructor(private categoryRepository: ICategoryRepository) {}
 
-  async inserCategory(category: ICreateCategory) {
+  async insertCategory(category: ICreateCategory) {
     try {
       const createCategory: ICategory = category;
 

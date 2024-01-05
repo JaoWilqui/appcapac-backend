@@ -10,7 +10,5 @@ export class ICreateVideos {
 
   category: ICategory;
 
-  modulo: number;
-
   campaing: ICampaing;
 }

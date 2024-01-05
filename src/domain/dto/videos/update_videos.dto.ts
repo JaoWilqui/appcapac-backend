@@ -12,7 +12,5 @@ export class IUpdateVideos {
 
   category: ICategory;
 
-  modulo: number;
-
   campaing: ICampaing;
 }

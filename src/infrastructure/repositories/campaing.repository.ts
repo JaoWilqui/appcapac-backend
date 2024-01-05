@@ -52,7 +52,7 @@ export class CampaingRepository implements TodoRepository<CampaingEntity> {
     }
 
     queryBuilder.andWhere('campaing.deletado IS NULL');
-    queryBuilder.select(['campaing.id', 'campaing.nome', 'campaing.descricao', 'campaing.dtcadastro']);
+    queryBuilder.select(['campaing.id', 'campaing.nome', 'campaing.descricao', 'campaing.status', 'campaing.dtinicio', 'campaing.dtfim', 'campaing.dtcadastro']);
 
     if (params?.pageCount && params?.page) {
       queryBuilder.skip(params.pageCount * (params.page - 1));
