@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IPaginationDTO } from 'src/domain/dto/pagination.dto';
+import { ImagesEntity } from 'src/infrastructure/entities/images.entity';
 
+import { IImages } from 'src/domain/entities/images.entity';
 import { TodoRepository } from 'src/infrastructure/repositories/_todo.repository';
 import { Repository } from 'typeorm';
-import { ImagesEntity } from '../entities/images.entity';
 
 @Injectable()
 export class ImagesRepository implements TodoRepository<ImagesEntity> {
@@ -19,22 +20,42 @@ export class ImagesRepository implements TodoRepository<ImagesEntity> {
   }
   async insert(images: ImagesEntity): Promise<void> {
     const imagesEntity = images;
-    await this.imagesEntityRepository.insert(imagesEntity);
+    const image = await this.imagesEntityRepository.save(imagesEntity);
   }
-  async findAll(params: IPaginationDTO<ImagesEntity>): Promise<IPaginationDTO<ImagesEntity>> {
+  async findAll(params: IPaginationDTO<ImagesEntity> & IImages): Promise<IPaginationDTO<ImagesEntity>> {
     const queryBuilder = this.imagesEntityRepository.createQueryBuilder('images');
     const paginatedData: IPaginationDTO<ImagesEntity> = new IPaginationDTO<ImagesEntity>();
-    // if (params?.filters) {
-    //   Object.keys(params.filters).forEach(key => {
-    //     if (params.filters[key]) {
-    //       queryBuilder.andWhere(`images.${key}=:${key}`, { [key]: params.filters[key] });
-    //     }
-    //   });
-    // }
-    queryBuilder.andWhere('images.deletado!=:deletado', { deletado: 'x' });
-    queryBuilder.skip(params.pageCount * params.page);
-    queryBuilder.take(params.pageCount);
-    queryBuilder.orderBy(params.orderBy, params.order);
+
+    if (params?.id) {
+      queryBuilder.andWhere(`images.id=:id`, { id: params.id });
+    }
+
+    if (params?.descricao) {
+      queryBuilder.andWhere(`images.descricao like :descricao`, { descricao: `%${params.descricao}%` });
+    }
+
+    if (params?.nome) {
+      queryBuilder.andWhere(`images.nome like :nome`, { nome: `%${params.descricao}%` });
+    }
+
+    if (params?.dtcadastro) {
+      queryBuilder.andWhere(`images.dtcadastro=:dtcadastro`, { dtcadastro: params.dtcadastro });
+    }
+
+    queryBuilder.leftJoinAndSelect('images.category', 'category');
+    queryBuilder.leftJoinAndSelect('images.campaing', 'campaing');
+    queryBuilder.andWhere('images.deletado IS NULL');
+    queryBuilder.select(['images.id', 'images.nome', 'images.imageRelativePath', 'images.descricao', 'campaing', 'category', 'images.dtcadastro']);
+    if (params?.pageCount && params?.page) {
+      queryBuilder.skip(params.pageCount * (params.page - 1));
+      queryBuilder.take(params.pageCount);
+    }
+
+    if (params?.order && params?.orderBy) {
+      queryBuilder.orderBy(params.orderBy, params.order);
+    }
+    queryBuilder.execute();
+
     paginatedData.itemCount = await queryBuilder.getCount();
     paginatedData.data = await queryBuilder.getMany();
     return paginatedData;

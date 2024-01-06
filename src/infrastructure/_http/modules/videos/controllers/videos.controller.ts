@@ -21,41 +21,41 @@ export class VideosController {
     private updateVideosUsecase: UpdateVideosUsecase,
     private deleteVideosUsecase: DeleteVideosUsecase,
     private findAllVideosUsecase: FindAllVideosUsecase,
-    private findVideosByIdUserUsecase: FindVideosByIdUserUsecase,
+    private findVideosByIdVideosUsecase: FindVideosByIdUserUsecase,
   ) {}
 
   @Permissions(Perms.admin, Perms.user)
   @Modules(ModulesEnum.videos)
   @Get(':id')
-  async getUserById(@Param('id') id: number) {
-    return await this.findVideosByIdUserUsecase.findVideosById(id);
+  async getVideosById(@Param('id') id: number) {
+    return await this.findVideosByIdVideosUsecase.findVideosById(id);
   }
 
   @Permissions(Perms.admin, Perms.user)
   @Modules(ModulesEnum.videos)
   @Get('')
-  async getAllUsers(@Query() params: PaginationDTO<GetVideoDto> & IVideos) {
+  async getAllVideos(@Query() params: PaginationDTO<GetVideoDto> & IVideos) {
     return await this.findAllVideosUsecase.findAllVideos(params);
   }
 
   @Permissions(Perms.admin, Perms.user)
   @Modules(ModulesEnum.videos)
   @Post('register')
-  async registerUser(@Body() createVideoDTO: CreateVideoDTO) {
+  async registerVideos(@Body() createVideoDTO: CreateVideoDTO) {
     return await this.createVideosUsecase.insertVideo(createVideoDTO);
   }
 
   @Permissions(Perms.admin, Perms.user)
   @Modules(ModulesEnum.videos)
   @Put('update/:id')
-  async updateUser(@Body() updateVideoDTO: UpdateVideoDTO, @Param('id') id: number) {
+  async updateVideos(@Body() updateVideoDTO: UpdateVideoDTO, @Param('id') id: number) {
     return await this.updateVideosUsecase.updateVideos(id, updateVideoDTO);
   }
 
   @Permissions(Perms.admin, Perms.user)
   @Modules(ModulesEnum.videos)
   @Delete('delete/:id')
-  async deleteUser(@Param('id') id: number) {
+  async deleteVideos(@Param('id') id: number) {
     return await this.deleteVideosUsecase.deleteVideo(id);
   }
 }

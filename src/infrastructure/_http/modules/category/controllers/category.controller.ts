@@ -1,7 +1,3 @@
-/*
-https://docs.nestjs.com/controllers#controllers
-*/
-
 import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { CreateCategoryUsecase } from 'src/application/usecases/category/create_category.usecase';
 import { DeleteCategoryUsecase } from 'src/application/usecases/category/delete_category.usecase';
@@ -27,36 +23,36 @@ export class CategoryController {
     private updateCategoryUsecase: UpdateCategoryUsecase,
     private deleteCategoryUsecase: DeleteCategoryUsecase,
     private findAllCategoryUsecase: FindAllCategoryUsecase,
-    private findCategoryByIdUserUsecase: FindCategoryByIdUserUsecase,
+    private findCategoryByIdCategoryUsecase: FindCategoryByIdUserUsecase,
   ) {}
 
   @Permissions(Perms.admin, Perms.user)
   @Get(':id')
-  async getUserById(@Param('id') id: number) {
-    return await this.findCategoryByIdUserUsecase.findCategoryById(id);
+  async getCategoryById(@Param('id') id: number) {
+    return await this.findCategoryByIdCategoryUsecase.findCategoryById(id);
   }
 
   @Permissions(Perms.admin, Perms.user)
   @Get('')
-  async getAllUsers(@Query() params: PaginationDTO<GetCategoryDto> & ICategory) {
+  async getAllCategories(@Query() params: PaginationDTO<GetCategoryDto> & ICategory) {
     return await this.findAllCategoryUsecase.findAllCategory(params);
   }
 
   @Permissions(Perms.admin)
   @Post('register')
-  async registerUser(@Body() createCategoryDTO: CreateCateogryDTO) {
+  async registerCategory(@Body() createCategoryDTO: CreateCateogryDTO) {
     return await this.createCategoryUsecase.insertCategory(createCategoryDTO);
   }
 
   @Permissions(Perms.admin)
   @Put('update/:id')
-  async updateUser(@Body() updateCategoryDTO: UpdateCategoryDTO, @Param('id') id: number) {
+  async updateCategory(@Body() updateCategoryDTO: UpdateCategoryDTO, @Param('id') id: number) {
     return await this.updateCategoryUsecase.updateCategory(id, updateCategoryDTO);
   }
 
   @Permissions(Perms.admin)
   @Delete('delete/:id')
-  async deleteUser(@Param('id') id: number) {
+  async deleteCategory(@Param('id') id: number) {
     return await this.deleteCategoryUsecase.deleteCategory(id);
   }
 }

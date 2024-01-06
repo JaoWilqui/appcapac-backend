@@ -29,33 +29,33 @@ export class CampaingController {
     private findCampaingByIUsecase: FindCampaingByIdUserUsecase,
   ) {}
 
-  @Permissions(Perms.admin)
+  @Permissions(Perms.admin, Perms.user)
   @Get(':id')
-  async getUserById(@Param('id') id: number) {
+  async getCampaingById(@Param('id') id: number) {
     return await this.findCampaingByIUsecase.findCampaingById(id);
   }
 
-  @Permissions(Perms.admin)
+  @Permissions(Perms.admin, Perms.user)
   @Get('')
-  async getAllUsers(@Query() params: PaginationDTO<GetCampaingDto> & ICampaing) {
+  async getAllCampaings(@Query() params: PaginationDTO<GetCampaingDto> & ICampaing) {
     return await this.findAllCampaingUsecase.findAllCampaing(params);
   }
 
   @Permissions(Perms.admin)
   @Post('register')
-  async registerUser(@Body() createCampaingDTO: CreateCampaingDTO) {
+  async registerCampaing(@Body() createCampaingDTO: CreateCampaingDTO) {
     return await this.createCampaingUsecase.insertCampaing(createCampaingDTO);
   }
 
   @Permissions(Perms.admin)
   @Put('update/:id')
-  async updateUser(@Body() updateCampaingDTO: UpdateCampaingDTO, @Param('id') id: number) {
+  async updateCampaing(@Body() updateCampaingDTO: UpdateCampaingDTO, @Param('id') id: number) {
     return await this.updateCampaingUsecase.updateCampaing(id, updateCampaingDTO);
   }
 
   @Permissions(Perms.admin)
   @Delete('delete/:id')
-  async deleteUser(@Param('id') id: number) {
+  async deleteCampaing(@Param('id') id: number) {
     return await this.deleteCampaingUsecase.deleteCampaing(id);
   }
 }

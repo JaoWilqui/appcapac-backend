@@ -1,14 +1,14 @@
 import { ICampaing } from 'src/domain/entities/campaing.entity';
 import { ICategory } from 'src/domain/entities/category.entity';
 
-export class IUpdateVideos {
+export class IUpdateImages {
   id?: number;
+
+  nome: string;
 
   descricao: string;
 
-  link: string;
-
-  nome: string;
+  imageRelativePath: string;
 
   category: ICategory;
 

@@ -7,10 +7,10 @@ export class ImagesEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 50, nullable: false })
+  @Column({ type: 'varchar', length: 50 })
   nome: string;
 
-  @Column({ type: 'varchar', length: 50, nullable: false })
+  @Column({ type: 'varchar', length: 50 })
   descricao: string;
 
   @Column({ type: 'varchar', length: 300, nullable: false })
