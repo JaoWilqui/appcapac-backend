@@ -16,17 +16,45 @@ export class UserRepository implements TodoRepository<UserEntity> {
 
   async findByEmail(email: string): Promise<UserEntity> {
     const queryBuilder = this.userEntityRepository.createQueryBuilder('user');
-    queryBuilder.leftJoinAndSelect('user.modules', 'modules').addSelect(['modules.id', 'modules.nome', 'modules.dtcadastro']);
+    queryBuilder
+      .leftJoinAndSelect('user.modules', 'modules')
+      .addSelect(['modules.id', 'modules.nome', 'modules.dtcadastro']);
     queryBuilder.andWhere('user.email=:email', { email: email });
     queryBuilder.andWhere('user.deletado IS NULL');
-    queryBuilder.select(['user.id', 'user.nome', 'user.sobrenome', 'user.email', 'user.dtcadastro', 'user.senha', 'user.perms', 'modules']);
+    queryBuilder.select([
+      'user.id',
+      'user.nome',
+      'user.sobrenome',
+      'user.email',
+      'user.dtcadastro',
+      'user.senha',
+      'user.perms',
+      'modules',
+    ]);
     queryBuilder.execute();
     const userEntity = await queryBuilder.getOne();
     return userEntity;
   }
 
   async updateContent(id: number, user: UserEntity): Promise<void> {
-    await this.userEntityRepository.update(id, user);
+    const query = this.userEntityRepository.createQueryBuilder('user');
+    user.id = id;
+    const actualRelationships = await query.relation(UserEntity, 'modules').of(user).loadMany();
+    await query
+      .relation(UserEntity, 'modules')
+      .of(user)
+      .addAndRemove(user.modules, actualRelationships);
+    await query
+      .update()
+      .set({
+        email: user.email,
+        nome: user.nome,
+        perms: user.perms,
+        senha: user.senha,
+        sobrenome: user.sobrenome,
+      })
+      .where('id = :id', { id: id })
+      .execute();
   }
   async insert(user: UserEntity): Promise<void> {
     const userEntity = user;
@@ -47,14 +75,22 @@ export class UserRepository implements TodoRepository<UserEntity> {
       queryBuilder.andWhere(`user.email like :email`, { email: `%${params.email}%` });
     }
     if (params?.sobrenome) {
-      queryBuilder.andWhere(`user.sobrenome like :sobrenome `, { sobrenome: `%${params.sobrenome}%` });
+      queryBuilder.andWhere(`user.sobrenome like :sobrenome `, {
+        sobrenome: `%${params.sobrenome}%`,
+      });
     }
     if (params?.dtcadastro) {
       queryBuilder.andWhere(`user.dtcadastro=:dtcadastro`, { dtcadastro: params.dtcadastro });
     }
 
     queryBuilder.andWhere('user.deletado IS NULL');
-    queryBuilder.select(['user.id', 'user.nome', 'user.sobrenome', 'user.email', 'user.dtcadastro']);
+    queryBuilder.select([
+      'user.id',
+      'user.nome',
+      'user.sobrenome',
+      'user.email',
+      'user.dtcadastro',
+    ]);
 
     if (params?.pageCount && params?.page) {
       queryBuilder.skip(params.pageCount * (params.page - 1));
@@ -71,10 +107,20 @@ export class UserRepository implements TodoRepository<UserEntity> {
   }
   async findById(id: number): Promise<UserEntity> {
     const queryBuilder = this.userEntityRepository.createQueryBuilder('user');
-    queryBuilder.leftJoinAndSelect('user.modules', 'modules').addSelect(['modules.id', 'modules.nome', 'modules.dtcadastro']);
+    queryBuilder
+      .leftJoinAndSelect('user.modules', 'modules')
+      .addSelect(['modules.id', 'modules.nome', 'modules.dtcadastro']);
     queryBuilder.andWhere('user.id=:id', { id: id });
     queryBuilder.andWhere('user.deletado IS NULL');
-    queryBuilder.select(['user.id', 'user.nome', 'user.sobrenome', 'user.email', 'user.dtcadastro', 'user.perms', 'modules']);
+    queryBuilder.select([
+      'user.id',
+      'user.nome',
+      'user.sobrenome',
+      'user.email',
+      'user.dtcadastro',
+      'user.perms',
+      'modules',
+    ]);
     queryBuilder.execute();
     const userEntity = await queryBuilder.getOne();
     return userEntity;

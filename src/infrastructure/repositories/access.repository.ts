@@ -23,13 +23,7 @@ export class AccessRepository implements TodoRepository<AccessEntity> {
   async findAll(params: IPaginationDTO<AccessEntity>): Promise<IPaginationDTO<AccessEntity>> {
     const queryBuilder = this.accessEntityRepository.createQueryBuilder('access');
     const paginatedData: IPaginationDTO<AccessEntity> = new IPaginationDTO<AccessEntity>();
-    // if (params?.filters) {
-    //   Object.keys(params.filters).forEach(key => {
-    //     if (params.filters[key]) {
-    //       queryBuilder.andWhere(`access.${key}=:${key}`, { [key]: params.filters[key] });
-    //     }
-    //   });
-    // }
+
     queryBuilder.skip(params.pageCount * params.page);
     queryBuilder.take(params.pageCount);
     queryBuilder.orderBy(params.orderBy, params.order);

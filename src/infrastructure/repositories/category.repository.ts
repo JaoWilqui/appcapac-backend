@@ -21,7 +21,9 @@ export class CategoryRepository implements TodoRepository<CategoryEntity> {
     const categoryEntity = category;
     await this.categoryEntityRepository.insert(categoryEntity);
   }
-  async findAll(params: IPaginationDTO<CategoryEntity> & ICategory): Promise<IPaginationDTO<CategoryEntity>> {
+  async findAll(
+    params: IPaginationDTO<CategoryEntity> & ICategory,
+  ): Promise<IPaginationDTO<CategoryEntity>> {
     const queryBuilder = this.categoryEntityRepository.createQueryBuilder('category');
     const paginatedData: IPaginationDTO<CategoryEntity> = new IPaginationDTO<CategoryEntity>();
 
@@ -34,14 +36,21 @@ export class CategoryRepository implements TodoRepository<CategoryEntity> {
     }
 
     if (params?.descricao) {
-      queryBuilder.andWhere(`category.descricao like :descricao `, { descricao: `%${params.descricao}%` });
+      queryBuilder.andWhere(`category.descricao like :descricao `, {
+        descricao: `%${params.descricao}%`,
+      });
     }
     if (params?.dtcadastro) {
       queryBuilder.andWhere(`category.dtcadastro=:dtcadastro`, { dtcadastro: params.dtcadastro });
     }
 
     queryBuilder.andWhere('category.deletado IS NULL');
-    queryBuilder.select(['category.id', 'category.nome', 'category.descricao', 'category.dtcadastro']);
+    queryBuilder.select([
+      'category.id',
+      'category.nome',
+      'category.descricao',
+      'category.dtcadastro',
+    ]);
     if (params?.pageCount && params?.page) {
       queryBuilder.skip(params.pageCount * (params.page - 1));
       queryBuilder.take(params.pageCount);
@@ -56,7 +65,18 @@ export class CategoryRepository implements TodoRepository<CategoryEntity> {
     return paginatedData;
   }
   async findById(id: number): Promise<CategoryEntity> {
-    const categoryEntity = await this.categoryEntityRepository.findOneBy({ id: id });
+    const queryBuilder = this.categoryEntityRepository.createQueryBuilder('category');
+    queryBuilder.andWhere('category.id=:id', { id: id });
+    queryBuilder.andWhere('category.deletado IS NULL');
+    queryBuilder.select([
+      'category.id',
+      'category.nome',
+      'category.descricao',
+      'category.dtcadastro',
+    ]);
+    queryBuilder.execute();
+    const categoryEntity = await queryBuilder.getOne();
+
     return categoryEntity;
   }
   async deleteById(id: number): Promise<void> {

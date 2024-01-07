@@ -21,7 +21,9 @@ export class CampaingRepository implements TodoRepository<CampaingEntity> {
     const campaingEntity = campaing;
     await this.campaingEntityRepository.insert(campaingEntity);
   }
-  async findAll(params: IPaginationDTO<CampaingEntity> & ICampaing): Promise<IPaginationDTO<CampaingEntity>> {
+  async findAll(
+    params: IPaginationDTO<CampaingEntity> & ICampaing,
+  ): Promise<IPaginationDTO<CampaingEntity>> {
     const queryBuilder = this.campaingEntityRepository.createQueryBuilder('campaing');
     const paginatedData: IPaginationDTO<CampaingEntity> = new IPaginationDTO<CampaingEntity>();
     if (params?.id) {
@@ -33,7 +35,9 @@ export class CampaingRepository implements TodoRepository<CampaingEntity> {
     }
 
     if (params?.descricao) {
-      queryBuilder.andWhere(`campaing.descricao like :descricao `, { descricao: `%${params.descricao}%` });
+      queryBuilder.andWhere(`campaing.descricao like :descricao `, {
+        descricao: `%${params.descricao}%`,
+      });
     }
     if (params?.dtcadastro) {
       queryBuilder.andWhere(`campaing.dtcadastro=:dtcadastro`, { dtcadastro: params.dtcadastro });
@@ -52,7 +56,15 @@ export class CampaingRepository implements TodoRepository<CampaingEntity> {
     }
 
     queryBuilder.andWhere('campaing.deletado IS NULL');
-    queryBuilder.select(['campaing.id', 'campaing.nome', 'campaing.descricao', 'campaing.status', 'campaing.dtinicio', 'campaing.dtfim', 'campaing.dtcadastro']);
+    queryBuilder.select([
+      'campaing.id',
+      'campaing.nome',
+      'campaing.descricao',
+      'campaing.status',
+      'campaing.dtinicio',
+      'campaing.dtfim',
+      'campaing.dtcadastro',
+    ]);
 
     if (params?.pageCount && params?.page) {
       queryBuilder.skip(params.pageCount * (params.page - 1));
@@ -67,7 +79,20 @@ export class CampaingRepository implements TodoRepository<CampaingEntity> {
     return paginatedData;
   }
   async findById(id: number): Promise<CampaingEntity> {
-    const campaingEntity = await this.campaingEntityRepository.findOneBy({ id: id });
+    const queryBuilder = this.campaingEntityRepository.createQueryBuilder('campaing');
+    queryBuilder.andWhere('campaing.id=:id', { id: id });
+    queryBuilder.andWhere('campaing.deletado IS NULL');
+    queryBuilder.select([
+      'campaing.id',
+      'campaing.nome',
+      'campaing.descricao',
+      'campaing.status',
+      'campaing.dtinicio',
+      'campaing.dtfim',
+      'campaing.dtcadastro',
+    ]);
+    queryBuilder.execute();
+    const campaingEntity = await queryBuilder.getOne();
     return campaingEntity;
   }
   async deleteById(id: number): Promise<void> {

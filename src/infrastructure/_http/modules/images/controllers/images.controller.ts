@@ -2,8 +2,22 @@
 https://docs.nestjs.com/controllers#controllers
 */
 
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  Req,
+  UploadedFiles,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
+import { Request } from 'express';
 import { CreateImageUsecase } from 'src/application/usecases/images/create_image.usecase';
 import { DeleteImageUsecase } from 'src/application/usecases/images/delete_image.usecase';
 import { FindAllImagesUsecase } from 'src/application/usecases/images/find_all_images.usecase';
@@ -14,6 +28,7 @@ import { Permissions } from 'src/infrastructure/_http/decorators/perms.decorator
 import { AuthGuard } from 'src/infrastructure/_http/guards/auth.guard';
 import { ModulesGuard } from 'src/infrastructure/_http/guards/modules.guard';
 import { PermsGuard } from 'src/infrastructure/_http/guards/perms.guard';
+import { CreateImagesDTO } from 'src/infrastructure/dtos/images/create_images.dto';
 import { GetImagesDTO } from 'src/infrastructure/dtos/images/get_images.dto';
 import { UpdateImagesDTO } from 'src/infrastructure/dtos/images/update_images.dto';
 import { PaginationDTO } from 'src/infrastructure/dtos/pagination.dto';
@@ -43,43 +58,52 @@ export class ImagesController {
   async getAllimages(@Query() params: PaginationDTO<GetImagesDTO> & IImages) {
     const images = await this.findAllImagesUsecase.findAllImages(params);
     images.data.forEach(image => {
-      image.imageRelativePath = fs.readFileSync(path.join(process.cwd(), `src/uploads/${image.imageRelativePath.toString()}`)).toString('base64');
+      image.imageRelativePath = fs
+        .readFileSync(path.join(process.cwd(), `./uploads/${image.imageRelativePath.toString()}`))
+        .toString('base64');
     });
 
     return images;
   }
-
+  @Permissions(Perms.admin)
   @Post('upload')
   @UseInterceptors(
     FilesInterceptor('image', 1, {
       storage: multer.diskStorage({
         destination: './uploads',
         filename: function (req, file, callback) {
+          console.log(file, req);
           callback(null, file.originalname + '');
         },
       }),
     }),
   )
-  async uploadFiles(@UploadedFiles() image: Express.Multer.File, @Body() imageInfo: any) {
-    console.log(JSON.parse(imageInfo));
-    // const uploadImage: CreateImagesDTO = {
-    //   nome: imageInfo.nome,
-    //   category: imageInfo.category,
-    //   campaing: imageInfo.campaing,
-    //   descricao: imageInfo.descricao,
-    //   imageRelativePath: image.originalname,
-    // };
+  async uploadFiles(@UploadedFiles() image: Express.Multer.File, @Req() req: Request) {
+    const imageInfo: CreateImagesDTO = JSON.parse(req.body.imageInfo);
+    const uploadImage: CreateImagesDTO = {
+      nome: imageInfo.nome,
+      category: imageInfo.category,
+      campaing: imageInfo.campaing,
+      descricao: imageInfo.descricao,
+      imageRelativePath: image[0].originalname,
+    };
 
-    // await this.createImageUsecase.insertImages(uploadImage);
-  }
-
-  @Post('register')
-  async register(@Body() UpdateImagesDTO: UpdateImagesDTO) {
-    await this.createImageUsecase.insertImages(UpdateImagesDTO);
+    await this.createImageUsecase.insertImages(uploadImage);
   }
 
   @Permissions(Perms.admin)
   @Put('update/:id')
+  @UseInterceptors(
+    FilesInterceptor('image', 1, {
+      storage: multer.diskStorage({
+        destination: './uploads',
+        filename: function (req, file, callback) {
+          console.log(file, req);
+          callback(null, file.originalname + '');
+        },
+      }),
+    }),
+  )
   async updateimage(@Body() updateImagesDTO: UpdateImagesDTO, @Param('id') id: number) {
     return await this.updateImagesUsecase.updateImages(id, updateImagesDTO);
   }

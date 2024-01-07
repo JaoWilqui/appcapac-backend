@@ -59,7 +59,15 @@ export class VideosRepository implements TodoRepository<VideosEntity> {
     return paginatedData;
   }
   async findById(id: number): Promise<VideosEntity> {
-    const videosEntity = await this.videosEntityRepository.findOneBy({ id: id });
+    const queryBuilder = this.videosEntityRepository.createQueryBuilder('videos');
+    queryBuilder.leftJoinAndSelect('videos.campaing', 'campaing').addSelect(['campaing.id', 'campaing.nome', 'campaing.dtcadastro']);
+    queryBuilder.leftJoinAndSelect('videos.category', 'category').addSelect(['campaing.id', 'campaing.nome', 'campaing.dtcadastro']);
+    queryBuilder.andWhere('videos.id=:id', { id: id });
+    queryBuilder.andWhere('videos.deletado IS NULL');
+    queryBuilder.select(['videos.id', 'videos.nome', 'videos.link', 'videos.descricao', 'campaing', 'category', 'videos.dtcadastro']);
+    queryBuilder.execute();
+    const videosEntity = await queryBuilder.getOne();
+
     return videosEntity;
   }
   async deleteById(id: number): Promise<void> {
