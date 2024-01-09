@@ -10,6 +10,7 @@ export class FindAllCampaingUsecase implements IFindAllCampaingUsecase {
       const campaing = await this.campaingRepository.findAll(params);
       return campaing;
     } catch (error) {
+      console.log(error);
       throw Error('Ocorreu um erro ao tentar retornar as Campanhas!');
     }
   }

@@ -1,7 +1,3 @@
-/*
-https://docs.nestjs.com/controllers#controllers
-*/
-
 import {
   Controller,
   Delete,
@@ -17,7 +13,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { Request, Response } from 'express';
+import { Request } from 'express';
 import { CreateImageUsecase } from 'src/application/usecases/images/create_image.usecase';
 import { DeleteImageUsecase } from 'src/application/usecases/images/delete_image.usecase';
 import { FindAllImagesUsecase } from 'src/application/usecases/images/find_all_images.usecase';
@@ -52,22 +48,35 @@ export class ImagesController {
   @Get(':id')
   async getimageById(@Param('id') id: number) {
     const image = await this.findImagesByIdimageUsecase.findImagesById(id);
-    image.imageRelativePath =
-      process.env.APP_URL + `/images/view/${image.imageRelativePath.toString()}`;
+
+    image.imageRelativePath = process.env.APP_URL + '/images/view/' + image.imageRelativePath;
+
     return image;
   }
 
   @Permissions(Perms.admin, Perms.user)
   @Get('')
   async getAllimages(@Query() params: PaginationDTO<GetImagesDTO> & IImages) {
-    const images = await this.findAllImagesUsecase.findAllImages(params);
-    images.data.forEach(image => {
-      image.imageRelativePath =
-        process.env.APP_URL + `/images/view/${image.imageRelativePath.toString()}`;
-    });
+    let images = await this.findAllImagesUsecase.findAllImages(params);
+    images = {
+      ...images,
+      data: images.data.map(img => ({
+        ...img,
+        imageRelativePath: process.env.APP_URL + '/images/view/' + img.imageRelativePath,
+      })),
+    };
 
     return images;
   }
+
+  @Public()
+  @Get('/view/:path')
+  async getImage(@Param('path') path, @Res() res) {
+    const file = fs.createReadStream(process.cwd() + '/uploads/images/' + path);
+    res.setHeader('Content-Type', 'image/png');
+    return file.pipe(res);
+  }
+
   @Permissions(Perms.admin)
   @Post('upload')
   @UseInterceptors(
@@ -75,7 +84,6 @@ export class ImagesController {
       storage: multer.diskStorage({
         destination: './uploads/images',
         filename: function (req, file, callback) {
-          console.log(file, req);
           callback(null, file.originalname + '');
         },
       }),
@@ -91,44 +99,32 @@ export class ImagesController {
       imageRelativePath: image[0].originalname,
     };
 
-    await this.createImageUsecase.insertImages(uploadImage);
-  }
-
-  @Public()
-  @Get('view/:path')
-  async getImagePath(@Param('path') path: string, @Res() res: Response) {
-    const imageBuffer = fs.createReadStream(process.cwd() + `/uploads/images/${path}`);
-    res.set({ 'Content-Type': 'image/png' });
-    return imageBuffer.pipe(res);
+    return await this.createImageUsecase.insertImages(uploadImage);
   }
 
   @Permissions(Perms.admin)
   @Put('upload/:id')
-  @UseInterceptors(
-    FilesInterceptor('image', 1, {
-      storage: multer.diskStorage({
-        destination: './uploads/images',
-        filename: function (req, file, callback) {
-          console.log(file, req);
-          callback(null, file.originalname + '');
-        },
-      }),
-    }),
-  )
-  async updateimage(
+  @UseInterceptors(FilesInterceptor('images', 1))
+  async updateUpload(
     @UploadedFiles() image: Express.Multer.File,
     @Req() req: Request,
     @Param('id') id: number,
   ) {
+    const registeredImage = await this.findImagesByIdimageUsecase.findImagesById(id);
+
+    fs.unlinkSync(
+      process.cwd() + `/uploads/images/${registeredImage.imageRelativePath.toString()}`,
+    );
+
+    multer.diskStorage({
+      destination: './uploads/images',
+      filename: function (req, file, callback) {
+        console.log(file, req);
+        callback(null, file.originalname + '');
+      },
+    });
+
     const imageInfo: UpdateImagesDTO = JSON.parse(req.body.imageInfo);
-
-    const imagePathToDelete = (await this.findImagesByIdimageUsecase.findImagesById(id))
-      .imageRelativePath;
-
-    if (imageInfo.imageRelativePath != imagePathToDelete) {
-      fs.unlinkSync(process.cwd() + '/uploads/images/' + imagePathToDelete);
-    }
-
     const uploadImage: UpdateImagesDTO = {
       id: id,
       nome: imageInfo.nome,

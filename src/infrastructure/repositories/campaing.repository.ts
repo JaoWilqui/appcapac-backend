@@ -40,7 +40,9 @@ export class CampaingRepository implements TodoRepository<CampaingEntity> {
       });
     }
     if (params?.dtcadastro) {
-      queryBuilder.andWhere(`campaing.dtcadastro=:dtcadastro`, { dtcadastro: params.dtcadastro });
+      queryBuilder.andWhere(`campaing.dtcadastro >= :dtcadastro`, {
+        dtcadastro: params.dtcadastro,
+      });
     }
 
     if (params?.status) {
@@ -48,11 +50,13 @@ export class CampaingRepository implements TodoRepository<CampaingEntity> {
     }
 
     if (params?.dtfim) {
-      queryBuilder.andWhere(`campaing.dtfim = :dtfim`, { dtcadastro: params.dtfim });
+      queryBuilder.andWhere(`campaing.dtfim >= :dtfim`, { dtcadastro: params.dtfim });
     }
 
     if (params?.dtinicio) {
-      queryBuilder.andWhere(`campaing.dtinicio = :dtinicio`, { dtcadastro: params.dtinicio });
+      queryBuilder.andWhere(`campaing.dtinicio >= :dtinicio`, {
+        dtcadastro: params.dtinicio,
+      });
     }
 
     queryBuilder.andWhere('campaing.deletado IS NULL');

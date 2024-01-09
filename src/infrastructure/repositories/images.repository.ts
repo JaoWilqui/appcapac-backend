@@ -64,7 +64,7 @@ export class ImagesRepository implements TodoRepository<ImagesEntity> {
     }
 
     if (params?.order && params?.orderBy) {
-      queryBuilder.orderBy(params.orderBy, params.order);
+      queryBuilder.orderBy('images.' + params.orderBy, params.order);
     }
     queryBuilder.execute();
 

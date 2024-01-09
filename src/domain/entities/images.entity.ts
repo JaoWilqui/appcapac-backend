@@ -4,15 +4,15 @@ import { ICategory } from './category.entity';
 export class IImages {
   id?: number;
 
-  nome?: string;
+  nome: string;
 
-  descricao?: string;
+  descricao: string;
 
   imageRelativePath: string;
 
-  category?: ICategory;
+  category: ICategory;
 
-  campaing?: ICampaing;
+  campaing: ICampaing;
 
   deletado?: string;
 
