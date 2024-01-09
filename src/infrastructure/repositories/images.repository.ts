@@ -22,7 +22,9 @@ export class ImagesRepository implements TodoRepository<ImagesEntity> {
     const imagesEntity = images;
     const image = await this.imagesEntityRepository.save(imagesEntity);
   }
-  async findAll(params: IPaginationDTO<ImagesEntity> & IImages): Promise<IPaginationDTO<ImagesEntity>> {
+  async findAll(
+    params: IPaginationDTO<ImagesEntity> & IImages,
+  ): Promise<IPaginationDTO<ImagesEntity>> {
     const queryBuilder = this.imagesEntityRepository.createQueryBuilder('images');
     const paginatedData: IPaginationDTO<ImagesEntity> = new IPaginationDTO<ImagesEntity>();
 
@@ -31,7 +33,9 @@ export class ImagesRepository implements TodoRepository<ImagesEntity> {
     }
 
     if (params?.descricao) {
-      queryBuilder.andWhere(`images.descricao like :descricao`, { descricao: `%${params.descricao}%` });
+      queryBuilder.andWhere(`images.descricao like :descricao`, {
+        descricao: `%${params.descricao}%`,
+      });
     }
 
     if (params?.nome) {
@@ -45,7 +49,15 @@ export class ImagesRepository implements TodoRepository<ImagesEntity> {
     queryBuilder.leftJoinAndSelect('images.category', 'category');
     queryBuilder.leftJoinAndSelect('images.campaing', 'campaing');
     queryBuilder.andWhere('images.deletado IS NULL');
-    queryBuilder.select(['images.id', 'images.nome', 'images.imageRelativePath', 'images.descricao', 'campaing', 'category', 'images.dtcadastro']);
+    queryBuilder.select([
+      'images.id',
+      'images.nome',
+      'images.imageRelativePath',
+      'images.descricao',
+      'campaing',
+      'category',
+      'images.dtcadastro',
+    ]);
     if (params?.pageCount && params?.page) {
       queryBuilder.skip(params.pageCount * (params.page - 1));
       queryBuilder.take(params.pageCount);
@@ -61,7 +73,27 @@ export class ImagesRepository implements TodoRepository<ImagesEntity> {
     return paginatedData;
   }
   async findById(id: number): Promise<ImagesEntity> {
-    const imagesEntity = await this.imagesEntityRepository.findOneBy({ id: id });
+    const queryBuilder = this.imagesEntityRepository.createQueryBuilder('images');
+    queryBuilder
+      .leftJoinAndSelect('images.campaing', 'campaing')
+      .addSelect(['campaing.id', 'campaing.nome', 'campaing.dtcadastro']);
+    queryBuilder
+      .leftJoinAndSelect('images.category', 'category')
+      .addSelect(['category.id', 'category.nome', 'campaing.dtcadastro']);
+    queryBuilder.andWhere('images.id=:id', { id: id });
+    queryBuilder.andWhere('images.deletado IS NULL');
+    queryBuilder.select([
+      'images.id',
+      'images.nome',
+      'images.imageRelativePath',
+      'images.descricao',
+      'campaing',
+      'category',
+      'images.dtcadastro',
+    ]);
+    queryBuilder.execute();
+    const imagesEntity = await queryBuilder.getOne();
+
     return imagesEntity;
   }
   async deleteById(id: number): Promise<void> {
