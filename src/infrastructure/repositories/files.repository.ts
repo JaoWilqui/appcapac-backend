@@ -19,7 +19,7 @@ export class FilesRepository implements TodoRepository<FilesEntity> {
   }
   async insert(file: FilesEntity): Promise<void> {
     const filesEntity = file;
-    await this.filesEntityRepository.insert(filesEntity);
+    await this.filesEntityRepository.save(filesEntity);
   }
   async findAll(
     params: IPaginationDTO<FilesEntity> & IFiles,

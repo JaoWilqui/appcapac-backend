@@ -77,7 +77,7 @@ export class FilesController {
     return file.pipe(res);
   }
 
-  @Post('upload')
+  @Permissions(Perms.admin)
   @UseInterceptors(
     FilesInterceptor('file', 1, {
       storage: multer.diskStorage({
@@ -88,11 +88,12 @@ export class FilesController {
       }),
     }),
   )
+  @Post('upload')
   async uploadFiles(@UploadedFiles() file: Express.Multer.File, @Req() req: Request) {
     const fileInfo: CreateFileDTO = JSON.parse(req.body.fileInfo);
     const uploadFile: CreateFileDTO = {
       nome: fileInfo.nome,
-      category: fileInfo.category,
+      category: Number(fileInfo.category),
       tipo: fileInfo.tipo,
       descricao: fileInfo.descricao,
       fileRelativePath: file[0].originalname,

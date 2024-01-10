@@ -20,7 +20,7 @@ export class ImagesRepository implements TodoRepository<ImagesEntity> {
   }
   async insert(images: ImagesEntity): Promise<void> {
     const imagesEntity = images;
-    const image = await this.imagesEntityRepository.save(imagesEntity);
+    await this.imagesEntityRepository.save(imagesEntity);
   }
   async findAll(
     params: IPaginationDTO<ImagesEntity> & IImages,

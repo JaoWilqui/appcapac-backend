@@ -5,6 +5,7 @@ import { AuthModule } from './infrastructure/_http/auth/auth.module';
 import { PermsGuard } from './infrastructure/_http/guards/perms.guard';
 import { CampaingModule } from './infrastructure/_http/modules/campaing/campaing.module';
 import { CategoryModule } from './infrastructure/_http/modules/category/category.module';
+import { FilesModule } from './infrastructure/_http/modules/files/files.module';
 import { ImagesModule } from './infrastructure/_http/modules/images/images.module';
 import { ModulesModule } from './infrastructure/_http/modules/modules/modules.module';
 import { UserModule } from './infrastructure/_http/modules/user/user.module';
@@ -13,7 +14,18 @@ import { ConfigurationModule } from './infrastructure/config/configuration.modul
 import { MysqlDatabaseModule } from './infrastructure/database/mysql.module';
 
 @Module({
-  imports: [AuthModule, VideosModule, ModulesModule, ImagesModule, CampaingModule, CategoryModule, UserModule, MysqlDatabaseModule, ConfigurationModule],
+  imports: [
+    AuthModule,
+    FilesModule,
+    VideosModule,
+    ModulesModule,
+    ImagesModule,
+    CampaingModule,
+    CategoryModule,
+    UserModule,
+    MysqlDatabaseModule,
+    ConfigurationModule,
+  ],
   controllers: [],
   providers: [
     {
