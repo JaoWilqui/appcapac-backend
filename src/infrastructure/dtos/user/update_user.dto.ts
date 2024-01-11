@@ -6,6 +6,8 @@ export class UpdateUserDTO implements IUpdateUser {
   @IsNotEmpty({ message: 'O campo ID é obrigatório' })
   id: number;
 
+  cpf: string;
+
   @IsNotEmpty({ message: 'O campo nome é obrigatório' })
   nome: string;
 

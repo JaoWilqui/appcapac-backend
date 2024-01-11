@@ -23,7 +23,7 @@ export class FilesEntity {
     name: 'id_categoria',
     referencedColumnName: 'id',
   })
-  categoria: CategoryEntity;
+  category: CategoryEntity;
 
   @Column({ type: 'varchar', length: 50, nullable: false })
   tipo: string;

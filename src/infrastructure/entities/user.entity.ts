@@ -19,6 +19,9 @@ export class UserEntity {
   @Column({ type: 'varchar', length: 10, nullable: false })
   senha: string;
 
+  @Column({ type: 'varchar', length: 11, nullable: false })
+  cpf: string;
+
   @Column({ type: 'date', nullable: false })
   dtcadastro: Date;
 

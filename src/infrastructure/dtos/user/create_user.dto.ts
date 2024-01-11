@@ -6,6 +6,9 @@ export class CreateUserDTO implements ICreatetUser {
   @IsNotEmpty({ message: 'O campo nome é obrigatório' })
   nome: string;
 
+  @IsNotEmpty({ message: 'O campo cpf é obrigatório' })
+  cpf: string;
+
   @IsNotEmpty({ message: 'O campo sobrenome é obrigatório' })
   sobrenome: string;
 

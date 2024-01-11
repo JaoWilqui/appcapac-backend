@@ -7,6 +7,8 @@ export class GetUserDto implements IUser {
 
   nome: string;
 
+  cpf: string;
+
   sobrenome: string;
 
   email: string;

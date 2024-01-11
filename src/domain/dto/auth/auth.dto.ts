@@ -1,4 +1,4 @@
 export class ILogin {
-  email: string;
+  cpf: string;
   password: string;
 }

@@ -5,6 +5,7 @@ export class IUserProfile {
   nome: string;
   sobrenome: string;
   email: string;
+  cpf: string;
   dtcadastro: Date;
   modules: IModules[];
   perms: string;

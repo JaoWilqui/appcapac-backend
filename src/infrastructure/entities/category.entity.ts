@@ -17,7 +17,7 @@ export class CategoryEntity {
   @Column({ type: 'date', nullable: false })
   dtcadastro: Date;
 
-  @OneToMany(() => FilesEntity, file => file.categoria)
+  @OneToMany(() => FilesEntity, file => file.category)
   arquivos: FilesEntity[];
 
   @OneToMany(() => VideosEntity, videos => videos.category)

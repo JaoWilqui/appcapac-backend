@@ -5,6 +5,8 @@ export class IUpdateUser {
   nome: string;
   sobrenome: string;
   email: string;
+  cpf: string;
+
   senha: string;
   modules: number[];
   perms: Perms;

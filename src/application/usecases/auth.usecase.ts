@@ -14,7 +14,7 @@ export class AuthUsecase implements IAuthUseCase {
   ) {}
 
   async signIn(login: ILogin) {
-    const user = await this.userRepository.findByEmail(login.email);
+    const user = await this.userRepository.findByCpf(login.cpf);
 
     if (!user) throw new AppError('Usuário ou senha incorretos', 401);
 
@@ -31,6 +31,7 @@ export class AuthUsecase implements IAuthUseCase {
       sobrenome: user.sobrenome,
       perms: user.perms,
       dtcadastro: user.dtcadastro,
+      cpf: user.cpf,
       modules: user.modules,
     };
     return {

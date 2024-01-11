@@ -46,16 +46,16 @@ export class CampaingRepository implements TodoRepository<CampaingEntity> {
     }
 
     if (params?.status) {
-      queryBuilder.andWhere(`campaing.status = :status`, { dtcadastro: params.status });
+      queryBuilder.andWhere(`campaing.status = :status`, { status: params.status });
     }
 
     if (params?.dtfim) {
-      queryBuilder.andWhere(`campaing.dtfim >= :dtfim`, { dtcadastro: params.dtfim });
+      queryBuilder.andWhere(`campaing.dtfim <= :dtfim`, { dtfim: params.dtfim });
     }
 
     if (params?.dtinicio) {
       queryBuilder.andWhere(`campaing.dtinicio >= :dtinicio`, {
-        dtcadastro: params.dtinicio,
+        dtinicio: params.dtinicio,
       });
     }
 
@@ -76,7 +76,7 @@ export class CampaingRepository implements TodoRepository<CampaingEntity> {
     }
 
     if (params?.order && params?.orderBy) {
-      queryBuilder.orderBy(params.orderBy, params.order);
+      queryBuilder.orderBy('campaing.' + params.orderBy, params.order);
     }
     paginatedData.itemCount = await queryBuilder.getCount();
     paginatedData.data = await queryBuilder.getMany();

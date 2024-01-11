@@ -29,7 +29,7 @@ export class ImagesRepository implements TodoRepository<ImagesEntity> {
     const paginatedData: IPaginationDTO<ImagesEntity> = new IPaginationDTO<ImagesEntity>();
 
     if (params?.id) {
-      queryBuilder.andWhere(`images.id=:id`, { id: params.id });
+      queryBuilder.andWhere(`images.id = :id`, { id: params.id });
     }
 
     if (params?.descricao) {
@@ -43,7 +43,7 @@ export class ImagesRepository implements TodoRepository<ImagesEntity> {
     }
 
     if (params?.dtcadastro) {
-      queryBuilder.andWhere(`images.dtcadastro=:dtcadastro`, { dtcadastro: params.dtcadastro });
+      queryBuilder.andWhere(`images.dtcadastro >= :dtcadastro`, { dtcadastro: params.dtcadastro });
     }
 
     queryBuilder.leftJoinAndSelect('images.category', 'category');

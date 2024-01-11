@@ -41,7 +41,9 @@ export class CategoryRepository implements TodoRepository<CategoryEntity> {
       });
     }
     if (params?.dtcadastro) {
-      queryBuilder.andWhere(`category.dtcadastro=:dtcadastro`, { dtcadastro: params.dtcadastro });
+      queryBuilder.andWhere(`category.dtcadastro >= :dtcadastro`, {
+        dtcadastro: params.dtcadastro,
+      });
     }
 
     queryBuilder.andWhere('category.deletado IS NULL');
@@ -57,7 +59,7 @@ export class CategoryRepository implements TodoRepository<CategoryEntity> {
     }
 
     if (params?.order && params?.orderBy) {
-      queryBuilder.orderBy(params.orderBy, params.order);
+      queryBuilder.orderBy('category.' + params.orderBy, params.order);
     }
     queryBuilder.execute();
     paginatedData.itemCount = await queryBuilder.getCount();

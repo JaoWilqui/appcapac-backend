@@ -14,6 +14,29 @@ export class UserRepository implements TodoRepository<UserEntity> {
     private readonly userEntityRepository: Repository<UserEntity>,
   ) {}
 
+  async findByCpf(cpf: string): Promise<UserEntity> {
+    const queryBuilder = this.userEntityRepository.createQueryBuilder('user');
+    queryBuilder
+      .leftJoinAndSelect('user.modules', 'modules')
+      .addSelect(['modules.id', 'modules.nome', 'modules.dtcadastro']);
+    queryBuilder.andWhere('user.cpf=:cpf', { cpf: cpf });
+    queryBuilder.andWhere('user.deletado IS NULL');
+    queryBuilder.select([
+      'user.id',
+      'user.nome',
+      'user.sobrenome',
+      'user.email',
+      'user.dtcadastro',
+      'user.senha',
+      'user.cpf',
+      'user.perms',
+      'modules',
+    ]);
+    queryBuilder.execute();
+    const userEntity = await queryBuilder.getOne();
+    return userEntity;
+  }
+
   async findByEmail(email: string): Promise<UserEntity> {
     const queryBuilder = this.userEntityRepository.createQueryBuilder('user');
     queryBuilder
@@ -68,6 +91,9 @@ export class UserRepository implements TodoRepository<UserEntity> {
       queryBuilder.andWhere(`user.id=:id`, { id: params.id });
     }
 
+    if (params?.cpf) {
+      queryBuilder.andWhere(`user.cpf like :cpf`, { cpf: `%${params.cpf}%` });
+    }
     if (params?.nome) {
       queryBuilder.andWhere(`user.nome like :nome`, { nome: `%${params.nome}%` });
     }
@@ -80,7 +106,7 @@ export class UserRepository implements TodoRepository<UserEntity> {
       });
     }
     if (params?.dtcadastro) {
-      queryBuilder.andWhere(`user.dtcadastro=:dtcadastro`, { dtcadastro: params.dtcadastro });
+      queryBuilder.andWhere(`user.dtcadastro >= :dtcadastro`, { dtcadastro: params.dtcadastro });
     }
 
     queryBuilder.andWhere('user.deletado IS NULL');
@@ -98,7 +124,7 @@ export class UserRepository implements TodoRepository<UserEntity> {
     }
 
     if (params?.order && params?.orderBy) {
-      queryBuilder.orderBy(params.orderBy, params.order);
+      queryBuilder.orderBy('user.' + params.orderBy, params.order);
     }
     queryBuilder.execute();
     paginatedData.itemCount = await queryBuilder.getCount();

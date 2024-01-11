@@ -46,7 +46,7 @@ export class FilesRepository implements TodoRepository<FilesEntity> {
     }
 
     if (params?.dtcadastro) {
-      queryBuilder.andWhere(`files.dtcadastro=:dtcadastro`, { dtcadastro: params.dtcadastro });
+      queryBuilder.andWhere(`files.dtcadastro >= :dtcadastro`, { dtcadastro: params.dtcadastro });
     }
 
     queryBuilder.leftJoinAndSelect('files.category', 'category');

@@ -9,6 +9,7 @@ export interface IUser {
   senha: string;
   dtcadastro?: Date;
   modules: IModules[];
+  cpf: string;
   deletado?: string;
   perms: Perms;
 }

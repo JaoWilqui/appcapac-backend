@@ -7,7 +7,7 @@ import {
   Put,
   Query,
   Req,
-  Res,
+  StreamableFile,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
@@ -33,6 +33,7 @@ import { PaginationDTO } from 'src/infrastructure/dtos/pagination.dto';
 import { Perms } from 'src/infrastructure/enum/permissions.enum';
 import fs = require('fs');
 import multer = require('multer');
+import path = require('path');
 @UseGuards(PermsGuard, AuthGuard, ModulesGuard)
 @Controller('files')
 export class FilesController {
@@ -62,7 +63,6 @@ export class FilesController {
       ...files,
       data: files.data.map(file => ({
         ...file,
-        fileRelativePath: process.env.APP_URL + '/files/view/' + file.fileRelativePath,
       })),
     };
 
@@ -70,11 +70,10 @@ export class FilesController {
   }
 
   @Public()
-  @Get('/view/:path')
-  async getImage(@Param('path') path, @Res() res) {
+  @Get('/download/:path')
+  async getImage(@Param('path') path) {
     const file = fs.createReadStream(process.cwd() + '/uploads/files/' + path);
-    res.setHeader('Content-Type', 'file/png');
-    return file.pipe(res);
+    return new StreamableFile(file);
   }
 
   @Permissions(Perms.admin)
@@ -93,12 +92,11 @@ export class FilesController {
     const fileInfo: CreateFileDTO = JSON.parse(req.body.fileInfo);
     const uploadFile: CreateFileDTO = {
       nome: fileInfo.nome,
-      category: Number(fileInfo.category),
+      category: fileInfo.category,
       tipo: fileInfo.tipo,
       descricao: fileInfo.descricao,
       fileRelativePath: file[0].originalname,
     };
-
     return await this.createFileUsecase.insertFile(uploadFile);
   }
 
