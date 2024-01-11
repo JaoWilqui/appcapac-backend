@@ -93,7 +93,7 @@ export class FilesController {
     const fileInfo: CreateFileDTO = JSON.parse(req.body.fileInfo);
     const uploadFile: CreateFileDTO = {
       nome: fileInfo.nome,
-      category: Number(fileInfo.category),
+      category: fileInfo.category,
       tipo: fileInfo.tipo,
       descricao: fileInfo.descricao,
       fileRelativePath: file[0].originalname,
