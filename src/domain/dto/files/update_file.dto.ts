@@ -1,4 +1,6 @@
 import { ICategory } from 'src/domain/entities/category.entity';
+import { IOperator } from 'src/domain/entities/operators.entity';
+import { AdhesionEnum } from 'src/infrastructure/enum/adhesion.enum';
 
 export class IUpdateFiles {
   id: number;
@@ -7,6 +9,12 @@ export class IUpdateFiles {
   descricao: string;
 
   fileRelativePath: string;
+
+  uf: string;
+
+  adesao: AdhesionEnum;
+
+  operator: IOperator;
 
   category: ICategory;
 

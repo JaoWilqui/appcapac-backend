@@ -6,6 +6,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { AdhesionEnum } from '../enum/adhesion.enum';
 import { CampaingEntity } from './campaing.entity';
 import { CategoryEntity } from './category.entity';
 import { OperatorsEntity } from './operators.entity';
@@ -44,6 +45,12 @@ export class ImagesEntity {
     referencedColumnName: 'id',
   })
   campaing: CampaingEntity;
+
+  @Column({ type: 'enum', enum: AdhesionEnum, nullable: false })
+  adesao: AdhesionEnum;
+
+  @Column({ type: 'varchar', length: 2 })
+  uf: string;
 
   @Column({ type: 'date', nullable: false })
   dtcadastro: Date;

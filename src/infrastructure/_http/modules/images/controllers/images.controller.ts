@@ -93,7 +93,10 @@ export class ImagesController {
     const imageInfo: CreateImagesDTO = JSON.parse(req.body.imageInfo);
     const uploadImage: CreateImagesDTO = {
       nome: imageInfo.nome,
+      operator: imageInfo.operator,
       category: imageInfo.category,
+      adesao: imageInfo.adesao,
+      uf: imageInfo.uf,
       campaing: imageInfo.campaing,
       descricao: imageInfo.descricao,
       imageRelativePath: image[0].originalname,
@@ -122,6 +125,9 @@ export class ImagesController {
     const imageInfo: UpdateImagesDTO = JSON.parse(req.body.imageInfo);
     const uploadImage: UpdateImagesDTO = {
       id: id,
+      operator: imageInfo.operator,
+      adesao: imageInfo.adesao,
+      uf: imageInfo.uf,
       nome: imageInfo.nome,
       category: imageInfo.category,
       campaing: imageInfo.campaing,

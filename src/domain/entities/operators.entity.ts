@@ -10,7 +10,7 @@ export class IOperator {
 
   deletado?: Date;
 
-  images: IImages[];
+  images?: IImages[];
 
-  files: IFiles[];
+  files?: IFiles[];
 }

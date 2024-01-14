@@ -91,9 +91,12 @@ export class FilesController {
   async uploadFiles(@UploadedFiles() file: Express.Multer.File, @Req() req: Request) {
     const fileInfo: CreateFileDTO = JSON.parse(req.body.fileInfo);
     const uploadFile: CreateFileDTO = {
+      operator: fileInfo.operator,
       nome: fileInfo.nome,
       category: fileInfo.category,
       tipo: fileInfo.tipo,
+      adesao: fileInfo.adesao,
+      uf: fileInfo.uf,
       descricao: fileInfo.descricao,
       fileRelativePath: file[0].originalname,
     };
@@ -124,7 +127,10 @@ export class FilesController {
     const fileInfo: UpdateFileDTO = JSON.parse(req.body.fileInfo);
     const uploadFile: UpdateFileDTO = {
       id: id,
+      operator: fileInfo.operator,
       nome: fileInfo.nome,
+      adesao: fileInfo.adesao,
+      uf: fileInfo.uf,
       tipo: fileInfo.tipo,
       category: fileInfo.category,
       descricao: fileInfo.descricao,

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { IPaginationDTO } from 'src/domain/dto/pagination.dto';
+import { IOperator } from 'src/domain/entities/operators.entity';
 import { TodoRepository } from 'src/infrastructure/repositories/_todo.repository';
 import { Repository } from 'typeorm';
 import { OperatorsEntity } from '../entities/operators.entity';
@@ -21,35 +22,27 @@ export class OperatorsRepository implements TodoRepository<OperatorsEntity> {
     const operatorsEntity = operator;
     await this.operatorsEntityRepository.insert(operatorsEntity);
   }
-  async findAll(params: IPaginationDTO<OperatorsEntity>): Promise<IPaginationDTO<OperatorsEntity>> {
+  async findAll(
+    params: IPaginationDTO<OperatorsEntity> & IOperator,
+  ): Promise<IPaginationDTO<OperatorsEntity>> {
     const queryBuilder = this.operatorsEntityRepository.createQueryBuilder('operators');
     const paginatedData: IPaginationDTO<OperatorsEntity> = new IPaginationDTO<OperatorsEntity>();
 
-    // if (params?.id) {
-    //   queryBuilder.andWhere(`operators.id=:id`, { id: params.id });
-    // }
+    if (params?.id) {
+      queryBuilder.andWhere(`operators.id=:id`, { id: params.id });
+    }
 
-    // if (params?.nome) {
-    //   queryBuilder.andWhere(`operators.nome like :nome`, { nome: `%${params.nome}%` });
-    // }
+    if (params?.nome) {
+      queryBuilder.andWhere(`operators.nome like :nome`, { nome: `%${params.nome}%` });
+    }
 
-    // if (params?.descricao) {
-    //   queryBuilder.andWhere(`operators.descricao like :descricao `, {
-    //     descricao: `%${params.descricao}%`,
-    //   });
-    // }
-    // if (params?.dtcadastro) {
-    //   queryBuilder.andWhere(`operators.dtcadastro >= :dtcadastro`, {
-    //     dtcadastro: params.dtcadastro,
-    //   });
-    // }
+    if (params?.dtcadastro) {
+      queryBuilder.andWhere(`operators.dtcadastro >= :dtcadastro`, {
+        dtcadastro: params.dtcadastro,
+      });
+    }
 
-    queryBuilder.select([
-      'operators.id',
-      'operators.nome',
-      'operators.descricao',
-      'operators.dtcadastro',
-    ]);
+    queryBuilder.select(['operators.id', 'operators.nome', 'operators.dtcadastro']);
     if (params?.pageCount && params?.page) {
       queryBuilder.skip(params.pageCount * (params.page - 1));
       queryBuilder.take(params.pageCount);

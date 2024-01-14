@@ -6,6 +6,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { AdhesionEnum } from '../enum/adhesion.enum';
 import { CategoryEntity } from './category.entity';
 import { OperatorsEntity } from './operators.entity';
 
@@ -39,6 +40,12 @@ export class FilesEntity {
     referencedColumnName: 'id',
   })
   operator: OperatorsEntity;
+
+  @Column({ type: 'enum', enum: AdhesionEnum, nullable: false })
+  adesao: AdhesionEnum;
+
+  @Column({ type: 'varchar', length: 2 })
+  uf: string;
 
   @Column({ type: 'varchar', length: 50, nullable: false })
   tipo: string;

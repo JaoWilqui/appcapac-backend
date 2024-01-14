@@ -12,12 +12,12 @@ export class UpdateCampaingDTO implements IUpdateCampaing {
   @IsNotEmpty({ message: 'O campo nome é obrigatório' })
   nome: string;
 
-  @IsNotEmpty({ message: 'O campo nome é obrigatório' })
+  @IsNotEmpty({ message: 'O campo dtinicio é obrigatório' })
   dtinicio: Date;
 
-  @IsNotEmpty({ message: 'O campo nome é obrigatório' })
+  @IsNotEmpty({ message: 'O campo dtfim é obrigatório' })
   dtfim: Date;
 
-  @IsNotEmpty({ message: 'O campo nome é obrigatório' })
+  @IsNotEmpty({ message: 'O campo status é obrigatório' })
   status: CampaingEnum;
 }
