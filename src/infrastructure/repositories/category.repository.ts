@@ -46,7 +46,6 @@ export class CategoryRepository implements TodoRepository<CategoryEntity> {
       });
     }
 
-    queryBuilder.andWhere('category.deletado IS NULL');
     queryBuilder.select([
       'category.id',
       'category.nome',
@@ -69,7 +68,7 @@ export class CategoryRepository implements TodoRepository<CategoryEntity> {
   async findById(id: number): Promise<CategoryEntity> {
     const queryBuilder = this.categoryEntityRepository.createQueryBuilder('category');
     queryBuilder.andWhere('category.id=:id', { id: id });
-    queryBuilder.andWhere('category.deletado IS NULL');
+
     queryBuilder.select([
       'category.id',
       'category.nome',
@@ -82,6 +81,6 @@ export class CategoryRepository implements TodoRepository<CategoryEntity> {
     return categoryEntity;
   }
   async deleteById(id: number): Promise<void> {
-    await this.categoryEntityRepository.update(id, { deletado: 'x' });
+    await this.categoryEntityRepository.softDelete(id);
   }
 }

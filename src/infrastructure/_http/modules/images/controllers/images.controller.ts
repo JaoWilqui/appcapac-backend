@@ -104,26 +104,21 @@ export class ImagesController {
 
   @Permissions(Perms.admin)
   @Put('upload/:id')
-  @UseInterceptors(FilesInterceptor('images', 1))
+  @UseInterceptors(
+    FilesInterceptor('images', 1, {
+      storage: multer.diskStorage({
+        destination: './uploads/images',
+        filename: function (req, file, callback) {
+          callback(null, file.originalname + '');
+        },
+      }),
+    }),
+  )
   async updateUpload(
     @UploadedFiles() image: Express.Multer.File,
     @Req() req: Request,
     @Param('id') id: number,
   ) {
-    const registeredImage = await this.findImagesByIdimageUsecase.findImagesById(id);
-
-    fs.unlinkSync(
-      process.cwd() + `/uploads/images/${registeredImage.imageRelativePath.toString()}`,
-    );
-
-    multer.diskStorage({
-      destination: './uploads/images',
-      filename: function (req, file, callback) {
-        console.log(file, req);
-        callback(null, file.originalname + '');
-      },
-    });
-
     const imageInfo: UpdateImagesDTO = JSON.parse(req.body.imageInfo);
     const uploadImage: UpdateImagesDTO = {
       id: id,

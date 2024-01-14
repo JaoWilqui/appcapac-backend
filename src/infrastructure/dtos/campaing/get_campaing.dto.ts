@@ -8,7 +8,6 @@ export class GetCampaingDto implements ICampaing {
 
   dtinicio: Date;
   dtfim: Date;
-  deletado?: string;
   status: CampaingEnum;
   videos?: IVideos[];
   images?: IImages[];

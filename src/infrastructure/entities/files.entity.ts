@@ -1,5 +1,13 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  DeleteDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { CategoryEntity } from './category.entity';
+import { OperatorsEntity } from './operators.entity';
 
 @Entity({ name: 'arquivos', synchronize: false })
 export class FilesEntity {
@@ -18,16 +26,23 @@ export class FilesEntity {
   @Column({ type: 'varchar', length: 300, nullable: false })
   fileRelativePath: string;
 
-  @ManyToOne(() => CategoryEntity, category => category.arquivos)
+  @ManyToOne(() => CategoryEntity, category => category.files)
   @JoinColumn({
     name: 'id_categoria',
     referencedColumnName: 'id',
   })
   category: CategoryEntity;
 
+  @ManyToOne(() => OperatorsEntity, operators => operators.files)
+  @JoinColumn({
+    name: 'id_operadoras',
+    referencedColumnName: 'id',
+  })
+  operator: OperatorsEntity;
+
   @Column({ type: 'varchar', length: 50, nullable: false })
   tipo: string;
 
-  @Column({ type: 'char', length: 1 })
-  deletado: string;
+  @DeleteDateColumn({ name: 'deletado' })
+  deletado: Date;
 }

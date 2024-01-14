@@ -33,6 +33,6 @@ export class ModulesRepository implements TodoRepository<ModulesEntity> {
     return modulesEntity;
   }
   async deleteById(id: number): Promise<void> {
-    await this.modulesEntityRepository.update(id, { deletado: 'x' });
+    await this.modulesEntityRepository.softDelete(id);
   }
 }

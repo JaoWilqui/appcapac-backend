@@ -7,6 +7,6 @@ async function bootstrap() {
   app.enableCors();
   app.useGlobalFilters(new ErrorFilter());
 
-  await app.listen(3000);
+  await app.listen(3002);
 }
 bootstrap();

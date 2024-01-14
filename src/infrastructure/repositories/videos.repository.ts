@@ -47,7 +47,6 @@ export class VideosRepository implements TodoRepository<VideosEntity> {
 
     queryBuilder.leftJoinAndSelect('videos.category', 'category');
     queryBuilder.leftJoinAndSelect('videos.campaing', 'campaing');
-    queryBuilder.andWhere('videos.deletado IS NULL');
     queryBuilder.select([
       'videos.id',
       'videos.nome',
@@ -79,7 +78,6 @@ export class VideosRepository implements TodoRepository<VideosEntity> {
       .leftJoinAndSelect('videos.category', 'category')
       .addSelect(['category.id', 'category.nome', 'campaing.dtcadastro']);
     queryBuilder.andWhere('videos.id=:id', { id: id });
-    queryBuilder.andWhere('videos.deletado IS NULL');
     queryBuilder.select([
       'videos.id',
       'videos.nome',
@@ -95,6 +93,6 @@ export class VideosRepository implements TodoRepository<VideosEntity> {
     return videosEntity;
   }
   async deleteById(id: number): Promise<void> {
-    await this.videosEntityRepository.update(id, { deletado: 'x' });
+    await this.videosEntityRepository.softDelete(id);
   }
 }

@@ -15,6 +15,5 @@ export class GetImagesDTO implements IImages {
 
   campaing: ICampaing;
 
-  deletado?: string;
   dtcadastro?: Date;
 }

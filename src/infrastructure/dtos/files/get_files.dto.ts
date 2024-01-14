@@ -14,6 +14,5 @@ export class GetFilesDTO implements IFiles {
 
   category: ICategory;
 
-  deletado?: string;
   dtcadastro?: Date;
 }

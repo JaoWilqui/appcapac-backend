@@ -50,7 +50,6 @@ export class FilesRepository implements TodoRepository<FilesEntity> {
     }
 
     queryBuilder.leftJoinAndSelect('files.category', 'category');
-    queryBuilder.andWhere('files.deletado IS NULL');
     queryBuilder.select([
       'files.id',
       'files.nome',
@@ -80,7 +79,7 @@ export class FilesRepository implements TodoRepository<FilesEntity> {
       .leftJoinAndSelect('files.category', 'category')
       .addSelect(['category.id', 'category.nome', 'campaing.dtcadastro']);
     queryBuilder.andWhere('files.id=:id', { id: id });
-    queryBuilder.andWhere('files.deletado IS NULL');
+
     queryBuilder.select([
       'files.id',
       'files.nome',
@@ -97,6 +96,6 @@ export class FilesRepository implements TodoRepository<FilesEntity> {
     return filesEntity;
   }
   async deleteById(id: number): Promise<void> {
-    await this.filesEntityRepository.update(id, { deletado: 'x' });
+    await this.filesEntityRepository.softDelete(id);
   }
 }

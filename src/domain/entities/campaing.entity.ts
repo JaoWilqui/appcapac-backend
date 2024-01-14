@@ -15,7 +15,7 @@ export class ICampaing {
 
   dtfim: Date;
 
-  deletado?: string;
+  deletado?: Date;
 
   status: CampaingEnum;
 

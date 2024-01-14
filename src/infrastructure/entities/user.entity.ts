@@ -1,4 +1,11 @@
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  DeleteDateColumn,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Perms } from '../enum/permissions.enum';
 import { ModulesEntity } from './modules.entity';
 
@@ -39,9 +46,9 @@ export class UserEntity {
   })
   modules: ModulesEntity[];
 
-  @Column({ type: 'char', length: 1 })
-  deletado: string;
-
   @Column({ type: 'enum', enum: Perms, nullable: false })
   perms: Perms;
+
+  @DeleteDateColumn({ name: 'deletado' })
+  deletado: Date;
 }

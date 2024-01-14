@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { ModulesEnum } from '../enum/modules.enum';
 import { AccessEntity } from './access.entity';
 
@@ -13,9 +13,9 @@ export class ModulesEntity {
   @Column({ type: 'varchar', length: 200, nullable: false })
   dtcadastros: Date;
 
-  @Column({ type: 'char', length: 1 })
-  deletado: string;
-
   @OneToMany(() => AccessEntity, access => access.modulo)
   access: AccessEntity[];
+
+  @DeleteDateColumn({ name: 'deletado' })
+  deletado: Date;
 }

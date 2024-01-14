@@ -10,6 +10,6 @@ export interface IUser {
   dtcadastro?: Date;
   modules: IModules[];
   cpf: string;
-  deletado?: string;
+  deletado?: Date;
   perms: Perms;
 }

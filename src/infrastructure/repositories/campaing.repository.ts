@@ -59,7 +59,6 @@ export class CampaingRepository implements TodoRepository<CampaingEntity> {
       });
     }
 
-    queryBuilder.andWhere('campaing.deletado IS NULL');
     queryBuilder.select([
       'campaing.id',
       'campaing.nome',
@@ -85,7 +84,7 @@ export class CampaingRepository implements TodoRepository<CampaingEntity> {
   async findById(id: number): Promise<CampaingEntity> {
     const queryBuilder = this.campaingEntityRepository.createQueryBuilder('campaing');
     queryBuilder.andWhere('campaing.id=:id', { id: id });
-    queryBuilder.andWhere('campaing.deletado IS NULL');
+
     queryBuilder.select([
       'campaing.id',
       'campaing.nome',
@@ -100,6 +99,6 @@ export class CampaingRepository implements TodoRepository<CampaingEntity> {
     return campaingEntity;
   }
   async deleteById(id: number): Promise<void> {
-    await this.campaingEntityRepository.update(id, { deletado: 'x' });
+    await this.campaingEntityRepository.softDelete(id);
   }
 }

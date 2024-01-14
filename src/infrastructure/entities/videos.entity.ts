@@ -1,4 +1,11 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  DeleteDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { CampaingEntity } from './campaing.entity';
 import { CategoryEntity } from './category.entity';
 
@@ -6,9 +13,6 @@ import { CategoryEntity } from './category.entity';
 export class VideosEntity {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column({ type: 'char', length: 1 })
-  deletado: string;
 
   @Column({ type: 'varchar', length: 100, nullable: false })
   descricao: string;
@@ -35,4 +39,7 @@ export class VideosEntity {
 
   @Column({ type: 'date', nullable: false })
   dtcadastro: Date;
+
+  @DeleteDateColumn({ name: 'deletado' })
+  deletado: Date;
 }

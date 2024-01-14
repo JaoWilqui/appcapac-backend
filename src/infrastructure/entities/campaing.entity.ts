@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { CampaingEnum } from '../enum/campaning.enum';
 import { ImagesEntity } from './images.entity';
 import { VideosEntity } from './videos.entity';
@@ -23,9 +23,6 @@ export class CampaingEntity {
   @Column({ type: 'date', nullable: false })
   dtfim: Date;
 
-  @Column({ type: 'char', length: 1, nullable: false })
-  deletado: string;
-
   @Column({ type: 'enum', enum: CampaingEnum, nullable: false })
   status: CampaingEnum;
 
@@ -34,4 +31,7 @@ export class CampaingEntity {
 
   @OneToMany(() => ImagesEntity, images => images.campaing)
   images: ImagesEntity[];
+
+  @DeleteDateColumn({ name: 'deletado' })
+  deletado: Date;
 }

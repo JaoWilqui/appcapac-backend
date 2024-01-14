@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { FilesEntity } from './files.entity';
 import { ImagesEntity } from './images.entity';
 import { VideosEntity } from './videos.entity';
@@ -18,7 +18,7 @@ export class CategoryEntity {
   dtcadastro: Date;
 
   @OneToMany(() => FilesEntity, file => file.category)
-  arquivos: FilesEntity[];
+  files: FilesEntity[];
 
   @OneToMany(() => VideosEntity, videos => videos.category)
   videos: VideosEntity[];
@@ -26,6 +26,6 @@ export class CategoryEntity {
   @OneToMany(() => ImagesEntity, images => images.category)
   images: ImagesEntity[];
 
-  @Column({ type: 'char', length: 1 })
-  deletado: string;
+  @DeleteDateColumn({ name: 'deletado' })
+  deletado: Date;
 }

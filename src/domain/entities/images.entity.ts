@@ -14,7 +14,7 @@ export class IImages {
 
   campaing: ICampaing;
 
-  deletado?: string;
+  deletado?: Date;
 
   dtcadastro?: Date;
 }

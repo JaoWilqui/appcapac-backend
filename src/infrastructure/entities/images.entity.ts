@@ -1,6 +1,14 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  DeleteDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { CampaingEntity } from './campaing.entity';
 import { CategoryEntity } from './category.entity';
+import { OperatorsEntity } from './operators.entity';
 
 @Entity({ name: 'imagens', synchronize: false })
 export class ImagesEntity {
@@ -23,16 +31,23 @@ export class ImagesEntity {
   })
   category: CategoryEntity;
 
-  @ManyToOne(() => CampaingEntity, campaing => campaing)
+  @ManyToOne(() => OperatorsEntity, operators => operators.images)
+  @JoinColumn({
+    name: 'id_operadoras',
+    referencedColumnName: 'id',
+  })
+  operator: OperatorsEntity;
+
+  @ManyToOne(() => CampaingEntity, campaing => campaing.images)
   @JoinColumn({
     name: 'id_campanha',
     referencedColumnName: 'id',
   })
   campaing: CampaingEntity;
 
-  @Column({ type: 'char', length: 1 })
-  deletado: string;
-
   @Column({ type: 'date', nullable: false })
   dtcadastro: Date;
+
+  @DeleteDateColumn({ name: 'deletado' })
+  deletado: Date;
 }

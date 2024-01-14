@@ -4,7 +4,7 @@ import { ICategory } from './category.entity';
 export class IVideos {
   id?: number;
 
-  deletado?: string;
+  deletado?: Date;
 
   descricao: string;
 

@@ -15,5 +15,5 @@ export class IFiles {
 
   tipo: string;
 
-  deletado?: string;
+  deletado?: Date;
 }

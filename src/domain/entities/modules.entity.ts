@@ -11,7 +11,7 @@ export class IModules {
 
   dtcadastros: Date;
 
-  deletado: string;
+  deletado: Date;
 
   arquivos: IFiles[];
 

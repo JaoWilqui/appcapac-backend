@@ -20,7 +20,6 @@ export class UserRepository implements TodoRepository<UserEntity> {
       .leftJoinAndSelect('user.modules', 'modules')
       .addSelect(['modules.id', 'modules.nome', 'modules.dtcadastro']);
     queryBuilder.andWhere('user.cpf=:cpf', { cpf: cpf });
-    queryBuilder.andWhere('user.deletado IS NULL');
     queryBuilder.select([
       'user.id',
       'user.nome',
@@ -43,7 +42,6 @@ export class UserRepository implements TodoRepository<UserEntity> {
       .leftJoinAndSelect('user.modules', 'modules')
       .addSelect(['modules.id', 'modules.nome', 'modules.dtcadastro']);
     queryBuilder.andWhere('user.email=:email', { email: email });
-    queryBuilder.andWhere('user.deletado IS NULL');
     queryBuilder.select([
       'user.id',
       'user.nome',
@@ -109,7 +107,6 @@ export class UserRepository implements TodoRepository<UserEntity> {
       queryBuilder.andWhere(`user.dtcadastro >= :dtcadastro`, { dtcadastro: params.dtcadastro });
     }
 
-    queryBuilder.andWhere('user.deletado IS NULL');
     queryBuilder.select([
       'user.id',
       'user.nome',
@@ -137,7 +134,6 @@ export class UserRepository implements TodoRepository<UserEntity> {
       .leftJoinAndSelect('user.modules', 'modules')
       .addSelect(['modules.id', 'modules.nome', 'modules.dtcadastro']);
     queryBuilder.andWhere('user.id=:id', { id: id });
-    queryBuilder.andWhere('user.deletado IS NULL');
     queryBuilder.select([
       'user.id',
       'user.nome',
@@ -152,6 +148,6 @@ export class UserRepository implements TodoRepository<UserEntity> {
     return userEntity;
   }
   async deleteById(id: number): Promise<void> {
-    await this.userEntityRepository.update(id, { deletado: 'x' });
+    await this.userEntityRepository.softDelete(id);
   }
 }

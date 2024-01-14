@@ -17,5 +17,5 @@ export class ICategory {
 
   images?: IImages[];
 
-  deletado?: string;
+  deletado?: Date;
 }
