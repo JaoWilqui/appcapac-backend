@@ -113,6 +113,7 @@ export class UserRepository implements TodoRepository<UserEntity> {
       'user.sobrenome',
       'user.email',
       'user.dtcadastro',
+      'user.cpf',
     ]);
 
     if (params?.pageCount && params?.page) {
