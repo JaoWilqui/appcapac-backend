@@ -48,13 +48,17 @@ export class ImagesRepository implements TodoRepository<ImagesEntity> {
 
     queryBuilder.leftJoinAndSelect('images.category', 'category');
     queryBuilder.leftJoinAndSelect('images.campaing', 'campaing');
+    queryBuilder.leftJoinAndSelect('images.operator', 'operator');
     queryBuilder.select([
       'images.id',
       'images.nome',
       'images.imageRelativePath',
       'images.descricao',
+      'images.uf',
+      'images.adesao',
       'campaing',
       'category',
+      'operator',
       'images.dtcadastro',
     ]);
     if (params?.pageCount && params?.page) {
@@ -79,13 +83,19 @@ export class ImagesRepository implements TodoRepository<ImagesEntity> {
     queryBuilder
       .leftJoinAndSelect('images.category', 'category')
       .addSelect(['category.id', 'category.nome', 'campaing.dtcadastro']);
+    queryBuilder
+      .leftJoinAndSelect('images.operator', 'operator')
+      .addSelect(['operator.id', 'operator.nome', 'operator.dtcadastro']);
     queryBuilder.andWhere('images.id=:id', { id: id });
     queryBuilder.select([
       'images.id',
       'images.nome',
       'images.imageRelativePath',
       'images.descricao',
+      'images.uf',
+      'images.adesao',
       'campaing',
+      'operator',
       'category',
       'images.dtcadastro',
     ]);

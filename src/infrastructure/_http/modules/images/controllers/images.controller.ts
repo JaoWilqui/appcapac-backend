@@ -8,11 +8,11 @@ import {
   Query,
   Req,
   Res,
-  UploadedFiles,
+  UploadedFile,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { FilesInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { Request } from 'express';
 import { CreateImageUsecase } from 'src/application/usecases/images/create_image.usecase';
 import { DeleteImageUsecase } from 'src/application/usecases/images/delete_image.usecase';
@@ -79,17 +79,15 @@ export class ImagesController {
 
   @Permissions(Perms.admin)
   @Post('upload')
-  @UseInterceptors(
-    FilesInterceptor('image', 1, {
-      storage: multer.diskStorage({
-        destination: './uploads/images',
-        filename: function (req, file, callback) {
-          callback(null, file.originalname + '');
-        },
-      }),
-    }),
-  )
-  async uploadFiles(@UploadedFiles() image: Express.Multer.File, @Req() req: Request) {
+  @UseInterceptors(FileInterceptor('image'))
+  async uploadFiles(@UploadedFile() image: Express.Multer.File, @Req() req: Request) {
+    const fileName = `${Date.now() + Math.random().toString(16).substr(8)}.${image.originalname
+      .split('.')
+      .pop()}`;
+
+    const ws = fs.createWriteStream('./uploads/images/' + fileName);
+    ws.write(image.buffer);
+
     const imageInfo: CreateImagesDTO = JSON.parse(req.body.imageInfo);
     const uploadImage: CreateImagesDTO = {
       nome: imageInfo.nome,
@@ -99,7 +97,7 @@ export class ImagesController {
       uf: imageInfo.uf,
       campaing: imageInfo.campaing,
       descricao: imageInfo.descricao,
-      imageRelativePath: image[0].originalname,
+      imageRelativePath: fileName,
     };
 
     return await this.createImageUsecase.insertImages(uploadImage);
@@ -107,22 +105,25 @@ export class ImagesController {
 
   @Permissions(Perms.admin)
   @Put('upload/:id')
-  @UseInterceptors(
-    FilesInterceptor('images', 1, {
-      storage: multer.diskStorage({
-        destination: './uploads/images',
-        filename: function (req, file, callback) {
-          callback(null, file.originalname + '');
-        },
-      }),
-    }),
-  )
+  @UseInterceptors(FileInterceptor('image'))
   async updateUpload(
-    @UploadedFiles() image: Express.Multer.File,
+    @UploadedFile() image: Express.Multer.File,
     @Req() req: Request,
     @Param('id') id: number,
   ) {
+    const registeredImg = await this.findImagesByIdimageUsecase.findImagesById(id);
+
+    fs.unlinkSync('./uploads/images/' + registeredImg.imageRelativePath);
+
     const imageInfo: UpdateImagesDTO = JSON.parse(req.body.imageInfo);
+
+    const fileName = `${Date.now() + Math.random().toString(16).substr(8)}.${image.originalname
+      .split('.')
+      .pop()}`;
+
+    const ws = fs.createWriteStream('./uploads/images/' + fileName);
+    ws.write(image.buffer);
+
     const uploadImage: UpdateImagesDTO = {
       id: id,
       operator: imageInfo.operator,
@@ -132,7 +133,7 @@ export class ImagesController {
       category: imageInfo.category,
       campaing: imageInfo.campaing,
       descricao: imageInfo.descricao,
-      imageRelativePath: image[0].originalname,
+      imageRelativePath: fileName,
     };
 
     return await this.updateImagesUsecase.updateImages(id, uploadImage);
