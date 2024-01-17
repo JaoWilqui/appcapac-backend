@@ -142,6 +142,7 @@ export class UserRepository implements TodoRepository<UserEntity> {
       'user.email',
       'user.dtcadastro',
       'user.perms',
+      'user.cpf',
       'modules',
     ]);
     queryBuilder.execute();

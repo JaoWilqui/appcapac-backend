@@ -60,12 +60,7 @@ export class OperatorsRepository implements TodoRepository<OperatorsEntity> {
     const queryBuilder = this.operatorsEntityRepository.createQueryBuilder('operators');
     queryBuilder.andWhere('operators.id=:id', { id: id });
 
-    queryBuilder.select([
-      'operators.id',
-      'operators.nome',
-      'operators.descricao',
-      'operators.dtcadastro',
-    ]);
+    queryBuilder.select(['operators.id', 'operators.nome', 'operators.dtcadastro']);
     queryBuilder.execute();
     const operatorsEntity = await queryBuilder.getOne();
 
