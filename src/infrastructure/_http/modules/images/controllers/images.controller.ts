@@ -80,12 +80,12 @@ export class ImagesController {
   @Permissions(Perms.admin)
   @Post('upload')
   @UseInterceptors(FileInterceptor('image'))
-  async uploadFiles(@UploadedFile() image: Express.Multer.File, @Req() req: Request) {
-    const fileName = `${Date.now() + Math.random().toString(16).substr(8)}.${image.originalname
+  async uploadImage(@UploadedFile() image: Express.Multer.File, @Req() req: Request) {
+    const imageName = `${Date.now() + Math.random().toString(16).substr(8)}.${image.originalname
       .split('.')
       .pop()}`;
 
-    const ws = fs.createWriteStream('./uploads/images/' + fileName);
+    const ws = fs.createWriteStream('./uploads/images/' + imageName);
     ws.write(image.buffer);
 
     const imageInfo: CreateImagesDTO = JSON.parse(req.body.imageInfo);
@@ -97,7 +97,7 @@ export class ImagesController {
       uf: imageInfo.uf,
       campaing: imageInfo.campaing,
       descricao: imageInfo.descricao,
-      imageRelativePath: fileName,
+      imageRelativePath: imageName,
     };
 
     return await this.createImageUsecase.insertImages(uploadImage);
@@ -106,7 +106,7 @@ export class ImagesController {
   @Permissions(Perms.admin)
   @Put('upload/:id')
   @UseInterceptors(FileInterceptor('image'))
-  async updateUpload(
+  async updateImage(
     @UploadedFile() image: Express.Multer.File,
     @Req() req: Request,
     @Param('id') id: number,
@@ -117,11 +117,11 @@ export class ImagesController {
 
     const imageInfo: UpdateImagesDTO = JSON.parse(req.body.imageInfo);
 
-    const fileName = `${Date.now() + Math.random().toString(16).substr(8)}.${image.originalname
+    const imageName = `${Date.now() + Math.random().toString(16).substr(8)}.${image.originalname
       .split('.')
       .pop()}`;
 
-    const ws = fs.createWriteStream('./uploads/images/' + fileName);
+    const ws = fs.createWriteStream('./uploads/images/' + imageName);
     ws.write(image.buffer);
 
     const uploadImage: UpdateImagesDTO = {
@@ -133,7 +133,7 @@ export class ImagesController {
       category: imageInfo.category,
       campaing: imageInfo.campaing,
       descricao: imageInfo.descricao,
-      imageRelativePath: fileName,
+      imageRelativePath: imageName,
     };
 
     return await this.updateImagesUsecase.updateImages(id, uploadImage);

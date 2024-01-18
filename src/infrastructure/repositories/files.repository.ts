@@ -50,13 +50,18 @@ export class FilesRepository implements TodoRepository<FilesEntity> {
     }
 
     queryBuilder.leftJoinAndSelect('files.category', 'category');
+    queryBuilder.leftJoinAndSelect('files.operator', 'operator');
+
     queryBuilder.select([
       'files.id',
       'files.nome',
       'files.tipo',
       'files.fileRelativePath',
       'files.descricao',
+      'files.adesao',
+      'files.uf',
       'category',
+      'operator',
       'files.dtcadastro',
     ]);
     if (params?.pageCount && params?.page) {
@@ -78,6 +83,8 @@ export class FilesRepository implements TodoRepository<FilesEntity> {
     queryBuilder
       .leftJoinAndSelect('files.category', 'category')
       .addSelect(['category.id', 'category.nome', 'campaing.dtcadastro']);
+    queryBuilder.leftJoinAndSelect('files.operator', 'operator');
+
     queryBuilder.andWhere('files.id=:id', { id: id });
 
     queryBuilder.select([
@@ -86,8 +93,10 @@ export class FilesRepository implements TodoRepository<FilesEntity> {
       'files.tipo',
       'files.fileRelativePath',
       'files.descricao',
-      'campaing',
+      'files.adesao',
+      'files.uf',
       'category',
+      'operator',
       'files.dtcadastro',
     ]);
     queryBuilder.execute();

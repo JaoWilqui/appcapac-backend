@@ -8,11 +8,12 @@ import {
   Query,
   Req,
   StreamableFile,
+  UploadedFile,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { FilesInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateFileUsecase } from 'src/application/usecases/files/create_file.usecase';
 import { DeleteFileUsecase } from 'src/application/usecases/files/delete_file.usecase';
 import { FindAllFileUsecase } from 'src/application/usecases/files/find_all_files.usecase';
@@ -50,8 +51,6 @@ export class FilesController {
   async getfileById(@Param('id') id: number) {
     const file = await this.findFileByIdUserUsecase.findFileById(id);
 
-    file.fileRelativePath = process.env.APP_URL + '/files/view/' + file.fileRelativePath;
-
     return file;
   }
 
@@ -77,18 +76,16 @@ export class FilesController {
   }
 
   @Permissions(Perms.admin)
-  @UseInterceptors(
-    FilesInterceptor('file', 1, {
-      storage: multer.diskStorage({
-        destination: './uploads/files',
-        filename: function (req, file, callback) {
-          callback(null, file.originalname);
-        },
-      }),
-    }),
-  )
+  @UseInterceptors(FileInterceptor('file'))
   @Post('upload')
-  async uploadFiles(@UploadedFiles() file: Express.Multer.File, @Req() req: Request) {
+  async uploadFiles(@UploadedFile() file: Express.Multer.File, @Req() req: Request) {
+    const fileName = `${Date.now() + Math.random().toString(16).substr(8)}.${file.originalname
+      .split('.')
+      .pop()}`;
+
+    const ws = fs.createWriteStream('./uploads/files/' + fileName);
+    ws.write(file.buffer);
+
     const fileInfo: CreateFileDTO = JSON.parse(req.body.fileInfo);
     const uploadFile: CreateFileDTO = {
       operator: fileInfo.operator,
@@ -98,33 +95,31 @@ export class FilesController {
       adesao: fileInfo.adesao,
       uf: fileInfo.uf,
       descricao: fileInfo.descricao,
-      fileRelativePath: file[0].originalname,
+      fileRelativePath: fileName,
     };
     return await this.createFileUsecase.insertFile(uploadFile);
   }
 
   @Put('upload/:id')
-  @UseInterceptors(
-    FilesInterceptor('files', 1, {
-      storage: multer.diskStorage({
-        destination: './uploads/files',
-        filename: function (req, file, callback) {
-          console.log(file, req);
-          callback(null, file.originalname + '');
-        },
-      }),
-    }),
-  )
+  @UseInterceptors(FileInterceptor('files'))
   async updateUpload(
     @UploadedFiles() file: Express.Multer.File,
     @Req() req: Request,
     @Param('id') id: number,
   ) {
-    const registeredImage = await this.findFileByIdUserUsecase.findFileById(id);
+    const registeredFile = await this.findFileByIdUserUsecase.findFileById(id);
 
-    fs.unlinkSync(process.cwd() + `/uploads/files/${registeredImage.fileRelativePath.toString()}`);
+    fs.unlinkSync('./uploads/files/' + registeredFile.fileRelativePath);
 
     const fileInfo: UpdateFileDTO = JSON.parse(req.body.fileInfo);
+
+    const fileName = `${Date.now() + Math.random().toString(16).substr(8)}.${file.originalname
+      .split('.')
+      .pop()}`;
+
+    const ws = fs.createWriteStream('./uploads/files/' + fileName);
+    ws.write(file.buffer);
+
     const uploadFile: UpdateFileDTO = {
       id: id,
       operator: fileInfo.operator,
@@ -134,7 +129,7 @@ export class FilesController {
       tipo: fileInfo.tipo,
       category: fileInfo.category,
       descricao: fileInfo.descricao,
-      fileRelativePath: file[0].originalname,
+      fileRelativePath: fileName,
     };
 
     return await this.updateFilesUsecase.updateFile(id, uploadFile);
