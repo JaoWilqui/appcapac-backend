@@ -92,7 +92,7 @@ export class ImagesController {
     const uploadImage: CreateImagesDTO = {
       nome: imageInfo.nome,
       operator: imageInfo.operator,
-      category: imageInfo.category,
+      product: imageInfo.product,
       adesao: imageInfo.adesao,
       uf: imageInfo.uf,
       campaing: imageInfo.campaing,
@@ -130,7 +130,7 @@ export class ImagesController {
       adesao: imageInfo.adesao,
       uf: imageInfo.uf,
       nome: imageInfo.nome,
-      category: imageInfo.category,
+      product: imageInfo.product,
       campaing: imageInfo.campaing,
       descricao: imageInfo.descricao,
       imageRelativePath: imageName,

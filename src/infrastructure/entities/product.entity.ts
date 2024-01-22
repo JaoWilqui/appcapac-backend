@@ -3,8 +3,8 @@ import { FilesEntity } from './files.entity';
 import { ImagesEntity } from './images.entity';
 import { VideosEntity } from './videos.entity';
 
-@Entity({ name: 'categoria', synchronize: false })
-export class CategoryEntity {
+@Entity({ name: 'produtos', synchronize: false })
+export class ProductEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -17,13 +17,13 @@ export class CategoryEntity {
   @Column({ type: 'date', nullable: false })
   dtcadastro: Date;
 
-  @OneToMany(() => FilesEntity, file => file.category)
+  @OneToMany(() => FilesEntity, file => file.product)
   files: FilesEntity[];
 
-  @OneToMany(() => VideosEntity, videos => videos.category)
+  @OneToMany(() => VideosEntity, videos => videos.product)
   videos: VideosEntity[];
 
-  @OneToMany(() => ImagesEntity, images => images.category)
+  @OneToMany(() => ImagesEntity, images => images.product)
   images: ImagesEntity[];
 
   @DeleteDateColumn({ name: 'deletado' })

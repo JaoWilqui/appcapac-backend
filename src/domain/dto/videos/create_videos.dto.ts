@@ -1,5 +1,5 @@
 import { ICampaing } from 'src/domain/entities/campaing.entity';
-import { ICategory } from 'src/domain/entities/category.entity';
+import { IProduct } from 'src/domain/entities/product.entity';
 
 export class ICreateVideos {
   descricao: string;
@@ -8,7 +8,7 @@ export class ICreateVideos {
 
   nome: string;
 
-  category: ICategory;
+  product: IProduct;
 
   campaing: ICampaing;
 }

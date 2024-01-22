@@ -1,4 +1,4 @@
-export class IUpdateCategory {
+export class IUpdateProduct {
   id: number;
 
   nome: string;

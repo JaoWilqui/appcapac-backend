@@ -1,5 +1,5 @@
 import { ICampaing } from './campaing.entity';
-import { ICategory } from './category.entity';
+import { IProduct } from './product.entity';
 
 export class IVideos {
   id?: number;
@@ -12,7 +12,7 @@ export class IVideos {
 
   nome: string;
 
-  category: ICategory;
+  product: IProduct;
 
   campaing: ICampaing;
 

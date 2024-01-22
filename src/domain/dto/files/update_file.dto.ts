@@ -1,5 +1,5 @@
-import { ICategory } from 'src/domain/entities/category.entity';
 import { IOperator } from 'src/domain/entities/operators.entity';
+import { IProduct } from 'src/domain/entities/product.entity';
 import { AdhesionEnum } from 'src/infrastructure/enum/adhesion.enum';
 
 export class IUpdateFiles {
@@ -16,7 +16,7 @@ export class IUpdateFiles {
 
   operator: IOperator;
 
-  category: ICategory;
+  product: IProduct;
 
   tipo: string;
 }

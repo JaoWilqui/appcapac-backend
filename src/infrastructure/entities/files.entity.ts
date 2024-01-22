@@ -7,8 +7,8 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { AdhesionEnum } from '../enum/adhesion.enum';
-import { CategoryEntity } from './category.entity';
 import { OperatorsEntity } from './operators.entity';
+import { ProductEntity } from './product.entity';
 
 @Entity({ name: 'arquivos', synchronize: false })
 export class FilesEntity {
@@ -27,12 +27,12 @@ export class FilesEntity {
   @Column({ type: 'varchar', length: 300, nullable: false })
   fileRelativePath: string;
 
-  @ManyToOne(() => CategoryEntity, category => category.files)
+  @ManyToOne(() => ProductEntity, product => product.files)
   @JoinColumn({
-    name: 'id_categoria',
+    name: 'id_produto',
     referencedColumnName: 'id',
   })
-  category: CategoryEntity;
+  product: ProductEntity;
 
   @ManyToOne(() => OperatorsEntity, operators => operators.files)
   @JoinColumn({

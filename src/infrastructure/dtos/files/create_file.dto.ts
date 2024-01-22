@@ -1,7 +1,7 @@
 import { IsNotEmpty } from 'class-validator';
 import { ICreateFiles } from 'src/domain/dto/files/create_file.dto';
-import { ICategory } from 'src/domain/entities/category.entity';
 import { IOperator } from 'src/domain/entities/operators.entity';
+import { IProduct } from 'src/domain/entities/product.entity';
 import { AdhesionEnum } from 'src/infrastructure/enum/adhesion.enum';
 
 export class CreateFileDTO implements ICreateFiles {
@@ -26,6 +26,6 @@ export class CreateFileDTO implements ICreateFiles {
   @IsNotEmpty({ message: 'O campo descricao é obrigatório' })
   descricao: string;
 
-  @IsNotEmpty({ message: 'O campo category é obrigatório' })
-  category: ICategory;
+  @IsNotEmpty({ message: 'O campo product é obrigatório' })
+  product: IProduct;
 }

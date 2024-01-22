@@ -45,7 +45,7 @@ export class VideosRepository implements TodoRepository<VideosEntity> {
       queryBuilder.andWhere(`videos.dtcadastro=:dtcadastro`, { dtcadastro: params.dtcadastro });
     }
 
-    queryBuilder.leftJoinAndSelect('videos.category', 'category');
+    queryBuilder.leftJoinAndSelect('videos.product', 'product');
     queryBuilder.leftJoinAndSelect('videos.campaing', 'campaing');
     queryBuilder.select([
       'videos.id',
@@ -53,7 +53,7 @@ export class VideosRepository implements TodoRepository<VideosEntity> {
       'videos.descricao',
       'videos.link',
       'campaing',
-      'category',
+      'product',
       'videos.dtcadastro',
     ]);
     if (params?.pageCount && params?.page) {
@@ -75,8 +75,8 @@ export class VideosRepository implements TodoRepository<VideosEntity> {
       .leftJoinAndSelect('videos.campaing', 'campaing')
       .addSelect(['campaing.id', 'campaing.nome', 'campaing.dtcadastro']);
     queryBuilder
-      .leftJoinAndSelect('videos.category', 'category')
-      .addSelect(['category.id', 'category.nome', 'campaing.dtcadastro']);
+      .leftJoinAndSelect('videos.product', 'product')
+      .addSelect(['product.id', 'product.nome', 'campaing.dtcadastro']);
     queryBuilder.andWhere('videos.id=:id', { id: id });
     queryBuilder.select([
       'videos.id',
@@ -84,7 +84,7 @@ export class VideosRepository implements TodoRepository<VideosEntity> {
       'videos.link',
       'videos.descricao',
       'campaing',
-      'category',
+      'product',
       'videos.dtcadastro',
     ]);
     queryBuilder.execute();

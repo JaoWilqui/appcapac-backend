@@ -1,7 +1,7 @@
 import { IsNotEmpty } from 'class-validator';
 import { IUpdateFiles } from 'src/domain/dto/files/update_file.dto';
-import { ICategory } from 'src/domain/entities/category.entity';
 import { IOperator } from 'src/domain/entities/operators.entity';
+import { IProduct } from 'src/domain/entities/product.entity';
 import { AdhesionEnum } from 'src/infrastructure/enum/adhesion.enum';
 
 export class UpdateFileDTO implements IUpdateFiles {
@@ -28,6 +28,6 @@ export class UpdateFileDTO implements IUpdateFiles {
   @IsNotEmpty({ message: 'O campo descricao é obrigatório' })
   descricao: string;
 
-  @IsNotEmpty({ message: 'O campo category é obrigatório' })
-  category: ICategory;
+  @IsNotEmpty({ message: 'O campo product é obrigatório' })
+  product: IProduct;
 }

@@ -49,7 +49,7 @@ export class FilesRepository implements TodoRepository<FilesEntity> {
       queryBuilder.andWhere(`files.dtcadastro >= :dtcadastro`, { dtcadastro: params.dtcadastro });
     }
 
-    queryBuilder.leftJoinAndSelect('files.category', 'category');
+    queryBuilder.leftJoinAndSelect('files.product', 'product');
     queryBuilder.leftJoinAndSelect('files.operator', 'operator');
 
     queryBuilder.select([
@@ -60,7 +60,7 @@ export class FilesRepository implements TodoRepository<FilesEntity> {
       'files.descricao',
       'files.adesao',
       'files.uf',
-      'category',
+      'product',
       'operator',
       'files.dtcadastro',
     ]);
@@ -81,8 +81,8 @@ export class FilesRepository implements TodoRepository<FilesEntity> {
   async findById(id: number): Promise<FilesEntity> {
     const queryBuilder = this.filesEntityRepository.createQueryBuilder('files');
     queryBuilder
-      .leftJoinAndSelect('files.category', 'category')
-      .addSelect(['category.id', 'category.nome', 'campaing.dtcadastro']);
+      .leftJoinAndSelect('files.product', 'product')
+      .addSelect(['product.id', 'product.nome', 'campaing.dtcadastro']);
     queryBuilder.leftJoinAndSelect('files.operator', 'operator');
 
     queryBuilder.andWhere('files.id=:id', { id: id });
@@ -95,7 +95,7 @@ export class FilesRepository implements TodoRepository<FilesEntity> {
       'files.descricao',
       'files.adesao',
       'files.uf',
-      'category',
+      'product',
       'operator',
       'files.dtcadastro',
     ]);

@@ -46,7 +46,7 @@ export class ImagesRepository implements TodoRepository<ImagesEntity> {
       queryBuilder.andWhere(`images.dtcadastro >= :dtcadastro`, { dtcadastro: params.dtcadastro });
     }
 
-    queryBuilder.leftJoinAndSelect('images.category', 'category');
+    queryBuilder.leftJoinAndSelect('images.product', 'product');
     queryBuilder.leftJoinAndSelect('images.campaing', 'campaing');
     queryBuilder.leftJoinAndSelect('images.operator', 'operator');
     queryBuilder.select([
@@ -57,7 +57,7 @@ export class ImagesRepository implements TodoRepository<ImagesEntity> {
       'images.uf',
       'images.adesao',
       'campaing',
-      'category',
+      'product',
       'operator',
       'images.dtcadastro',
     ]);
@@ -81,8 +81,8 @@ export class ImagesRepository implements TodoRepository<ImagesEntity> {
       .leftJoinAndSelect('images.campaing', 'campaing')
       .addSelect(['campaing.id', 'campaing.nome', 'campaing.dtcadastro']);
     queryBuilder
-      .leftJoinAndSelect('images.category', 'category')
-      .addSelect(['category.id', 'category.nome', 'campaing.dtcadastro']);
+      .leftJoinAndSelect('images.product', 'product')
+      .addSelect(['product.id', 'product.nome', 'campaing.dtcadastro']);
     queryBuilder
       .leftJoinAndSelect('images.operator', 'operator')
       .addSelect(['operator.id', 'operator.nome', 'operator.dtcadastro']);
@@ -96,7 +96,7 @@ export class ImagesRepository implements TodoRepository<ImagesEntity> {
       'images.adesao',
       'campaing',
       'operator',
-      'category',
+      'product',
       'images.dtcadastro',
     ]);
     queryBuilder.execute();

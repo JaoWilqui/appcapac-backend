@@ -90,7 +90,7 @@ export class FilesController {
     const uploadFile: CreateFileDTO = {
       operator: fileInfo.operator,
       nome: fileInfo.nome,
-      category: fileInfo.category,
+      product: fileInfo.product,
       tipo: fileInfo.tipo,
       adesao: fileInfo.adesao,
       uf: fileInfo.uf,
@@ -127,7 +127,7 @@ export class FilesController {
       adesao: fileInfo.adesao,
       uf: fileInfo.uf,
       tipo: fileInfo.tipo,
-      category: fileInfo.category,
+      product: fileInfo.product,
       descricao: fileInfo.descricao,
       fileRelativePath: fileName,
     };

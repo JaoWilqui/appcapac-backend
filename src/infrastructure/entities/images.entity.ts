@@ -8,8 +8,8 @@ import {
 } from 'typeorm';
 import { AdhesionEnum } from '../enum/adhesion.enum';
 import { CampaingEntity } from './campaing.entity';
-import { CategoryEntity } from './category.entity';
 import { OperatorsEntity } from './operators.entity';
+import { ProductEntity } from './product.entity';
 
 @Entity({ name: 'imagens', synchronize: false })
 export class ImagesEntity {
@@ -25,12 +25,12 @@ export class ImagesEntity {
   @Column({ type: 'varchar', length: 300, nullable: false })
   imageRelativePath: string;
 
-  @ManyToOne(() => CategoryEntity, category => category.images)
+  @ManyToOne(() => ProductEntity, product => product.images)
   @JoinColumn({
-    name: 'id_categoria',
+    name: 'id_produto',
     referencedColumnName: 'id',
   })
-  category: CategoryEntity;
+  product: ProductEntity;
 
   @ManyToOne(() => OperatorsEntity, operators => operators.images)
   @JoinColumn({

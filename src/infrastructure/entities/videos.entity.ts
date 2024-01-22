@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { CampaingEntity } from './campaing.entity';
-import { CategoryEntity } from './category.entity';
+import { ProductEntity } from './product.entity';
 
 @Entity({ name: 'videos', synchronize: false })
 export class VideosEntity {
@@ -23,12 +23,12 @@ export class VideosEntity {
   @Column({ type: 'varchar', length: 150, nullable: false })
   nome: string;
 
-  @ManyToOne(() => CategoryEntity, category => category.videos)
+  @ManyToOne(() => ProductEntity, product => product.videos)
   @JoinColumn({
-    name: 'id_categoria',
+    name: 'id_produto',
     referencedColumnName: 'id',
   })
-  category: CategoryEntity;
+  product: ProductEntity;
 
   @ManyToOne(() => CampaingEntity, campaing => campaing)
   @JoinColumn({

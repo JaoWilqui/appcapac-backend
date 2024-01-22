@@ -1,6 +1,6 @@
 import { ICampaing } from 'src/domain/entities/campaing.entity';
-import { ICategory } from 'src/domain/entities/category.entity';
 import { IOperator } from 'src/domain/entities/operators.entity';
+import { IProduct } from 'src/domain/entities/product.entity';
 import { AdhesionEnum } from 'src/infrastructure/enum/adhesion.enum';
 
 export class IUpdateImages {
@@ -18,7 +18,7 @@ export class IUpdateImages {
 
   operator: IOperator;
 
-  category: ICategory;
+  product: IProduct;
 
   campaing: ICampaing;
 }

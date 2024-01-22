@@ -1,7 +1,7 @@
 import { IsNotEmpty } from 'class-validator';
-import { IUpdateCategory } from 'src/domain/dto/category/update_category.dto';
+import { IUpdateProduct } from 'src/domain/dto/product/update_product.dto';
 
-export class UpdateCategoryDTO implements IUpdateCategory {
+export class UpdateProductDTO implements IUpdateProduct {
   @IsNotEmpty({ message: 'O campo ID é obrigatório' })
   id: number;
 

@@ -1,7 +1,7 @@
 import { AdhesionEnum } from 'src/infrastructure/enum/adhesion.enum';
 import { ICampaing } from './campaing.entity';
-import { ICategory } from './category.entity';
 import { IOperator } from './operators.entity';
+import { IProduct } from './product.entity';
 
 export class IImages {
   id?: number;
@@ -16,7 +16,7 @@ export class IImages {
 
   adesao: AdhesionEnum;
 
-  category: ICategory;
+  product: IProduct;
 
   operator: IOperator;
 

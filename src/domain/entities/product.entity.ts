@@ -2,7 +2,7 @@ import { IFiles } from './files.entity';
 import { IImages } from './images.entity';
 import { IVideos } from './videos.entity';
 
-export class ICategory {
+export class IProduct {
   id?: number;
 
   nome: string;

@@ -1,6 +1,6 @@
 import { AdhesionEnum } from 'src/infrastructure/enum/adhesion.enum';
-import { ICategory } from './category.entity';
 import { IOperator } from './operators.entity';
+import { IProduct } from './product.entity';
 
 export class IFiles {
   id?: number;
@@ -19,7 +19,7 @@ export class IFiles {
 
   operator: IOperator;
 
-  category: ICategory;
+  product: IProduct;
 
   tipo: string;
 

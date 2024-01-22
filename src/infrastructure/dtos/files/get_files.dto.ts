@@ -1,6 +1,6 @@
-import { ICategory } from 'src/domain/entities/category.entity';
 import { IFiles } from 'src/domain/entities/files.entity';
 import { IOperator } from 'src/domain/entities/operators.entity';
+import { IProduct } from 'src/domain/entities/product.entity';
 import { AdhesionEnum } from 'src/infrastructure/enum/adhesion.enum';
 
 export class GetFilesDTO implements IFiles {
@@ -21,7 +21,7 @@ export class GetFilesDTO implements IFiles {
 
   operator: IOperator;
 
-  category: ICategory;
+  product: IProduct;
 
   dtcadastro?: Date;
 }

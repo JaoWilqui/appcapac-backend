@@ -1,8 +1,8 @@
 import { IsNotEmpty } from 'class-validator';
 import { ICreateImages } from 'src/domain/dto/images/create_images.dto';
 import { ICampaing } from 'src/domain/entities/campaing.entity';
-import { ICategory } from 'src/domain/entities/category.entity';
 import { IOperator } from 'src/domain/entities/operators.entity';
+import { IProduct } from 'src/domain/entities/product.entity';
 import { AdhesionEnum } from 'src/infrastructure/enum/adhesion.enum';
 
 export class CreateImagesDTO implements ICreateImages {
@@ -24,8 +24,8 @@ export class CreateImagesDTO implements ICreateImages {
   @IsNotEmpty({ message: 'O campo operator é obrigatório' })
   operator: IOperator;
 
-  @IsNotEmpty({ message: 'O campo category é obrigatório' })
-  category: ICategory;
+  @IsNotEmpty({ message: 'O campo product é obrigatório' })
+  product: IProduct;
   @IsNotEmpty({ message: 'O campo campaing é obrigatório' })
   campaing: ICampaing;
 }

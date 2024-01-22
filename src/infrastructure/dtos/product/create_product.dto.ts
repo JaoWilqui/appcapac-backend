@@ -1,7 +1,7 @@
 import { IsNotEmpty } from 'class-validator';
-import { ICreateCategory } from 'src/domain/dto/category/create_category.dto';
+import { ICreateProduct } from 'src/domain/dto/product/create_product.dto';
 
-export class CreateCateogryDTO implements ICreateCategory {
+export class CreateProductDTO implements ICreateProduct {
   @IsNotEmpty({ message: 'O campo nome é obrigatório' })
   nome: string;
 

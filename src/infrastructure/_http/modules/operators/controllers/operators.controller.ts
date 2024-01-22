@@ -8,10 +8,10 @@ import { IOperator } from 'src/domain/entities/operators.entity';
 import { Permissions } from 'src/infrastructure/_http/decorators/perms.decorator';
 import { ModulesGuard } from 'src/infrastructure/_http/guards/modules.guard';
 import { PermsGuard } from 'src/infrastructure/_http/guards/perms.guard';
-import { CreateCateogryDTO } from 'src/infrastructure/dtos/category/create_category.dto';
 import { GetOperatorDTO } from 'src/infrastructure/dtos/operators/get_operator.dto';
 import { UpdateOperatorDTO } from 'src/infrastructure/dtos/operators/update_operator.dto';
 import { PaginationDTO } from 'src/infrastructure/dtos/pagination.dto';
+import { CreateProductDTO } from 'src/infrastructure/dtos/product/create_product.dto';
 import { Perms } from 'src/infrastructure/enum/permissions.enum';
 import { AuthGuard } from './../../../guards/auth.guard';
 
@@ -40,7 +40,7 @@ export class OperatorsController {
 
   @Permissions(Perms.admin)
   @Post('register')
-  async registerOperator(@Body() createOperatorDTO: CreateCateogryDTO) {
+  async registerOperator(@Body() createOperatorDTO: CreateProductDTO) {
     return await this.createOperatorUsecase.insertOperator(createOperatorDTO);
   }
 
