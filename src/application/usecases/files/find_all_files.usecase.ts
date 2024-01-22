@@ -9,7 +9,13 @@ export class FindAllFileUsecase implements IFindAllFileUsecase {
 
   async findAllFile(params: IPaginationDTO<IFiles>) {
     try {
-      const files = await this.filesRepository.findAll(params);
+      let files = await this.filesRepository.findAll(params);
+      files = {
+        ...files,
+        data: files.data.map(file => ({
+          ...file,
+        })),
+      };
       return files;
     } catch (error) {
       throw new AppError('Ocorreu um erro ao tentar retornar os arquivos!', 400);

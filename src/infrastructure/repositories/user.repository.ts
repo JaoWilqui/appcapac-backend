@@ -14,6 +14,10 @@ export class UserRepository implements TodoRepository<UserEntity> {
     private readonly userEntityRepository: Repository<UserEntity>,
   ) {}
 
+  async updatePassword(id: number, senha: string): Promise<void> {
+    this.userEntityRepository.update(id, { senha: senha });
+  }
+
   async findByCpf(cpf: string): Promise<UserEntity> {
     const queryBuilder = this.userEntityRepository.createQueryBuilder('user');
     queryBuilder
@@ -72,6 +76,7 @@ export class UserRepository implements TodoRepository<UserEntity> {
         nome: user.nome,
         perms: user.perms,
         senha: user.senha,
+        cpf: user.cpf,
         sobrenome: user.sobrenome,
       })
       .where('id = :id', { id: id })

@@ -41,7 +41,14 @@ export class UpdateUserUsecase implements IUpdateUserUsecase {
       interceptUser.senha = existingUser.senha;
     }
 
+    if (user.perms) {
+      interceptUser.perms = user.perms;
+    } else {
+      interceptUser.perms = existingUser.perms;
+    }
+
     await this.userRepository.updateContent(id, interceptUser);
-    return { status: 200, message: 'Usuário atualziado com sucesso!' };
+
+    return { status: 200, message: 'Usuário atualizado com sucesso!' };
   }
 }

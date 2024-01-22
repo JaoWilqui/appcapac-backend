@@ -9,7 +9,6 @@ import {
   Req,
   StreamableFile,
   UploadedFile,
-  UploadedFiles,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -58,12 +57,6 @@ export class FilesController {
   @Get('')
   async getAllfiles(@Query() params: PaginationDTO<GetFilesDTO> & IFiles) {
     let files = await this.findAllFileUsecase.findAllFile(params);
-    files = {
-      ...files,
-      data: files.data.map(file => ({
-        ...file,
-      })),
-    };
 
     return files;
   }
@@ -100,10 +93,11 @@ export class FilesController {
     return await this.createFileUsecase.insertFile(uploadFile);
   }
 
+  @Permissions(Perms.admin)
+  @UseInterceptors(FileInterceptor('file'))
   @Put('upload/:id')
-  @UseInterceptors(FileInterceptor('files'))
   async updateUpload(
-    @UploadedFiles() file: Express.Multer.File,
+    @UploadedFile() file: Express.Multer.File,
     @Req() req: Request,
     @Param('id') id: number,
   ) {

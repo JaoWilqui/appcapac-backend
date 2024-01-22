@@ -7,6 +7,10 @@ export class FindImagesByIdUserUsecase implements IFindImagesByIdUserUsecase {
   async findImagesById(id: number) {
     try {
       const image = await this.imagesRepository.findById(id);
+      if (image) {
+        image.imageRelativePath = process.env.APP_URL + '/images/view/' + image.imageRelativePath;
+      }
+
       return image;
     } catch (error) {
       throw new AppError('Ocorreu um erro ao tentar retornar a imagem!', 400);

@@ -49,22 +49,13 @@ export class ImagesController {
   async getimageById(@Param('id') id: number) {
     const image = await this.findImagesByIdimageUsecase.findImagesById(id);
 
-    image.imageRelativePath = process.env.APP_URL + '/images/view/' + image.imageRelativePath;
-
     return image;
   }
 
   @Permissions(Perms.admin, Perms.user)
   @Get('')
   async getAllimages(@Query() params: PaginationDTO<GetImagesDTO> & IImages) {
-    let images = await this.findAllImagesUsecase.findAllImages(params);
-    images = {
-      ...images,
-      data: images.data.map(img => ({
-        ...img,
-        imageRelativePath: process.env.APP_URL + '/images/view/' + img.imageRelativePath,
-      })),
-    };
+    const images = await this.findAllImagesUsecase.findAllImages(params);
 
     return images;
   }

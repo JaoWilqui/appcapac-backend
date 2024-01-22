@@ -25,14 +25,20 @@ import { UserController } from './controllers/user.controller';
 
     {
       provide: CreateUserUsecase,
-      useFactory: (userRepository: IUserRepository, bcryptService: IBcryptService, modulesRepository: IModulesRepository) =>
-        new CreateUserUsecase(userRepository, bcryptService, modulesRepository),
+      useFactory: (
+        userRepository: IUserRepository,
+        bcryptService: IBcryptService,
+        modulesRepository: IModulesRepository,
+      ) => new CreateUserUsecase(userRepository, bcryptService, modulesRepository),
       inject: [UserRepository, BcryptService, ModulesRepository],
     },
     {
       provide: UpdateUserUsecase,
-      useFactory: (userRepository: IUserRepository, bcryptService: IBcryptService, modulesRepository: IModulesRepository) =>
-        new UpdateUserUsecase(userRepository, bcryptService, modulesRepository),
+      useFactory: (
+        userRepository: IUserRepository,
+        bcryptService: IBcryptService,
+        modulesRepository: IModulesRepository,
+      ) => new UpdateUserUsecase(userRepository, bcryptService, modulesRepository),
       inject: [UserRepository, BcryptService, ModulesRepository],
     },
     {

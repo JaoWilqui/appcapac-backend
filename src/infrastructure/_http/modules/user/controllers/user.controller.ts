@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { DeleteUserUsecase } from 'src/application/usecases/user/delete_user.usecase';
 import { FindAllUsersUsecase } from 'src/application/usecases/user/find_all_users.usecase';
+import { IUserProfile } from 'src/domain/dto/user/user_profile.dto';
 import { IUser } from 'src/domain/entities/user.entity';
 import { Permissions } from 'src/infrastructure/_http/decorators/perms.decorator';
 import { User } from 'src/infrastructure/_http/decorators/user.decorator';
@@ -29,7 +30,14 @@ export class UserController {
 
   @Get('profile')
   async getProfile(@User() user) {
-    return await user;
+    let userProfile: IUserProfile;
+    const registeredUser = await this.findUserByIdUsecase.findUserById(user.id);
+    userProfile = {
+      id: registeredUser.id,
+      dtcadastro: registeredUser.dtcadastro,
+      ...registeredUser,
+    };
+    return userProfile;
   }
 
   @Permissions(Perms.admin, Perms.user)

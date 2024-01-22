@@ -2,6 +2,7 @@ import { IPaginationDTO } from '../dto/pagination.dto';
 import { IUser } from '../entities/user.entity';
 
 export interface IUserRepository {
+  updatePassword(id: number, senha: string): Promise<void>;
   findByCpf(cpf: string): Promise<IUser>;
   findByEmail(email: string): Promise<IUser>;
   updateContent(id: number, user: IUser): Promise<void>;

@@ -8,7 +8,18 @@ export class FindAllImagesUsecase implements IFindAllImagesUsecase {
   constructor(private imagesRepository: IImagesRepository) {}
   async findAllImages(params: IPaginationDTO<IImages>) {
     try {
-      const images = await this.imagesRepository.findAll(params);
+      let images = await this.imagesRepository.findAll(params);
+
+      if (images.data.length > 0) {
+        images = {
+          ...images,
+          data: images.data.map(img => ({
+            ...img,
+            imageRelativePath: process.env.APP_URL + '/images/view/' + img.imageRelativePath,
+          })),
+        };
+      }
+
       return images;
     } catch (error) {
       throw new AppError('Ocorreu um erro ao tentar retornar as imagens!', 400);
