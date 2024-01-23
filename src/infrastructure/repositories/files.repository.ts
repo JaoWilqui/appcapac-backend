@@ -37,6 +37,30 @@ export class FilesRepository implements TodoRepository<FilesEntity> {
       });
     }
 
+    if (params?.operator) {
+      queryBuilder.andWhere(`operator.id = :operator`, { operator: params.operator });
+    }
+
+    if (params?.product) {
+      queryBuilder.andWhere(`product.id = :product`, { product: params.product });
+    }
+
+    if (params?.adesao) {
+      queryBuilder.andWhere(`files.adesao = :adesao`, {
+        adesao: params.adesao,
+      });
+    }
+
+    if (params?.uf) {
+      queryBuilder.andWhere(`files.uf = :uf`, {
+        uf: params.uf,
+      });
+    }
+
+    if (params?.cidade) {
+      queryBuilder.andWhere(`files.cidade like :cidade`, { cidade: `%${params.cidade}%` });
+    }
+
     if (params?.nome) {
       queryBuilder.andWhere(`files.nome like :nome`, { nome: `%${params.descricao}%` });
     }
@@ -84,7 +108,7 @@ export class FilesRepository implements TodoRepository<FilesEntity> {
     const queryBuilder = this.filesEntityRepository.createQueryBuilder('files');
     queryBuilder
       .leftJoinAndSelect('files.product', 'product')
-      .addSelect(['product.id', 'product.nome', 'campaing.dtcadastro']);
+      .addSelect(['product.id', 'product.nome', 'product.dtcadastro']);
     queryBuilder.leftJoinAndSelect('files.operator', 'operator');
 
     queryBuilder.andWhere('files.id=:id', { id: id });

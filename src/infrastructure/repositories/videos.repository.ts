@@ -37,6 +37,26 @@ export class VideosRepository implements TodoRepository<VideosEntity> {
       });
     }
 
+    if (params?.adesao) {
+      queryBuilder.andWhere(`videos.adesao = :adesao`, {
+        adesao: params.adesao,
+      });
+    }
+
+    if (params?.uf) {
+      queryBuilder.andWhere(`videos.uf = :uf`, {
+        uf: params.uf,
+      });
+    }
+
+    if (params?.cidade) {
+      queryBuilder.andWhere(`videos.cidade like :cidade`, { cidade: `%${params.cidade}%` });
+    }
+
+    if (params?.product) {
+      queryBuilder.andWhere(`product.id = :product`, { product: params.product });
+    }
+
     if (params?.nome) {
       queryBuilder.andWhere(`videos.nome like :nome`, { nome: `%${params.descricao}%` });
     }
@@ -46,7 +66,7 @@ export class VideosRepository implements TodoRepository<VideosEntity> {
     }
 
     queryBuilder.leftJoinAndSelect('videos.product', 'product');
-    queryBuilder.leftJoinAndSelect('videos.campaing', 'campaing');
+    // queryBuilder.leftJoinAndSelect('videos.campaing', 'campaing');
     queryBuilder.select([
       'videos.id',
       'videos.nome',
@@ -57,7 +77,7 @@ export class VideosRepository implements TodoRepository<VideosEntity> {
 
       'videos.cidade',
 
-      'campaing',
+      // 'campaing',
       'product',
       'videos.dtcadastro',
     ]);
@@ -76,12 +96,12 @@ export class VideosRepository implements TodoRepository<VideosEntity> {
   }
   async findById(id: number): Promise<VideosEntity> {
     const queryBuilder = this.videosEntityRepository.createQueryBuilder('videos');
-    queryBuilder
-      .leftJoinAndSelect('videos.campaing', 'campaing')
-      .addSelect(['campaing.id', 'campaing.nome', 'campaing.dtcadastro']);
+    // queryBuilder
+    //   .leftJoinAndSelect('videos.campaing', 'campaing')
+    //   .addSelect(['campaing.id', 'campaing.nome', 'campaing.dtcadastro']);
     queryBuilder
       .leftJoinAndSelect('videos.product', 'product')
-      .addSelect(['product.id', 'product.nome', 'campaing.dtcadastro']);
+      .addSelect(['product.id', 'product.nome', 'product.dtcadastro']);
     queryBuilder.andWhere('videos.id=:id', { id: id });
     queryBuilder.select([
       'videos.id',
@@ -92,7 +112,7 @@ export class VideosRepository implements TodoRepository<VideosEntity> {
 
       'videos.cidade',
       'videos.descricao',
-      'campaing',
+      // 'campaing',
       'product',
       'videos.dtcadastro',
     ]);

@@ -1,4 +1,3 @@
-import { ICampaing } from 'src/domain/entities/campaing.entity';
 import { IImages } from 'src/domain/entities/images.entity';
 import { IOperator } from 'src/domain/entities/operators.entity';
 import { IProduct } from 'src/domain/entities/product.entity';
@@ -23,7 +22,7 @@ export class GetImagesDTO implements IImages {
 
   product: IProduct;
 
-  campaing: ICampaing;
+  // campaing: ICampaing;
 
   dtcadastro?: Date;
 }

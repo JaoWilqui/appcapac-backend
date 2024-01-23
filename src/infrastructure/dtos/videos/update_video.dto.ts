@@ -1,6 +1,5 @@
 import { IsNotEmpty } from 'class-validator';
 import { IUpdateVideos } from 'src/domain/dto/videos/update_videos.dto';
-import { ICampaing } from 'src/domain/entities/campaing.entity';
 import { IProduct } from 'src/domain/entities/product.entity';
 import { AdhesionEnum } from 'src/infrastructure/enum/adhesion.enum';
 
@@ -21,6 +20,6 @@ export class UpdateVideoDTO implements IUpdateVideos {
   nome: string;
   @IsNotEmpty({ message: 'O campo product é obrigatório' })
   product: IProduct;
-  @IsNotEmpty({ message: 'O campo campaing é obrigatório' })
-  campaing: ICampaing;
+  // @IsNotEmpty({ message: 'O campo campaing é obrigatório' })
+  // campaing: ICampaing;
 }

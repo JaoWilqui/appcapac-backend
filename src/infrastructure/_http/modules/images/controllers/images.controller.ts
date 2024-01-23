@@ -88,7 +88,7 @@ export class ImagesController {
       cidade: imageInfo.cidade,
 
       uf: imageInfo.uf,
-      campaing: imageInfo.campaing,
+      // campaing: imageInfo.campaing,
       descricao: imageInfo.descricao,
       imageRelativePath: imageName,
     };
@@ -125,7 +125,7 @@ export class ImagesController {
       cidade: imageInfo.cidade,
       nome: imageInfo.nome,
       product: imageInfo.product,
-      campaing: imageInfo.campaing,
+      // campaing: imageInfo.campaing,
       descricao: imageInfo.descricao,
       imageRelativePath: imageName,
     };

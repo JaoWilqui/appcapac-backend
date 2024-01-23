@@ -1,4 +1,3 @@
-import { ICampaing } from 'src/domain/entities/campaing.entity';
 import { IProduct } from 'src/domain/entities/product.entity';
 import { AdhesionEnum } from 'src/infrastructure/enum/adhesion.enum';
 
@@ -19,5 +18,5 @@ export class IUpdateVideos {
 
   product: IProduct;
 
-  campaing: ICampaing;
+  // campaing: ICampaing;
 }

@@ -38,6 +38,30 @@ export class ImagesRepository implements TodoRepository<ImagesEntity> {
       });
     }
 
+    if (params?.adesao) {
+      queryBuilder.andWhere(`images.adesao = :adesao`, {
+        adesao: params.adesao,
+      });
+    }
+
+    if (params?.uf) {
+      queryBuilder.andWhere(`images.uf = :uf`, {
+        uf: params.uf,
+      });
+    }
+
+    if (params?.cidade) {
+      queryBuilder.andWhere(`images.cidade like :cidade`, { cidade: `%${params.cidade}%` });
+    }
+
+    if (params?.operator) {
+      queryBuilder.andWhere(`operator.id = :operator`, { operator: params.operator });
+    }
+
+    if (params?.product) {
+      queryBuilder.andWhere(`product.id = :product`, { product: params.product });
+    }
+
     if (params?.nome) {
       queryBuilder.andWhere(`images.nome like :nome`, { nome: `%${params.descricao}%` });
     }
@@ -47,7 +71,6 @@ export class ImagesRepository implements TodoRepository<ImagesEntity> {
     }
 
     queryBuilder.leftJoinAndSelect('images.product', 'product');
-    queryBuilder.leftJoinAndSelect('images.campaing', 'campaing');
     queryBuilder.leftJoinAndSelect('images.operator', 'operator');
     queryBuilder.select([
       'images.id',
@@ -57,7 +80,6 @@ export class ImagesRepository implements TodoRepository<ImagesEntity> {
       'images.uf',
       'images.adesao',
       'images.cidade',
-      'campaing',
       'product',
       'operator',
       'images.dtcadastro',
@@ -78,12 +100,12 @@ export class ImagesRepository implements TodoRepository<ImagesEntity> {
   }
   async findById(id: number): Promise<ImagesEntity> {
     const queryBuilder = this.imagesEntityRepository.createQueryBuilder('images');
-    queryBuilder
-      .leftJoinAndSelect('images.campaing', 'campaing')
-      .addSelect(['campaing.id', 'campaing.nome', 'campaing.dtcadastro']);
+    // queryBuilder
+    //   .leftJoinAndSelect('images.campaing', 'campaing')
+    //   .addSelect(['campaing.id', 'campaing.nome', 'campaing.dtcadastro']);
     queryBuilder
       .leftJoinAndSelect('images.product', 'product')
-      .addSelect(['product.id', 'product.nome', 'campaing.dtcadastro']);
+      .addSelect(['product.id', 'product.nome', 'product.dtcadastro']);
     queryBuilder
       .leftJoinAndSelect('images.operator', 'operator')
       .addSelect(['operator.id', 'operator.nome', 'operator.dtcadastro']);

@@ -1,5 +1,4 @@
 import { AdhesionEnum } from 'src/infrastructure/enum/adhesion.enum';
-import { ICampaing } from './campaing.entity';
 import { IProduct } from './product.entity';
 
 export class IVideos {
@@ -20,7 +19,7 @@ export class IVideos {
 
   adesao: AdhesionEnum;
 
-  campaing: ICampaing;
+  // campaing: ICampaing;
 
   dtcadastro?: Date;
 }
