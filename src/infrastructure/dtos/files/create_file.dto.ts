@@ -5,6 +5,9 @@ import { IProduct } from 'src/domain/entities/product.entity';
 import { AdhesionEnum } from 'src/infrastructure/enum/adhesion.enum';
 
 export class CreateFileDTO implements ICreateFiles {
+  @IsNotEmpty({ message: 'O campo cidade é obrigatório' })
+  cidade: string;
+
   @IsNotEmpty({ message: 'O campo fileRelativePath é obrigatório' })
   fileRelativePath: string;
 

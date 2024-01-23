@@ -14,6 +14,8 @@ export class ICreateImages {
 
   adesao: AdhesionEnum;
 
+  cidade: string;
+
   operator: IOperator;
 
   product: IProduct;

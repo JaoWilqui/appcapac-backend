@@ -52,6 +52,11 @@ export class VideosRepository implements TodoRepository<VideosEntity> {
       'videos.nome',
       'videos.descricao',
       'videos.link',
+      'videos.uf',
+      'videos.adesao',
+
+      'videos.cidade',
+
       'campaing',
       'product',
       'videos.dtcadastro',
@@ -82,6 +87,10 @@ export class VideosRepository implements TodoRepository<VideosEntity> {
       'videos.id',
       'videos.nome',
       'videos.link',
+      'videos.uf',
+      'videos.adesao',
+
+      'videos.cidade',
       'videos.descricao',
       'campaing',
       'product',

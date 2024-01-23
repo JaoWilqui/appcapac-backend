@@ -16,6 +16,8 @@ export class IUpdateImages {
 
   adesao: AdhesionEnum;
 
+  cidade: string;
+
   operator: IOperator;
 
   product: IProduct;

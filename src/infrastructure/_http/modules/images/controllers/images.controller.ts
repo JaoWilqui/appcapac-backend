@@ -85,6 +85,8 @@ export class ImagesController {
       operator: imageInfo.operator,
       product: imageInfo.product,
       adesao: imageInfo.adesao,
+      cidade: imageInfo.cidade,
+
       uf: imageInfo.uf,
       campaing: imageInfo.campaing,
       descricao: imageInfo.descricao,
@@ -120,6 +122,7 @@ export class ImagesController {
       operator: imageInfo.operator,
       adesao: imageInfo.adesao,
       uf: imageInfo.uf,
+      cidade: imageInfo.cidade,
       nome: imageInfo.nome,
       product: imageInfo.product,
       campaing: imageInfo.campaing,

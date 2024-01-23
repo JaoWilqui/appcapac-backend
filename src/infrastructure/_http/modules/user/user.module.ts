@@ -4,6 +4,7 @@ import { CreateUserUsecase } from 'src/application/usecases/user/create_user.use
 import { DeleteUserUsecase } from 'src/application/usecases/user/delete_user.usecase';
 import { FindAllUsersUsecase } from 'src/application/usecases/user/find_all_users.usecase';
 import { FindUserByIdUsecase } from 'src/application/usecases/user/find_user_by_id.usecase';
+import { UpdatePasswordUsecase } from 'src/application/usecases/user/update_password.usecase';
 import { UpdateUserUsecase } from 'src/application/usecases/user/update_user.usecase';
 import { IModulesRepository } from 'src/domain/repositories/modules.repository';
 import { IUserRepository } from 'src/domain/repositories/user.repository';
@@ -31,6 +32,13 @@ import { UserController } from './controllers/user.controller';
         modulesRepository: IModulesRepository,
       ) => new CreateUserUsecase(userRepository, bcryptService, modulesRepository),
       inject: [UserRepository, BcryptService, ModulesRepository],
+    },
+
+    {
+      provide: UpdatePasswordUsecase,
+      useFactory: (userRepository: IUserRepository, bcryptService: IBcryptService) =>
+        new UpdatePasswordUsecase(userRepository, bcryptService),
+      inject: [UserRepository, BcryptService],
     },
     {
       provide: UpdateUserUsecase,

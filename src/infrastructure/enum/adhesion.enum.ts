@@ -1,4 +1,4 @@
 export enum AdhesionEnum {
-  pf = 'PF',
-  pme = 'PME',
+  pf = 'PF/Adesão',
+  pme = 'PME/Empresarial',
 }

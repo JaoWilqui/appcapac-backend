@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { DeleteUserUsecase } from 'src/application/usecases/user/delete_user.usecase';
 import { FindAllUsersUsecase } from 'src/application/usecases/user/find_all_users.usecase';
+import { UpdatePasswordUsecase } from 'src/application/usecases/user/update_password.usecase';
 import { IUserProfile } from 'src/domain/dto/user/user_profile.dto';
 import { IUser } from 'src/domain/entities/user.entity';
 import { Permissions } from 'src/infrastructure/_http/decorators/perms.decorator';
@@ -26,6 +27,7 @@ export class UserController {
     private deleteUserUsecase: DeleteUserUsecase,
     private findAllUsersUsecase: FindAllUsersUsecase,
     private findUserByIdUsecase: FindUserByIdUsecase,
+    private updatePasswordUsecase: UpdatePasswordUsecase,
   ) {}
 
   @Get('profile')
@@ -56,6 +58,19 @@ export class UserController {
   @Post('register')
   async registerUser(@Body() createUserDTO: CreateUserDTO) {
     return await this.createUserUsecase.insertUser(createUserDTO);
+  }
+
+  @Permissions(Perms.admin, Perms.user)
+  @Put('change-password/:id')
+  async updatePassword(
+    @Param('id') id: number,
+    @Body() changePasswordDTO: { newPassword: string; confirmPassword: string },
+  ) {
+    return await this.updatePasswordUsecase.updatePassword(
+      id,
+      changePasswordDTO.newPassword,
+      changePasswordDTO.confirmPassword,
+    );
   }
 
   @Permissions(Perms.admin)

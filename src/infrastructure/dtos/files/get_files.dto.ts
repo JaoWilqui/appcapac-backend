@@ -4,6 +4,8 @@ import { IProduct } from 'src/domain/entities/product.entity';
 import { AdhesionEnum } from 'src/infrastructure/enum/adhesion.enum';
 
 export class GetFilesDTO implements IFiles {
+  cidade: string;
+
   deletado?: Date;
   id: number;
 

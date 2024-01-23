@@ -13,6 +13,8 @@ export class ICreateFiles {
 
   adesao: AdhesionEnum;
 
+  cidade: string;
+
   operator: IOperator;
 
   product: IProduct;

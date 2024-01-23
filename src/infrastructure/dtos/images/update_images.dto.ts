@@ -10,6 +10,8 @@ export class UpdateImagesDTO implements IUpdateImages {
   id: number;
   @IsNotEmpty({ message: 'O campo nome é obrigatório' })
   nome: string;
+  @IsNotEmpty({ message: 'O campo cidade é obrigatório' })
+  cidade: string;
 
   @IsNotEmpty({ message: 'O campo uf é obrigatório' })
   uf: string;

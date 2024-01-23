@@ -1,5 +1,6 @@
 import { ICampaing } from 'src/domain/entities/campaing.entity';
 import { IProduct } from 'src/domain/entities/product.entity';
+import { AdhesionEnum } from 'src/infrastructure/enum/adhesion.enum';
 
 export class ICreateVideos {
   descricao: string;
@@ -9,6 +10,12 @@ export class ICreateVideos {
   nome: string;
 
   product: IProduct;
+
+  uf: string;
+
+  adesao: AdhesionEnum;
+
+  cidade: string;
 
   campaing: ICampaing;
 }

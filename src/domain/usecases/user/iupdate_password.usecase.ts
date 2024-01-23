@@ -1,3 +1,3 @@
 export interface IUpdatePasswordUsecase {
-  updatePassword(id: number, senha: string): Promise<any>;
+  updatePassword(id: number, password: string, confirmPassword: string): Promise<any>;
 }

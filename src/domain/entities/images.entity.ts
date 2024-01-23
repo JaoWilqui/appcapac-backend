@@ -18,6 +18,8 @@ export class IImages {
 
   product: IProduct;
 
+  cidade: string;
+
   operator: IOperator;
 
   campaing: ICampaing;

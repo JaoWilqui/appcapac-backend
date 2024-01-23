@@ -6,6 +6,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { AdhesionEnum } from '../enum/adhesion.enum';
 import { CampaingEntity } from './campaing.entity';
 import { ProductEntity } from './product.entity';
 
@@ -39,6 +40,15 @@ export class VideosEntity {
 
   @Column({ type: 'date', nullable: false })
   dtcadastro: Date;
+
+  @Column({ type: 'varchar', length: 100 })
+  cidade: string;
+
+  @Column({ type: 'enum', enum: AdhesionEnum, nullable: false })
+  adesao: AdhesionEnum;
+
+  @Column({ type: 'varchar', length: 2 })
+  uf: string;
 
   @DeleteDateColumn({ name: 'deletado' })
   deletado: Date;

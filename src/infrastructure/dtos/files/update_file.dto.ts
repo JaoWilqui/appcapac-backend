@@ -6,6 +6,8 @@ import { AdhesionEnum } from 'src/infrastructure/enum/adhesion.enum';
 
 export class UpdateFileDTO implements IUpdateFiles {
   id: number;
+  @IsNotEmpty({ message: 'O campo cidade é obrigatório' })
+  cidade: string;
 
   @IsNotEmpty({ message: 'O campo fileRelativePath é obrigatório' })
   fileRelativePath: string;

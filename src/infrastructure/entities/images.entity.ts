@@ -46,6 +46,9 @@ export class ImagesEntity {
   })
   campaing: CampaingEntity;
 
+  @Column({ type: 'varchar', length: 100 })
+  cidade: string;
+
   @Column({ type: 'enum', enum: AdhesionEnum, nullable: false })
   adesao: AdhesionEnum;
 

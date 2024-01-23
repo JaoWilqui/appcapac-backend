@@ -14,6 +14,7 @@ export class IFiles {
   fileRelativePath: string;
 
   uf: string;
+  cidade: string;
 
   adesao: AdhesionEnum;
 

@@ -6,6 +6,8 @@ import { IProduct } from 'src/domain/entities/product.entity';
 import { AdhesionEnum } from 'src/infrastructure/enum/adhesion.enum';
 
 export class CreateImagesDTO implements ICreateImages {
+  @IsNotEmpty({ message: 'O campo cidade é obrigatório' })
+  cidade: string;
   @IsNotEmpty({ message: 'O campo nome é obrigatório' })
   nome: string;
 

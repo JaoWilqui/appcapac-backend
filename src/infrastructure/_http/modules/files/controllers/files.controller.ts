@@ -85,6 +85,8 @@ export class FilesController {
       nome: fileInfo.nome,
       product: fileInfo.product,
       tipo: fileInfo.tipo,
+      cidade: fileInfo.cidade,
+
       adesao: fileInfo.adesao,
       uf: fileInfo.uf,
       descricao: fileInfo.descricao,
@@ -119,6 +121,8 @@ export class FilesController {
       operator: fileInfo.operator,
       nome: fileInfo.nome,
       adesao: fileInfo.adesao,
+      cidade: fileInfo.cidade,
+
       uf: fileInfo.uf,
       tipo: fileInfo.tipo,
       product: fileInfo.product,

@@ -5,6 +5,8 @@ import { IProduct } from 'src/domain/entities/product.entity';
 import { AdhesionEnum } from 'src/infrastructure/enum/adhesion.enum';
 
 export class GetImagesDTO implements IImages {
+  cidade: string;
+  deletado?: Date;
   id?: number;
 
   nome: string;

@@ -59,6 +59,8 @@ export class FilesRepository implements TodoRepository<FilesEntity> {
       'files.fileRelativePath',
       'files.descricao',
       'files.adesao',
+      'files.cidade',
+
       'files.uf',
       'product',
       'operator',
@@ -94,6 +96,8 @@ export class FilesRepository implements TodoRepository<FilesEntity> {
       'files.fileRelativePath',
       'files.descricao',
       'files.adesao',
+      'files.cidade',
+
       'files.uf',
       'product',
       'operator',

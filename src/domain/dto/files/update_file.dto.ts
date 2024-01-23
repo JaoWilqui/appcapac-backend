@@ -14,6 +14,8 @@ export class IUpdateFiles {
 
   adesao: AdhesionEnum;
 
+  cidade: string;
+
   operator: IOperator;
 
   product: IProduct;
