@@ -118,7 +118,6 @@ export class ImagesRepository implements TodoRepository<ImagesEntity> {
       'images.uf',
       'images.cidade',
       'images.adesao',
-      'campaing',
       'operator',
       'product',
       'images.dtcadastro',

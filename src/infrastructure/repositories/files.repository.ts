@@ -121,7 +121,6 @@ export class FilesRepository implements TodoRepository<FilesEntity> {
       'files.descricao',
       'files.adesao',
       'files.cidade',
-
       'files.uf',
       'product',
       'operator',

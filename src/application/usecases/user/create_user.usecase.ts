@@ -17,12 +17,14 @@ export class CreateUserUsecase implements ICreateUserUsecase {
   async insertUser(user: ICreatetUser) {
     const existingUser = await this.userRepository.findByCpf(user.cpf);
 
-    if (existingUser.cpf === user.cpf) {
-      throw new AppError('CPF já existente!', 401);
-    }
+    if (existingUser) {
+      if (existingUser.cpf === user.cpf) {
+        throw new AppError('CPF já existente!', 400);
+      }
 
-    if (existingUser.email === user.email) {
-      throw new AppError('E-mail já existente!', 401);
+      if (existingUser.email === user.email) {
+        throw new AppError('E-mail já existente!', 400);
+      }
     }
 
     const interceptUser: IUser = { ...user, modules: [] };
