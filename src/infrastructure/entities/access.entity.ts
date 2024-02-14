@@ -2,7 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 't
 import { ModulesEntity } from './modules.entity';
 import { UserEntity } from './user.entity';
 
-@Entity({ name: 'acesso', synchronize: false })
+@Entity({ name: 'acessos', synchronize: false })
 export class AccessEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -16,11 +16,11 @@ export class AccessEntity {
 
   @ManyToOne(() => ModulesEntity, module => module)
   @JoinColumn({
-    name: 'id_modulos',
+    name: 'id_modulo',
     referencedColumnName: 'id',
   })
   modulo: ModulesEntity;
 
-  @Column({ type: 'date' })
+  @Column({ type: 'timestamp', nullable: false, default: () => 'CURRENT_TIMESTAMP' })
   dtcadastro: Date;
 }

@@ -10,8 +10,8 @@ export class ModulesEntity {
   @Column({ type: 'enum', enum: ModulesEnum, nullable: false })
   nome: ModulesEnum;
 
-  @Column({ type: 'varchar', length: 200, nullable: false })
-  dtcadastros: Date;
+  @Column({ type: 'timestamp', nullable: false, default: () => 'CURRENT_TIMESTAMP' })
+  dtcadastro: Date;
 
   @OneToMany(() => AccessEntity, access => access.modulo)
   access: AccessEntity[];

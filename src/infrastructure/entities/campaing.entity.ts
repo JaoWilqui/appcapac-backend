@@ -14,7 +14,7 @@ export class CampaingEntity {
   @Column({ type: 'varchar', length: 300, nullable: false })
   descricao: string;
 
-  @Column({ type: 'date', nullable: false })
+  @Column({ type: 'timestamp', nullable: false, default: () => 'CURRENT_TIMESTAMP' })
   dtcadastro: Date;
 
   @Column({ type: 'date', nullable: false })

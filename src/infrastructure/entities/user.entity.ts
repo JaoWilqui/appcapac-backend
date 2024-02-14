@@ -29,7 +29,7 @@ export class UserEntity {
   @Column({ type: 'varchar', length: 11, nullable: false })
   cpf: string;
 
-  @Column({ type: 'date', nullable: false })
+  @Column({ type: 'timestamp', nullable: false, default: () => 'CURRENT_TIMESTAMP' })
   dtcadastro: Date;
 
   @ManyToMany(() => ModulesEntity)
