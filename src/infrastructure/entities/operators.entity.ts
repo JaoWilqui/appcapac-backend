@@ -10,7 +10,7 @@ export class OperatorsEntity {
   @Column({ type: 'varchar', length: 255, nullable: false })
   nome: string;
 
-  @Column({ type: 'date' })
+  @Column({ type: 'timestamp', nullable: false, default: () => 'CURRENT_TIMESTAMP' })
   dtcadastro: Date;
 
   @DeleteDateColumn({ name: 'deletado' })

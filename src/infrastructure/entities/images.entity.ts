@@ -55,7 +55,7 @@ export class ImagesEntity {
   @Column({ type: 'varchar', length: 2 })
   uf: string;
 
-  @Column({ type: 'date', nullable: false })
+  @Column({ type: 'timestamp', nullable: false, default: () => 'CURRENT_TIMESTAMP' })
   dtcadastro: Date;
 
   @DeleteDateColumn({ name: 'deletado' })

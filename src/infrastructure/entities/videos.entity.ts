@@ -38,7 +38,7 @@ export class VideosEntity {
   })
   campaing: CampaingEntity;
 
-  @Column({ type: 'date', nullable: false })
+  @Column({ type: 'timestamp', nullable: false, default: () => 'CURRENT_TIMESTAMP' })
   dtcadastro: Date;
 
   @Column({ type: 'varchar', length: 100 })

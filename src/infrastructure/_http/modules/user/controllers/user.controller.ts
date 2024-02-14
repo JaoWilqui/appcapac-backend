@@ -5,6 +5,7 @@ import { UpdatePasswordUsecase } from 'src/application/usecases/user/update_pass
 import { IUserProfile } from 'src/domain/dto/user/user_profile.dto';
 import { IUser } from 'src/domain/entities/user.entity';
 import { Permissions } from 'src/infrastructure/_http/decorators/perms.decorator';
+import { Public } from 'src/infrastructure/_http/decorators/public.decorator';
 import { User } from 'src/infrastructure/_http/decorators/user.decorator';
 import { AuthGuard } from 'src/infrastructure/_http/guards/auth.guard';
 import { ModulesGuard } from 'src/infrastructure/_http/guards/modules.guard';
@@ -54,7 +55,7 @@ export class UserController {
     return await this.findAllUsersUsecase.findAllUsers(params);
   }
 
-  @Permissions(Perms.admin)
+  @Public()
   @Post('register')
   async registerUser(@Body() createUserDTO: CreateUserDTO) {
     return await this.createUserUsecase.insertUser(createUserDTO);

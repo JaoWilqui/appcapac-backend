@@ -9,7 +9,7 @@ export class IModules {
 
   nome: ModulesEnum;
 
-  dtcadastros: Date;
+  dtcadastro: Date;
 
   deletado: Date;
 
