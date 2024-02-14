@@ -15,17 +15,18 @@ export class UpdateUserUsecase implements IUpdateUserUsecase {
     private modulesRepository: IModulesRepository,
   ) {}
   async updateUser(id: number, user: IUpdateUser) {
-    const existingUser = await this.userRepository.findByCpf(user.cpf);
+    const existingCpfUser = await this.userRepository.findByCpf(user.cpf);
 
-    if (existingUser) {
-      if (existingUser.cpf === user.cpf) {
-        throw new AppError('CPF já existente!', 400);
-      }
+    const existingEmailUser = await this.userRepository.findByEmail(user.email);
 
-      if (existingUser.email === user.email) {
-        throw new AppError('E-mail já existente!', 400);
-      }
+    if (existingCpfUser && existingCpfUser.id != id) {
+      throw new AppError('CPF já existente!', 400);
     }
+
+    if (existingEmailUser && existingEmailUser.id != id) {
+      throw new AppError('E-mail já existente!', 400);
+    }
+
     const interceptUser: IUser = { ...user, modules: [] };
 
     const filteredModules: IModules[] = [];
@@ -43,13 +44,13 @@ export class UpdateUserUsecase implements IUpdateUserUsecase {
     if (user.senha) {
       interceptUser.senha = await this.bcryptService.encrypt(interceptUser.senha);
     } else {
-      interceptUser.senha = existingUser.senha;
+      interceptUser.senha = existingCpfUser.senha;
     }
 
     if (user.perms) {
       interceptUser.perms = user.perms;
     } else {
-      interceptUser.perms = existingUser.perms;
+      interceptUser.perms = existingCpfUser.perms;
     }
 
     await this.userRepository.updateContent(id, interceptUser);

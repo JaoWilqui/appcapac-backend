@@ -69,7 +69,7 @@ export class FilesController {
   }
 
   @Permissions(Perms.admin)
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('file', { limits: { fileSize: 10485760 } }))
   @Post('upload')
   async uploadFiles(@UploadedFile() file: Express.Multer.File, @Req() req: Request) {
     const fileName = `${Date.now() + Math.random().toString(16).substr(8)}.${file.originalname
@@ -96,7 +96,7 @@ export class FilesController {
   }
 
   @Permissions(Perms.admin)
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('file', { limits: { fileSize: 10485760 } }))
   @Put('upload/:id')
   async updateUpload(
     @UploadedFile() file: Express.Multer.File,

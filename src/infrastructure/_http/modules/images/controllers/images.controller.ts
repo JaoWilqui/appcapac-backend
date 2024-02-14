@@ -70,7 +70,7 @@ export class ImagesController {
 
   @Permissions(Perms.admin)
   @Post('upload')
-  @UseInterceptors(FileInterceptor('image'))
+  @UseInterceptors(FileInterceptor('image', { limits: { fileSize: 10485760 } }))
   async uploadImage(@UploadedFile() image: Express.Multer.File, @Req() req: Request) {
     const imageName = `${Date.now() + Math.random().toString(16).substr(8)}.${image.originalname
       .split('.')
@@ -98,7 +98,7 @@ export class ImagesController {
 
   @Permissions(Perms.admin)
   @Put('upload/:id')
-  @UseInterceptors(FileInterceptor('image'))
+  @UseInterceptors(FileInterceptor('image', { limits: { fileSize: 10485760 } }))
   async updateImage(
     @UploadedFile() image: Express.Multer.File,
     @Req() req: Request,
